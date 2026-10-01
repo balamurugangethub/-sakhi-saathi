@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sakhi Saathi – सखी साथी</title>
+<meta name="description" content="Voice-first AI guide that helps a first-time woman user in her own language apply for PM Matru Vandana Yojana (Rs 5,000 for pregnant and nursing mothers).">
+<style>
+  :root{--pink:#d6336c;--pink-d:#a61e4d;--bg:#fff5f8;--ink:#2b1b22;--green:#2f9e44;--red:#e03131;--card:#fff}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:system-ui,"Noto Sans Devanagari","Noto Sans Telugu",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;justify-content:center}
+  #app{width:100%;max-width:480px;padding:14px 16px 28px;display:flex;flex-direction:column;gap:14px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .logo{font-weight:800;color:var(--pink-d);font-size:20px;user-select:none}
+  .langs{display:flex;gap:6px}
+  .lang{border:2px solid var(--pink);background:#fff;color:var(--pink-d);border-radius:20px;padding:8px 14px;font-size:16px;font-weight:700;cursor:pointer}
+  .lang.on{background:var(--pink);color:#fff}
+  .dots{display:flex;gap:6px;justify-content:center}
+  .dot{width:10px;height:10px;border-radius:50%;background:#f3c1d1}.dot.on{background:var(--pink)}
+  .card{background:var(--card);border-radius:24px;padding:22px 18px;box-shadow:0 6px 24px #d6336c22;text-align:center}
+  .emoji{font-size:84px;line-height:1.1}
+  .big{font-size:26px;font-weight:800;line-height:1.35;margin:10px 0 4px}
+  .sub{font-size:18px;color:#6b4a57;margin:6px 0}
+  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:20px;padding:20px 14px;font-size:26px;font-weight:800;color:#fff;cursor:pointer;margin-top:12px;font-family:inherit}
+  .btn:active{transform:scale(.97)}
+  .yes{background:var(--green)}.no{background:var(--red)}.pink{background:var(--pink)}
+  .ghost{background:#fff;color:var(--pink-d);border:3px solid var(--pink);font-size:20px;padding:14px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .listen{background:#fff0f5;color:var(--pink-d);border:3px solid var(--pink);font-size:20px;padding:12px;margin-top:6px}
+  .mic.rec{background:#c92a2a;animation:pulse 1s infinite}
+  @keyframes pulse{50%{box-shadow:0 0 0 14px #c92a2a33}}
+  ul.list{list-style:none;padding:0;margin:8px 0;text-align:left}
+  ul.list li{font-size:21px;padding:11px 8px;border-bottom:1px solid #f6d3df;display:flex;gap:12px;align-items:center}
+  ul.list li span.i{font-size:32px}
+  .ans{background:#fff0f5;border-radius:16px;padding:14px;font-size:20px;text-align:left;margin-top:12px;white-space:pre-wrap}
+  .note{font-size:13px;color:#8a6a76;text-align:center}
+  #set{display:none;background:#fff;border-radius:16px;padding:12px;font-size:14px}
+  #set input{width:100%;padding:8px;margin:6px 0}
+  a.call{text-decoration:none}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo" id="logo">🌸 सखी साथी</div>
+    <div class="langs">
+      <button class="lang on" data-l="hi">हिन्दी</button>
+      <button class="lang" data-l="te">తెలుగు</button>
+    </div>
+  </header>
+  <div class="dots" id="dots"></div>
+  <main id="main"></main>
+  <div id="set">
+    <b>Settings (optional – for judges/developers)</b><br>
+    Gemini API key (stays only in this browser):
+    <input id="key" type="password" placeholder="AIza...">
+    <button class="lang on" id="savekey">Save</button>
+  </div>
+  <div class="note">Info source: PMMVY, Ministry of Women &amp; Child Development. Please confirm at your Anganwadi centre.</div>
+</div>
+
+<script>
+// ---------- Content (add a new language = add one more block here) ----------
+const T = {
+  hi: {
+    code:'hi-IN', yes:'हाँ', no:'नहीं', listen:'🔊 फिर से सुनें', speak:'🎤 बोलकर जवाब दें',
+    start:'शुरू करें', startVoice:'नमस्ते बहन! मैं सखी साथी हूँ। मैं आपको सरकार की योजना से पाँच हज़ार रुपये दिलाने में मदद करूँगी। शुरू करने के लिए हरा बटन दबाइए।',
+    welcomeTitle:'नमस्ते बहन! 🙏', welcomeSub:'गर्भवती या नई माँ के लिए सरकारी योजना – ₹5,000 सीधे आपके बैंक खाते में',
+    qs:[
+      {e:'🤰', t:'क्या आप गर्भवती हैं, या आपका बच्चा अभी छोटा है (6 महीने से कम)?'},
+      {e:'👶', t:'क्या यह आपका पहला बच्चा है?'},
+      {e:'🎂', t:'क्या आपकी उम्र 19 साल या उससे ज़्यादा है?'}
+    ],
+    okTitle:'बधाई हो! 🎉 आप योजना के लिए पात्र हैं', okVoice:'बधाई हो बहन! आप प्रधानमंत्री मातृ वंदना योजना के लिए पात्र हैं। आपको पाँच हज़ार रुपये सीधे बैंक खाते में मिलेंगे। अब देखिए, आपको क्या ले जाना है और कहाँ जाना है।',
+    noTitle:'माफ़ कीजिए 🙏', noVoice:'माफ़ कीजिए बहन, इस योजना के लिए अभी आप पात्र नहीं हैं। लेकिन चिंता मत कीजिए। अपनी आंगनवाड़ी दीदी से दूसरी योजनाओं के बारे में पूछिए, या हेल्पलाइन पर फ़ोन कीजिए।',
+    docsTitle:'📄 साथ ले जाएँ', docs:[['🪪','आधार कार्ड'],['🏦','बैंक पासबुक (आपके नाम की)'],['📕','माँ और बच्चे का कार्ड (MCP कार्ड)'],['📱','मोबाइल नंबर']],
+    whereTitle:'📍 कहाँ जाएँ', where:'अपने गाँव की आंगनवाड़ी केंद्र या आशा दीदी के पास जाइए। वहाँ फ़ॉर्म 1-A भरवाइए। कोई पैसा नहीं लगता – यह मुफ़्त है।',
+    moneyTitle:'💰 कितना पैसा मिलेगा', money:'कुल ₹5,000, तीन किस्तों में: ₹1,000 गर्भ दर्ज कराने पर, ₹2,000 छह महीने बाद जाँच कराने पर, ₹2,000 बच्चे के जन्म दर्ज कराने और पहले टीके के बाद।',
+    resultVoice:'आपको ये चीज़ें ले जानी हैं: आधार कार्ड, बैंक पासबुक, माँ और बच्चे का कार्ड, और मोबाइल नंबर। अपने गाँव की आंगनवाड़ी केंद्र या आशा दीदी के पास जाइए। यह मुफ़्त है। कुल पाँच हज़ार रुपये तीन किस्तों में मिलेंगे। कोई भी सवाल हो तो नीचे वाला बटन दबाकर पूछिए।',
+    ask:'❓ कुछ पूछना है?', askVoice:'आप जो पूछना चाहती हैं, बोलिए।', askTitle:'अपना सवाल बोलिए',
+    help:'📞 हेल्पलाइन पर फ़ोन करें', helpNo:'7998799804', again:'🔁 फिर से शुरू करें', back:'⬅️ वापस',
+    listening:'सुन रही हूँ…', noheard:'सुनाई नहीं दिया। फिर से बोलिए।', thinking:'सोच रही हूँ…',
+    nomic:'इस फ़ोन में बोलने की सुविधा नहीं है। कृपया बटन दबाइए।',
+    fallbackDefault:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या हेल्पलाइन 7998799804 पर फ़ोन कीजिए।',
+    faq:[
+      [/पैसे|रुपये|रुपए|कितना|किस्त|amount|money/i,'कुल ₹5,000 मिलते हैं, तीन किस्तों में, सीधे आपके बैंक खाते में।'],
+      [/कागज|दस्तावेज|डॉक्यूमेंट|आधार|पासबुक|क्या ले/i,'आधार कार्ड, आपके नाम की बैंक पासबुक, माँ-बच्चे का कार्ड (MCP) और मोबाइल नंबर ले जाइए।'],
+      [/कहाँ|कहां|कहा|कैसे|फ़ॉर्म|फॉर्म|आवेदन/i,'अपने गाँव की आंगनवाड़ी केंद्र या आशा दीदी के पास जाइए और फ़ॉर्म 1-A भरवाइए। यह मुफ़्त है।'],
+      [/फ़ोन|फोन|नंबर|हेल्पलाइन|मदद/i,'हेल्पलाइन नंबर है 7998799804।'],
+      [/बैंक खाता|खाता नहीं|account/i,'अगर बैंक खाता नहीं है तो आंगनवाड़ी दीदी या डाकघर में मुफ़्त खाता खुलवाया जा सकता है। पहले आधार कार्ड के साथ जाइए।'],
+      [/दूसरा|दूसरे बच्चे|second/i,'दूसरे बच्चे पर यह लाभ तब मिलता है जब दूसरी संतान लड़की हो। आंगनवाड़ी दीदी से पक्का कर लीजिए।']
+    ],
+    sys:'हिन्दी'
+  },
+  te: {
+    code:'te-IN', yes:'అవును', no:'కాదు', listen:'🔊 మళ్ళీ వినండి', speak:'🎤 మాట్లాడి చెప్పండి',
+    start:'మొదలుపెట్టండి', startVoice:'నమస్కారం అక్కా! నేను సఖి సాథిని. ప్రభుత్వ పథకం ద్వారా ఐదు వేల రూపాయలు పొందడానికి నేను మీకు సహాయం చేస్తాను. మొదలుపెట్టడానికి ఆకుపచ్చ బటన్ నొక్కండి.',
+    welcomeTitle:'నమస్కారం అక్కా! 🙏', welcomeSub:'గర్భిణీలు, కొత్త తల్లులకు ప్రభుత్వ పథకం – ₹5,000 నేరుగా మీ బ్యాంకు ఖాతాలో',
+    qs:[
+      {e:'🤰', t:'మీరు గర్భవతా, లేదా మీ బిడ్డ ఇంకా చిన్నదా (6 నెలల లోపు)?'},
+      {e:'👶', t:'ఇది మీ మొదటి బిడ్డా?'},
+      {e:'🎂', t:'మీ వయసు 19 సంవత్సరాలు లేదా ఎక్కువా?'}
+    ],
+    okTitle:'అభినందనలు! 🎉 మీరు అర్హులు', okVoice:'అభినందనలు అక్కా! మీరు ప్రధానమంత్రి మాతృ వందన యోజనకు అర్హులు. మీకు ఐదు వేల రూపాయలు నేరుగా బ్యాంకు ఖాతాలో వస్తాయి. ఇప్పుడు ఏమి తీసుకెళ్ళాలో, ఎక్కడికి వెళ్ళాలో చూడండి.',
+    noTitle:'క్షమించండి 🙏', noVoice:'క్షమించండి అక్కా, ఈ పథకానికి మీరు ఇప్పుడు అర్హులు కారు. కానీ ఆందోళన వద్దు. ఇతర పథకాల గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా హెల్ప్‌లైన్‌కు ఫోన్ చేయండి.',
+    docsTitle:'📄 వెంట తీసుకెళ్ళండి', docs:[['🪪','ఆధార్ కార్డు'],['🏦','బ్యాంకు పాస్‌బుక్ (మీ పేరు మీద)'],['📕','తల్లి-బిడ్డ కార్డు (MCP కార్డు)'],['📱','మొబైల్ నంబర్']],
+    whereTitle:'📍 ఎక్కడికి వెళ్ళాలి', where:'మీ ఊరిలోని అంగన్‌వాడీ కేంద్రానికి లేదా ఆశా వర్కర్ దగ్గరికి వెళ్ళండి. అక్కడ ఫారం 1-A నింపించండి. ఎలాంటి డబ్బు ఖర్చు లేదు – ఇది ఉచితం.',
+    moneyTitle:'💰 ఎంత డబ్బు వస్తుంది', money:'మొత్తం ₹5,000, మూడు విడతల్లో: గర్భం నమోదు చేస్తే ₹1,000, ఆరు నెలల తర్వాత పరీక్ష చేయిస్తే ₹2,000, బిడ్డ పుట్టుక నమోదు, మొదటి టీకా తర్వాత ₹2,000.',
+    resultVoice:'మీరు ఇవి తీసుకెళ్ళాలి: ఆధార్ కార్డు, బ్యాంకు పాస్‌బుక్, తల్లి బిడ్డ కార్డు, మొబైల్ నంబర్. మీ ఊరి అంగన్‌వాడీ కేంద్రానికి లేదా ఆశా వర్కర్ దగ్గరికి వెళ్ళండి. ఇది ఉచితం. మొత్తం ఐదు వేల రూపాయలు మూడు విడతల్లో వస్తాయి. ఏదైనా ప్రశ్న ఉంటే కింది బటన్ నొక్కి అడగండి.',
+    ask:'❓ ఏదైనా అడగాలా?', askVoice:'మీరు అడగాలనుకున్నది చెప్పండి.', askTitle:'మీ ప్రశ్న చెప్పండి',
+    help:'📞 హెల్ప్‌లైన్‌కు ఫోన్', helpNo:'7998799804', again:'🔁 మళ్ళీ మొదలు', back:'⬅️ వెనక్కి',
+    listening:'వింటున్నాను…', noheard:'వినిపించలేదు. మళ్ళీ చెప్పండి.', thinking:'ఆలోచిస్తున్నాను…',
+    nomic:'ఈ ఫోన్‌లో మాట్లాడే సౌకర్యం లేదు. దయచేసి బటన్ నొక్కండి.',
+    fallbackDefault:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా హెల్ప్‌లైన్ 7998799804 కు ఫోన్ చేయండి.',
+    faq:[
+      [/డబ్బు|రూపాయ|ఎంత|విడత|amount|money/i,'మొత్తం ₹5,000 మూడు విడతల్లో నేరుగా మీ బ్యాంకు ఖాతాలో వస్తాయి.'],
+      [/పత్రాలు|కాగితాలు|ఆధార్|పాస్‌బుక్|ఏమి తీసుకె/i,'ఆధార్ కార్డు, మీ పేరు మీద బ్యాంకు పాస్‌బుక్, తల్లి-బిడ్డ కార్డు, మొబైల్ నంబర్ తీసుకెళ్ళండి.'],
+      [/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు/i,'మీ ఊరి అంగన్‌వాడీ కేంద్రం లేదా ఆశా వర్కర్ దగ్గరికి వెళ్ళి ఫారం 1-A నింపించండి. ఇది ఉచితం.'],
+      [/ఫోన్|నంబర్|హెల్ప్‌లైన్|సహాయం/i,'హెల్ప్‌లైన్ నంబర్ 7998799804.'],
+      [/ఖాతా|బ్యాంకు/i,'బ్యాంకు ఖాతా లేకపోతే అంగన్‌వాడీ టీచర్ లేదా పోస్టాఫీసులో ఉచితంగా ఖాతా తెరవవచ్చు. ముందు ఆధార్ కార్డుతో వెళ్ళండి.']
+    ],
+    sys:'తెలుగు'
+  }
+};
+
+// ---------- State ----------
+let lang = 'hi', step = 0, eligible = true, recog = null;
+const $ = s => document.querySelector(s);
+const main = $('#main');
+const L = () => T[lang];
+const store = { get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}} };
+
+// ---------- Voice out ----------
+function say(text){
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = L().code; u.rate = 0.9;
+    const v = speechSynthesis.getVoices().find(v=>v.lang.replace('_','-').toLowerCase()===L().code.toLowerCase()) ||
+              speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(lang));
+    if(v) u.voice = v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+if('speechSynthesis' in window) speechSynthesis.onvoiceschanged = ()=>{};
+
+// ---------- Voice in ----------
+function listen(onText, onFail){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){ onFail(L().nomic); return; }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  recog = new SR(); recog.lang = L().code; recog.interimResults = false; recog.maxAlternatives = 1;
+  let got = false;
+  recog.onresult = e => { got = true; onText(e.results[0][0].transcript); };
+  recog.onerror = () => { if(!got) onFail(L().noheard); };
+  recog.onend = () => { document.querySelectorAll('.mic').forEach(b=>b.classList.remove('rec')); if(!got) onFail(L().noheard); };
+  recog.start();
+}
+const YES = /हाँ|हां|हा\b|जी|ठीक|सही|yes|yeah|అవును|ఔను|అవునండి/i;
+const NO  = /नहीं|नही|ना\b|no\b|కాదు|లేదు|కాదండి/i;
+
+// ---------- Render ----------
+function dots(){
+  const n = L().qs.length + 2; // welcome + qs + result
+  $('#dots').innerHTML = Array.from({length:n},(_,i)=>`<div class="dot ${i<=step?'on':''}"></div>`).join('');
+}
+function listenBtn(text){ return `<button class="btn listen" onclick='say(${JSON.stringify(text)})'>${L().listen}</button>`; }
+
+function render(){
+  dots();
+  const t = L(), qn = t.qs.length;
+  if(step===0){
+    main.innerHTML = `<div class="card"><div class="emoji">🌸</div><div class="big">${t.welcomeTitle}</div><div class="sub">${t.welcomeSub}</div>
+      <button class="btn yes" id="go">▶️ ${t.start}</button>${listenBtn(t.startVoice)}</div>`;
+    $('#go').onclick = ()=>{ eligible=true; step=1; render(); };
+    say(t.startVoice);
+  } else if(step<=qn){
+    const q = t.qs[step-1];
+    main.innerHTML = `<div class="card"><div class="emoji">${q.e}</div><div class="big">${q.t}</div>
+      ${listenBtn(q.t)}
+      <div class="row"><button class="btn yes" id="y">✅ ${t.yes}</button><button class="btn no" id="n">❌ ${t.no}</button></div>
+      <button class="btn pink mic" id="mic">${t.speak}</button>
+      <div id="msg" class="sub"></div></div>`;
+    const answer = ok => { if(!ok) eligible=false; step++; if(step>qn) step=qn+1; render(); };
+    $('#y').onclick = ()=>answer(true); $('#n').onclick = ()=>answer(false);
+    $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
+      listen(txt=>{ if(YES.test(txt)&&!NO.test(txt)) answer(true); else if(NO.test(txt)) answer(false); else $('#msg').textContent=t.noheard; },
+             m=>{ $('#msg').textContent=m; }); };
+    say(q.t);
+  } else {
+    result();
+  }
+}
+
+function result(){
+  const t = L();
+  if(!eligible){
+    main.innerHTML = `<div class="card"><div class="emoji">🙏</div><div class="big">${t.noTitle}</div>${listenBtn(t.noVoice)}
+      <a class="call" href="tel:${t.helpNo}"><button class="btn pink">${t.help}</button></a>
+      <button class="btn ghost" id="again">${t.again}</button></div>`;
+    $('#again').onclick=()=>{step=0;render()}; say(t.noVoice); return;
+  }
+  main.innerHTML = `<div class="card"><div class="emoji">🎉</div><div class="big">${t.okTitle}</div>
+    ${listenBtn(t.resultVoice)}
+    <div class="sub"><b>${t.docsTitle}</b></div>
+    <ul class="list">${t.docs.map(d=>`<li><span class="i">${d[0]}</span>${d[1]}</li>`).join('')}</ul>
+    <div class="sub"><b>${t.whereTitle}</b></div><div class="ans">${t.where}</div>
+    <div class="sub" style="margin-top:14px"><b>${t.moneyTitle}</b></div><div class="ans">${t.money}</div>
+    <button class="btn pink" id="ask">${t.ask}</button>
+    <a class="call" href="tel:${t.helpNo}"><button class="btn ghost">${t.help}<br>${t.helpNo}</button></a>
+    <button class="btn ghost" id="again">${t.again}</button></div>`;
+  $('#ask').onclick = askScreen; $('#again').onclick=()=>{step=0;render()};
+  say(t.okVoice + ' ' + t.resultVoice);
+}
+
+// ---------- Ask a question (Gemini if key present, else built-in FAQ) ----------
+function askScreen(){
+  const t = L();
+  main.innerHTML = `<div class="card"><div class="emoji">🎤</div><div class="big">${t.askTitle}</div>
+    <button class="btn pink mic" id="mic">${t.speak}</button>
+    <div id="msg" class="sub"></div><div id="out"></div>
+    <button class="btn ghost" id="back">${t.back}</button></div>`;
+  $('#back').onclick = result;
+  $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
+    listen(async q=>{ $('#msg').textContent='“'+q+'”'; await respond(q); }, m=>{ $('#msg').textContent=m; say(m); }); };
+  say(t.askVoice);
+}
+async function respond(q){
+  const t = L(); $('#out').innerHTML = `<div class="ans">${t.thinking}</div>`;
+  let a = null; const key = store.get('gkey');
+  if(key){
+    try{
+      const ctx = `You are Sakhi Saathi, a kind voice assistant for a rural Indian woman with no tech knowledge. Reply ONLY in ${t.sys}, in at most 3 very short, simple sentences, no English words, no markdown. Topic: PM Matru Vandana Yojana (PMMVY): Rs 5000 in 3 instalments (1000 on pregnancy registration, 2000 after 6 months antenatal check, 2000 after child birth registration and first vaccine cycle) for pregnant and lactating mothers, 19+ years, first living child (second child benefit only if girl). Apply on Form 1-A at Anganwadi centre or via ASHA worker; documents: Aadhaar, bank/post-office passbook in her name, MCP card, mobile number. Helpline 7998799804. If unsure, tell her to ask the Anganwadi worker. Never ask for personal data or OTP.`;
+      const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',{
+        method:'POST', headers:{'Content-Type':'application/json','x-goog-api-key':key},
+        body: JSON.stringify({systemInstruction:{parts:[{text:ctx}]}, contents:[{role:'user',parts:[{text:q}]}]})});
+      const j = await r.json(); a = j.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    }catch(e){ a = null; }
+  }
+  if(!a){ const hit = t.faq.find(f=>f[0].test(q)); a = hit ? hit[1] : t.fallbackDefault; }
+  $('#out').innerHTML = `<div class="ans">${a.replace(/</g,'&lt;')}</div>`; say(a);
+}
+
+// ---------- Wiring ----------
+document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>{
+  lang=b.dataset.l; store.set('lang',lang);
+  document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x===b));
+  document.documentElement.lang=lang; render();
+});
+// Hidden settings: tap logo 5 times
+let taps=0; $('#logo').onclick=()=>{ if(++taps>=5){ taps=0; const s=$('#set'); s.style.display='block'; $('#key').value=store.get('gkey')||''; } };
+$('#savekey').onclick=()=>{ store.set('gkey',$('#key').value.trim()); $('#set').style.display='none'; };
+// Optional: ?key=... is deliberately NOT supported (keys must never be in URLs).
+const sl = store.get('lang'); if(sl&&T[sl]){ lang=sl; document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===lang)); document.documentElement.lang=lang; }
+render();
+</script>
+</body>
+</html>
