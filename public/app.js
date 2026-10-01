@@ -954,7 +954,7 @@ more.onchange = () => { if(more.value) chooseLang(more.value); };
 paintBig();
 const sl = store.get('lang'); if(sl&&U[sl]) setLang(sl); else setLang('hi');
 langScreen();
-fetch('/healthz').then(r=>r.ok?r.json():null).then(j=>{
+fetch('/api/health').then(r=>r.ok?r.json():null).then(j=>{
   API.ai = !!(j && j.ai); more.hidden = !API.ai;
   if(!API.ai) return;
   if(main.querySelector('.tile[data-l]')) langScreen();

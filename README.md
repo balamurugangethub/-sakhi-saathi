@@ -24,7 +24,7 @@
 ## Architecture
 ```
 Browser (public/)  ──►  Node server (server.js, zero dependencies)  ──►  Gemini API
- index.html · app.js · style.css          │  /api/ask  /api/route  /api/translate  /api/tts  /healthz
+ index.html · app.js · style.css          │  /api/ask  /api/route  /api/translate  /api/tts  /api/health
  localStorage: profile, language,         │  GEMINI_API_KEY only on the server · rate limiting · input validation
  cached translations                      └─ strict CSP & security headers · gzip · deployed on Google Cloud Run
 ```

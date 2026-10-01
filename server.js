@@ -101,10 +101,15 @@ async function gemini(model, body, timeoutMs = 30000) {
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': c.key },
       body: JSON.stringify(body)
     });
-    if (!r.ok) { const e = new Error('upstream ' + r.status); e.status = 502; throw e; }
+    if (!r.ok) {
+      let detail = ''; try { detail = (await r.text()).slice(0, 400); } catch (x) { /* ignore */ }
+      console.error(JSON.stringify({ severity: 'ERROR', event: 'gemini_error', model, status: r.status, detail }));
+      const e = new Error('upstream ' + r.status); e.status = 502; throw e;
+    }
     return await r.json();
   } catch (err) {
     if (err.status) throw err;
+    console.error(JSON.stringify({ severity: 'ERROR', event: 'gemini_unreachable', model, message: String(err.message).slice(0, 200) }));
     const e = new Error('upstream unavailable'); e.status = 502; throw e;
   } finally { clearTimeout(timer); }
 }
@@ -245,7 +250,8 @@ function serveStatic(req, res, pathname) {
 
 async function handler(req, res) {
   const { pathname } = new URL(req.url, 'http://localhost');
-  if (pathname === '/healthz') return sendJson(res, 200, { ok: true, ai: !!cfg().key });
+  // note: Cloud Run's front end reserves /healthz, so the app uses /api/health (kept /healthz for other hosts)
+  if (pathname === '/api/health' || pathname === '/healthz') return sendJson(res, 200, { ok: true, ai: !!cfg().key });
   if (pathname.startsWith('/api/')) return handleApi(req, res, pathname);
   return serveStatic(req, res, pathname);
 }

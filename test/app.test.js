@@ -185,7 +185,7 @@ test('installable PWA: valid manifest, real PNG icons, service worker that never
   }
   const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
   assert.match(sw, /\/api\//);
-  assert.match(sw, /healthz/);
+  assert.match(sw, /\/api\//);
   assert.ok(win.document.querySelector('link[rel="manifest"]'));
 });
 

@@ -17,10 +17,10 @@ test.beforeEach(() => { process.env.GEMINI_API_KEY = 'test-key'; });
 const post = (path, body, headers = {}) => fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
 
 test('healthz reports ok and whether AI is configured', async () => {
-  let j = await (await fetch(base + '/healthz')).json();
+  let j = await (await fetch(base + '/api/health')).json();
   assert.deepEqual(j, { ok: true, ai: true });
   delete process.env.GEMINI_API_KEY;
-  j = await (await fetch(base + '/healthz')).json();
+  j = await (await fetch(base + '/api/health')).json();
   assert.equal(j.ai, false);
 });
 
