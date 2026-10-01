@@ -1,0 +1,129 @@
+'use strict';
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const srv = require('../server.js');
+
+let server, base;
+const geminiReply = parts => ({ ok: true, status: 200, json: async () => ({ candidates: [{ content: { parts } }] }) });
+
+test.before(async () => {
+  server = srv.createServer();
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  base = 'http://127.0.0.1:' + server.address().port;
+});
+test.after(() => server.close());
+test.beforeEach(() => { process.env.GEMINI_API_KEY = 'test-key'; });
+
+const post = (path, body, headers = {}) => fetch(base + path, { method: 'POST', headers: { 'Content-Type': 'application/json', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
+
+test('healthz reports ok and whether AI is configured', async () => {
+  let j = await (await fetch(base + '/healthz')).json();
+  assert.deepEqual(j, { ok: true, ai: true });
+  delete process.env.GEMINI_API_KEY;
+  j = await (await fetch(base + '/healthz')).json();
+  assert.equal(j.ai, false);
+});
+
+test('every response carries the security headers', async () => {
+  const r = await fetch(base + '/');
+  assert.equal(r.status, 200);
+  for (const h of Object.keys(srv.SECURITY_HEADERS)) assert.ok(r.headers.get(h), h + ' missing');
+  assert.match(r.headers.get('content-security-policy'), /script-src 'self'/);
+  assert.doesNotMatch(r.headers.get('content-security-policy'), /script-src[^;]*unsafe-inline/);
+});
+
+test('static files are served with the right type; traversal and unknown paths are refused', async () => {
+  assert.match((await fetch(base + '/app.js')).headers.get('content-type'), /javascript/);
+  assert.match((await fetch(base + '/style.css')).headers.get('content-type'), /css/);
+  assert.equal((await fetch(base + '/nope.html')).status, 404);
+  assert.equal((await fetch(base + '/..%2fserver.js')).status, 403);
+  assert.equal((await fetch(base + '/%00')).status, 400);
+  assert.equal((await fetch(base + '/', { method: 'DELETE' })).status, 405);
+});
+
+test('the Gemini key is never exposed to the browser', async () => {
+  for (const f of ['/', '/app.js', '/index.html', '/style.css']) {
+    const t = await (await fetch(base + f)).text();
+    assert.doesNotMatch(t, /AIza[0-9A-Za-z_-]{20,}/);
+    assert.doesNotMatch(t, /x-goog-api-key/i);
+  }
+});
+
+test('validators accept good input and reject bad input', () => {
+  assert.equal(srv.validateAsk({ q: 'how much', lang: 'ta', facts: 'x' }), null);
+  assert.ok(srv.validateAsk({ q: '', lang: 'ta' }));
+  assert.ok(srv.validateAsk({ q: 'x'.repeat(301), lang: 'ta' }));
+  assert.ok(srv.validateAsk({ q: 'x', lang: 'xx' }));
+  assert.equal(srv.validateRoute({ q: 'gas', services: [{ id: 'lpg', hint: 'gas' }] }), null);
+  assert.ok(srv.validateRoute({ q: 'gas', services: [{ id: 'bad id!', hint: 'x' }] }));
+  assert.ok(srv.validateTranslate({ lang: 'en', strings: ['a'] }));
+  assert.equal(srv.validateTranslate({ lang: 'bn', strings: ['a'] }), null);
+  assert.ok(srv.validateTranslate({ lang: 'bn', strings: new Array(61).fill('a') }));
+  assert.ok(srv.validateTts({ text: '', lang: 'hi' }));
+});
+
+test('/api/ask returns a grounded answer and never leaks upstream details', async () => {
+  let seen;
+  srv.deps.fetch = async (url, opts) => { seen = { url, opts }; return geminiReply([{ text: 'Go to the Anganwadi.' }]); };
+  const r = await post('/api/ask', { q: 'where do I go', lang: 'hi', facts: 'PMMVY facts' });
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), { answer: 'Go to the Anganwadi.' });
+  assert.equal(seen.opts.headers['x-goog-api-key'], 'test-key');
+  assert.match(JSON.parse(seen.opts.body).systemInstruction.parts[0].text, /Hindi/);
+  srv.deps.fetch = async () => ({ ok: false, status: 500, json: async () => ({}) });
+  const bad = await post('/api/ask', { q: 'x', lang: 'hi' });
+  assert.equal(bad.status, 502);
+  assert.doesNotMatch(await bad.text(), /500|key|google/i);
+});
+
+test('AI endpoints answer 503 when no key is configured', async () => {
+  delete process.env.GEMINI_API_KEY;
+  assert.equal((await post('/api/ask', { q: 'x', lang: 'hi' })).status, 503);
+});
+
+test('bad requests: wrong method, content type, invalid JSON, oversized body', async () => {
+  assert.equal((await fetch(base + '/api/ask')).status, 405);
+  assert.equal((await post('/api/ask', '{}', { 'Content-Type': 'text/plain' })).status, 415);
+  assert.equal((await post('/api/ask', '{not json')).status, 400);
+  assert.equal((await post('/api/ask', JSON.stringify({ q: 'x', lang: 'hi', facts: 'f'.repeat(200000) }))).status, 413);
+  assert.equal((await post('/api/missing', {})).status, 404);
+});
+
+test('/api/translate keeps order, caches, and rejects a malformed model reply', async () => {
+  let calls = 0;
+  srv.deps.fetch = async (url, opts) => { calls++; const arr = JSON.parse(JSON.parse(opts.body).contents[0].parts[0].text); return geminiReply([{ text: JSON.stringify(arr.map(s => s.toUpperCase())) }]); };
+  let r = await (await post('/api/translate', { lang: 'bn', strings: ['one', 'two'] })).json();
+  assert.deepEqual(r.strings, ['ONE', 'TWO']);
+  r = await (await post('/api/translate', { lang: 'bn', strings: ['two', 'three'] })).json();
+  assert.deepEqual(r.strings, ['TWO', 'THREE']);
+  assert.equal(calls, 2);
+  srv.deps.fetch = async () => geminiReply([{ text: '["only one"]' }]);
+  assert.equal((await post('/api/translate', { lang: 'mr', strings: ['a', 'b'] })).status, 502);
+});
+
+test('/api/tts wraps Gemini PCM audio into a playable WAV', async () => {
+  const pcm = Buffer.alloc(4800, 1);
+  srv.deps.fetch = async () => geminiReply([{ inlineData: { mimeType: 'audio/L16;codec=pcm;rate=24000', data: pcm.toString('base64') } }]);
+  const r = await post('/api/tts', { text: 'வணக்கம் அக்கா', lang: 'ta' });
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get('content-type'), 'audio/wav');
+  const buf = Buffer.from(await r.arrayBuffer());
+  assert.equal(buf.length, 44 + 4800);
+  assert.equal(buf.toString('ascii', 0, 4), 'RIFF');
+  assert.equal(buf.readUInt32LE(24), 24000);
+});
+
+test('pcmToWav writes a correct header', () => {
+  const w = srv.pcmToWav(Buffer.alloc(100), 16000);
+  assert.equal(w.toString('ascii', 8, 12), 'WAVE');
+  assert.equal(w.readUInt32LE(24), 16000);
+  assert.equal(w.readUInt32LE(40), 100);
+});
+
+test('rate limiter blocks after the limit and recovers after the window', () => {
+  const now = 1_000_000;
+  for (let i = 0; i < 3; i++) assert.equal(srv.allow('9.9.9.9', 'x', 3, 1000, now + i), true);
+  assert.equal(srv.allow('9.9.9.9', 'x', 3, 1000, now + 10), false);
+  assert.equal(srv.allow('9.9.9.9', 'x', 3, 1000, now + 5000), true);
+  assert.equal(srv.allow('8.8.8.8', 'x', 3, 1000, now + 10), true);
+});

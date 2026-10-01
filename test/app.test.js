@@ -1,0 +1,134 @@
+'use strict';
+// Loads the real page in jsdom and checks content completeness, eligibility rules, routing and accessibility basics.
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const path = require('path');
+const fs = require('fs');
+const vm = require('vm');
+const { JSDOM } = require('jsdom');
+
+let win, ctx;
+// run code in the page's own global scope so top-level const/let (S, U, PU ...) are visible
+const ev = code => new vm.Script(code).runInContext(ctx);
+const tick = () => new Promise(r => setTimeout(r, 0));
+const EMOJI = /[\u{1F300}-\u{1FAFF}✅❌⬅ℹ▶❓✏]/u;
+
+test.before(() => {
+  const root = path.join(__dirname, '..', 'public');
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/<script[^>]*src="app.js"[^>]*><\/script>/, '');
+  const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only', pretendToBeVisual: true });
+  win = dom.window; ctx = dom.getInternalVMContext();
+  win.fetch = () => Promise.reject(new Error('offline'));
+  ev(fs.readFileSync(path.join(root, 'app.js'), 'utf8'));
+});
+
+test('all core languages are complete for every scheme', () => {
+  const missing = ev(`(()=>{ const m=[]; for(const l of ['hi','ta','te','en']){ for(const s of S){
+    for(const k of ['name','d','where','info']) if(!s[k][l]) m.push(s.id+'.'+k+'.'+l);
+    s.qs.forEach((q,i)=>{ if(!q[l]) m.push(s.id+'.q'+i+'.'+l); });
+    s.docs.forEach((d,i)=>{ if(!d[1][l]) m.push(s.id+'.doc'+i+'.'+l); });
+    s.calls.forEach((c,i)=>{ if(typeof c[0]!=='string' && !c[0][l]) m.push(s.id+'.call'+i+'.'+l); });
+    if(!s.calls.length) m.push(s.id+'.nocalls'); if(!s.f) m.push(s.id+'.nofacts'); }
+    for(const k of Object.keys(U.en)) if(U[l][k]===undefined) m.push('U.'+k+'.'+l);
+    for(const k of Object.keys(PU.en)) if(PU[l][k]===undefined) m.push('PU.'+k+'.'+l);
+    PQ.forEach(q=>{ if(!q.q[l]) m.push('PQ.'+q.k+'.'+l); q.o.forEach(o=>{ if(o[1] && !o[1][l]) m.push('PQ.'+q.k+'.'+o[0]+'.'+l); }); }); }
+    STATES.forEach(r=>{ for(let i=1;i<=4;i++) if(!r[i]) m.push('state.'+r[0]+i); });
+    return m; })()`);
+  assert.deepEqual(Array.from(missing), []);
+});
+
+test('there are 36 states/UTs, 12+ services, and phone numbers look valid', () => {
+  assert.equal(ev('STATES.length'), 36);
+  assert.ok(ev('S.length') >= 12);
+  const bad = ev(`S.flatMap(s=>s.calls.filter(c=>!/^(\\*99#|[0-9]{3,12})$/.test(c[1])).map(c=>s.id+':'+c[1]))`);
+  assert.deepEqual(Array.from(bad), []);
+});
+
+test('keyword routing sends spoken requests to the right service', async () => {
+  ev(`setLang('en'); home();`);
+  const cases = { 'book gas': 'lpg', 'bank balance': 'balance', 'open bank account': 'jandhan', 'widow pension': 'widow',
+    'scholarship for my daughter': 'scholarship', 'ladki bahin': 'cash_MH', 'free treatment': 'ayushman', 'गैस सिलेंडर': 'lpg', 'इलाज': 'ayushman', 'கேஸ் சிலிண்டர்': 'lpg', 'బ్యాంకు ఖాతా': 'jandhan' };
+  for (const [q, id] of Object.entries(cases)) {
+    ev(`home()`); await ev(`route(${JSON.stringify(q)})`);
+    assert.equal(ev('cur && cur.id'), id, q);
+  }
+});
+
+test('eligibility rules filter schemes by profile', () => {
+  const ids = p => Array.from(ev(`S.filter(s=>!s.basic && fit(s,${JSON.stringify(p)})).map(s=>s.id)`));
+  assert.ok(ids({ state: 'TN', age: 'a40', marital: 'widow', poor: 'yes' }).includes('widow'));
+  assert.ok(ids({ state: 'TN' }).includes('urimai'));
+  assert.ok(!ids({ state: 'MH' }).includes('urimai'));
+  assert.ok(ids({ state: 'MH', age: 'a21' }).includes('cash_MH'));
+  assert.ok(!ids({ state: 'KA', age: 'a21' }).includes('cash_MH'));
+  assert.ok(!ids({ age: 'u18' }).includes('pmmvy'));
+  assert.ok(!ids({ marital: 'married' }).includes('widow'));
+  assert.ok(!ids({ daughter: 'no' }).includes('sukanya'));
+  assert.ok(!ids({ poor: 'no' }).includes('ayushman'));
+  assert.ok(!ids({ area: 'urban' }).includes('shg'));
+});
+
+test('every service flow reaches a result screen in every language, with no emoji left', async () => {
+  for (const l of ['hi', 'ta', 'te', 'en']) {
+    ev(`setLang('${l}'); home();`); await tick();
+    assert.ok(!EMOJI.test(win.document.getElementById('app').textContent), 'emoji on home ' + l);
+    const n = ev('S.length');
+    for (let i = 0; i < n; i++) {
+      ev(`open(S[${i}].id)`); await tick();
+      const q = ev(`S[${i}].qs.length`);
+      for (let k = 0; k < q; k++) { win.document.querySelector('#y').click(); await tick(); }
+      assert.ok(win.document.querySelector('#ask'), `result missing ${i} ${l}`);
+      assert.ok(!EMOJI.test(win.document.getElementById('app').textContent), `emoji in result ${i} ${l}`);
+    }
+  }
+});
+
+test('a "no" answer leads to a kind, non-dead-end screen with a way home', async () => {
+  ev(`setLang('en'); open('pmmvy')`); await tick();
+  win.document.querySelector('#n').click(); await tick();
+  assert.ok(win.document.querySelector('#home'));
+  assert.ok(win.document.querySelectorAll('a.call').length >= 1);
+});
+
+test('profile wizard saves only on the device and can be deleted', async () => {
+  ev(`localStorage.clear(); profile=null; setLang('en'); home();`); await tick();
+  win.document.querySelector('#pmk').click(); await tick();
+  win.document.querySelector('#go').click(); await tick();
+  win.document.querySelector('.st[data-c="MH"]').click(); await tick();
+  win.document.querySelector('#nx').click(); await tick();
+  for (const v of ['a21', 'married', 'OBC', 'no', 'yes', 'rural', 'no', 'no', 'yes']) { win.document.querySelector(`[data-v="${v}"]`).click(); await tick(); }
+  const saved = JSON.parse(win.localStorage.getItem('profile'));
+  assert.equal(saved.state, 'MH');
+  assert.deepEqual(Object.keys(saved).filter(k => /name|phone|aadhaar|mobile/i.test(k)), []);
+  win.document.querySelector('#ok').click(); await tick();
+  win.document.querySelector('#pdel').click(); await tick();
+  assert.equal(win.localStorage.getItem('profile'), '');
+});
+
+test('accessibility basics: lang attribute, labelled controls, live regions, hidden decorative icons', async () => {
+  ev(`setLang('ta'); home();`); await tick();
+  const d = win.document;
+  assert.equal(d.documentElement.lang, 'ta');
+  assert.ok(d.querySelector('#msg[aria-live]'));
+  assert.ok(d.querySelector('#vnote[aria-live]'));
+  assert.ok(d.querySelector('#vt[aria-pressed]'));
+  assert.ok(d.querySelector('#more[aria-label]'));
+  assert.ok(d.querySelector('#mic[aria-label]'));
+  d.querySelectorAll('.ic').forEach(i => assert.equal(i.getAttribute('aria-hidden'), 'true'));
+  d.querySelectorAll('svg').forEach(s => assert.ok(s.closest('[aria-hidden="true"]'), 'svg exposed to screen readers'));
+  d.querySelectorAll('button').forEach(b => assert.ok((b.textContent || '').trim() || b.getAttribute('aria-label'), 'unlabelled button ' + b.className));
+});
+
+test('voice is OFF by default and nothing speaks automatically', () => {
+  assert.equal(ev('voiceOn'), false);
+  assert.equal(win.document.querySelector('#vt').getAttribute('aria-pressed'), 'false');
+});
+
+test('no inline event handlers or secrets in the shipped HTML/JS', () => {
+  const html = fs.readFileSync(path.join(__dirname, '..', 'public', 'index.html'), 'utf8');
+  const js = fs.readFileSync(path.join(__dirname, '..', 'public', 'app.js'), 'utf8');
+  assert.doesNotMatch(html, /\son\w+\s*=/i);
+  assert.doesNotMatch(js, /onclick='|onclick="/);
+  assert.doesNotMatch(js + html, /AIza[0-9A-Za-z_-]{20,}/);
+  assert.doesNotMatch(html, /<script(?![^>]*\bsrc=)[^>]*>/i);
+});

@@ -1,0 +1,16 @@
+{
+  "name": "sakhi-saathi",
+  "version": "1.0.0",
+  "description": "Voice-first guide that helps first-time women users in India access government services in their own language.",
+  "private": true,
+  "license": "MIT",
+  "main": "server.js",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1"
+  }
+}

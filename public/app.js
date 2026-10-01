@@ -1,136 +1,3 @@
-<!doctype html>
-<html lang="hi">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cg fill='%23ff8fb3'%3E%3Ccircle cx='32' cy='14' r='11'/%3E%3Ccircle cx='50' cy='27' r='11'/%3E%3Ccircle cx='43' cy='48' r='11'/%3E%3Ccircle cx='21' cy='48' r='11'/%3E%3Ccircle cx='14' cy='27' r='11'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='9' fill='%23f5a524'/%3E%3C/svg%3E">
-<title>Sakhi Saathi – सखी साथी</title>
-<meta name="description" content="Voice-first Gemini-powered guide that helps first-time women users in Hindi, Telugu and Tamil access LPG booking, Magalir Urimai Thogai, Matru Vandana, Ujjwala, Sukanya Samriddhi, Jan Dhan, Ayushman Bharat and skill training.">
-<style>
-  :root{--ink:#1f1f1f;--muted:#5f6368;--line:#e6e8eb;--bg:#fff;--surface:#f6f7f9;--accent:#c2185b;--accent-d:#8e1144;--accent-w:#fde7f0;--green:#1e8e3e;--red:#d93025;
-        --shadow:0 1px 2px rgba(60,64,67,.12),0 6px 18px rgba(60,64,67,.08);--r:24px}
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{-webkit-text-size-adjust:100%}
-  body{margin:0;font-family:"Google Sans","Product Sans",system-ui,-apple-system,"Segoe UI","Noto Sans Devanagari","Noto Sans Tamil","Noto Sans Telugu",Roboto,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;line-height:1.45}
-  #app{width:100%;max-width:1040px;margin:0 auto;padding:0 16px 40px;display:flex;flex-direction:column;gap:6px}
-  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
-
-  /* header */
-  header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:12px 0 10px;margin:0 -16px;padding-left:16px;padding-right:16px;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
-  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;letter-spacing:-.01em;color:var(--ink);user-select:none}
-  .logo .ic{font-size:30px}
-  .langs{display:flex;gap:4px;background:var(--surface);padding:4px;border-radius:999px}
-  .lang{border:0;background:transparent;color:var(--muted);border-radius:999px;padding:9px 14px;min-height:40px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
-  .lang.on{background:var(--ink);color:#fff}
-  .vtoggle{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:8px 16px;min-height:44px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
-  .vtoggle[aria-pressed="true"]{background:var(--accent-w);border-color:var(--accent);color:var(--accent-d)}
-  .hbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-  @media(max-width:639px){
-    .hbar{display:contents}
-    .logo{order:1}.vtoggle{order:2;min-height:40px;padding:6px 14px;font-size:14px}
-    .langs{order:3;flex:1 0 100%;justify-content:space-between}.lang{flex:1;padding:9px 6px}
-    header{gap:8px;padding-top:10px}
-  }
-  .dots{display:flex;gap:6px;justify-content:center;margin-top:10px}
-  .dots:empty{display:none}
-  .dot{width:28px;height:4px;border-radius:2px;background:var(--line)}.dot.on{background:var(--accent)}
-
-  /* hero (home) */
-  .hero{padding:34px 4px 8px;max-width:760px}
-  .over{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
-  .hero h1{font-size:clamp(30px,6.2vw,52px);line-height:1.12;font-weight:700;letter-spacing:-.02em;margin:10px 0 8px}
-  .hero p{font-size:clamp(17px,2.4vw,20px);color:var(--muted);margin:0 0 20px}
-  .search{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;max-width:640px;min-height:68px;padding:8px 8px 8px 24px;border:1.5px solid var(--line);border-radius:999px;background:#fff;box-shadow:var(--shadow);font-family:inherit;font-size:19px;font-weight:600;color:var(--ink);cursor:pointer;text-align:left}
-  .search:hover{box-shadow:0 2px 4px rgba(60,64,67,.18),0 10px 24px rgba(60,64,67,.12)}
-  .search .mb{flex:none;width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px}
-  .search.rec{border-color:var(--red);box-shadow:0 0 0 6px rgba(217,48,37,.14)}
-  .search.rec .mb{background:var(--red)}
-  .chip{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:10px 18px;min-height:44px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:14px}
-  .chip:hover{background:var(--surface)}
-  .sec{font-size:clamp(22px,3.4vw,30px);font-weight:700;letter-spacing:-.015em;margin:34px 4px 14px}
-
-  /* artwork cards (Arts & Culture style) */
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:0}
-  @media(min-width:640px){.grid{grid-template-columns:repeat(3,1fr);gap:18px}}
-  @media(min-width:900px){.grid{grid-template-columns:repeat(4,1fr)}}
-  .strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:16px;padding:2px 2px 12px;margin:0 -16px;padding-left:16px;padding-right:16px;scrollbar-width:none}
-  .strip::-webkit-scrollbar{display:none}
-  .strip .tile{flex:0 0 min(64%,240px);scroll-snap-align:start}
-  .tile{position:relative;overflow:hidden;border:0;border-radius:var(--r);aspect-ratio:4/5;padding:16px;color:#fff;text-align:left;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;background:linear-gradient(155deg,var(--g1,#c2185b),var(--g2,#f48fb1));box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}
-  .tile::before{content:"";position:absolute;width:150%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.14);top:-70%;right:-55%}
-  .tile::after{content:"";position:absolute;inset:auto 0 0 0;height:62%;background:linear-gradient(to top,rgba(0,0,0,.62),rgba(0,0,0,0))}
-  .tile:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(60,64,67,.18),0 14px 30px rgba(60,64,67,.2)}
-  .tile:active{transform:scale(.98)}
-  .tile .e{position:relative;z-index:1;width:76px;height:76px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:48px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
-  .tile .t{position:relative;z-index:1;font-size:clamp(15px,2.6vw,18px);font-weight:700;line-height:1.28;text-shadow:0 1px 8px rgba(0,0,0,.35);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
-  @media(prefers-reduced-motion:reduce){.tile,.search{transition:none}.tile:hover{transform:none}.mic.rec{animation:none}}
-
-  /* profile promo / summary */
-  .pcta{display:flex;align-items:center;gap:16px;width:100%;max-width:760px;margin:22px 4px 0;padding:18px 20px;border:1.5px dashed #e5a9c2;border-radius:var(--r);background:var(--accent-w);color:var(--ink);font-family:inherit;text-align:left;cursor:pointer}
-  .pcta .pi{flex:none;width:52px;height:52px;border-radius:50%;background:#fff;color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:28px}
-  .pcta b{display:block;font-size:19px}.pcta small{display:block;font-size:15px;color:var(--muted);margin-top:2px}
-  .pcard{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;max-width:760px;margin:22px 4px 0;padding:16px 20px;border:1.5px solid var(--line);border-radius:var(--r);background:var(--surface)}
-  .pcard .pl{font-size:20px;font-weight:700}.pbtns{display:flex;gap:8px;flex-wrap:wrap}.pbtns .chip{margin-top:0}
-
-  /* flow screens */
-  main{display:block}
-  .card{background:#fff;border:1px solid var(--line);border-radius:28px;padding:30px 22px;box-shadow:var(--shadow);text-align:center;max-width:620px;margin:26px auto 0}
-  .emoji{width:116px;height:116px;margin:0 auto 10px;border-radius:50%;background:var(--accent-w);display:flex;align-items:center;justify-content:center;font-size:68px;line-height:1}
-  .big{font-size:clamp(23px,4.4vw,30px);font-weight:700;line-height:1.28;letter-spacing:-.01em;margin:12px 0 6px}
-  .sub{font-size:18px;color:var(--muted);margin:8px 0}
-  .btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:18px;min-height:64px;padding:16px 18px;font-size:21px;font-weight:600;color:#fff;cursor:pointer;margin-top:12px;font-family:inherit;text-align:center;transition:transform .12s ease,filter .15s ease}
-  .btn:hover{filter:brightness(1.05)}.btn:active{transform:scale(.98)}
-  .yes{background:var(--green)}.no{background:var(--red)}.pink{background:var(--accent)}
-  .ghost{background:#fff;color:var(--accent-d);border:1.5px solid #e5a9c2;font-size:18px;min-height:56px}
-  .listen{background:var(--accent-w);color:var(--accent-d);font-size:18px;min-height:54px}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .mic.rec{background:var(--red);animation:pulse 1.1s infinite}
-  @keyframes pulse{50%{box-shadow:0 0 0 12px rgba(217,48,37,.18)}}
-  ul.list{list-style:none;padding:0;margin:8px 0;text-align:left}
-  ul.list li{font-size:19px;padding:12px 4px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:center}
-  ul.list li span.i{flex:none;width:50px;height:50px;border-radius:14px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:30px}
-  .ans{background:var(--surface);border-left:4px solid var(--accent);border-radius:6px 18px 18px 6px;padding:16px 18px;font-size:19px;text-align:left;margin-top:10px;white-space:pre-wrap;line-height:1.55}
-  .note{font-size:13px;color:var(--muted);text-align:center;margin-top:18px}
-  #set{display:none;background:var(--surface);border-radius:16px;padding:12px;font-size:14px;max-width:620px;margin:16px auto 0}
-  #set input{width:100%;padding:8px;margin:6px 0}
-  a.call{text-decoration:none}
-  .inp{width:100%;font-size:24px;padding:16px;border:1.5px solid var(--line);border-radius:16px;font-family:inherit;margin-top:10px}
-  .inp:focus{outline:3px solid var(--accent);border-color:var(--accent)}
-  .grid1{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-  .st{font-size:18px;padding:12px 8px;min-height:56px;margin-top:0}
-  .btn small{font-size:15px;font-weight:500;display:block}
-  .ic{display:inline-block;width:1em;height:1em;vertical-align:-.14em;flex:none}
-  .ic svg{width:100%;height:100%;display:block}
-  .emoji .ic,.tile .e .ic,.pi .ic,.mb .ic{vertical-align:middle}
-</style>
-</head>
-<body>
-<div id="app">
-  <header>
-    <div class="logo" id="logo">🌸 <span>सखी साथी</span></div>
-    <div class="hbar">
-      <div class="langs" role="group" aria-label="Language">
-        <button class="lang" data-l="hi">हिन्दी</button>
-        <button class="lang" data-l="ta">தமிழ்</button>
-        <button class="lang" data-l="te">తెలుగు</button>
-        <button class="lang" data-l="en">English</button>
-      </div>
-      <button class="vtoggle" id="vt" aria-pressed="false"></button>
-    </div>
-  </header>
-  <div id="vnote" class="note" role="status" aria-live="polite"></div>
-  <div class="dots" id="dots"></div>
-  <main id="main"></main>
-  <div id="set">
-    <b>Settings (optional – judges/developers)</b><br>
-    Gemini API key (stays only in this browser):
-    <input id="key" type="password" placeholder="AIza...">
-    <button class="lang on" id="savekey">Save</button>
-  </div>
-  <div class="note">Sakhi Saathi · Info from official scheme guidelines. Please confirm details at your Anganwadi / bank / e-Sevai centre.</div>
-</div>
-
-<script>
 // ============ Icons: illustrated inline SVG replaces every emoji (no images to download) ============
 const ST='stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"';
 const ICONS = {
@@ -626,18 +493,43 @@ const T = () => U[lang];
 const store = { get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}} };
 
 // ============ Voice out ============
-function say(text){
+let API = { ai:false }, speechToken = 0, audioEl = null;
+const ttsUrls = new Map();
+const note = m => { const n=$('#vnote'); if(n) n.textContent = m || ''; };
+function stopSpeech(){
+  speechToken++;
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(audioEl){ try{ audioEl.pause(); }catch(e){} audioEl = null; }
+}
+function speakLocal(text, v){
+  try{ const u = new SpeechSynthesisUtterance(text); u.lang = T().code; u.rate = 0.9; if(v) u.voice = v; speechSynthesis.speak(u); }catch(e){}
+}
+/** Speak with a device voice for this language when one exists; otherwise ask the server for Gemini text-to-speech. */
+async function say(text){
+  stopSpeech(); const my = speechToken;
+  let vs = [], v = null;
   try{
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = T().code; u.rate = 0.9;
-    const vs = speechSynthesis.getVoices();
-    const v = vs.find(v=>v.lang.replace('_','-').toLowerCase()===T().code.toLowerCase()) || vs.find(v=>v.lang.toLowerCase().startsWith(lang));
-    if(v) u.voice = v;
-    else if(vs.length && lang!=='en') $('#vnote').textContent = T().vNone;
-    if(v) $('#vnote').textContent = '';
-    speechSynthesis.speak(u);
+    vs = speechSynthesis.getVoices(); const code = T().code.toLowerCase();
+    v = vs.find(x=>x.lang.replace('_','-').toLowerCase()===code) || vs.find(x=>x.lang.toLowerCase().startsWith(lang));
   }catch(e){}
+  if(v){ note(''); speakLocal(text, v); return; }
+  if(API.ai){
+    try{
+      note(T().thinking);
+      const k = lang+'|'+text; let url = ttsUrls.get(k);
+      if(!url){
+        const r = await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text.slice(0,1500),lang})});
+        if(!r.ok) throw new Error('tts');
+        url = URL.createObjectURL(await r.blob()); ttsUrls.set(k,url);
+        if(ttsUrls.size>30){ const old = ttsUrls.keys().next().value; URL.revokeObjectURL(ttsUrls.get(old)); ttsUrls.delete(old); }
+      }
+      if(my!==speechToken) return;
+      audioEl = new Audio(url); await audioEl.play(); note('');
+      return;
+    }catch(e){ note(''); }
+  }
+  if(my!==speechToken) return;
+  if(vs.length && lang!=='en') note(T().vNone); else speakLocal(text, null);
 }
 
 // Voice is OFF until she (or a helper) turns it on; the 🔊 Listen buttons always work.
@@ -648,7 +540,7 @@ function paintVoice(){
 }
 function toggleVoice(){
   voiceOn = !voiceOn; store.set('voice', voiceOn?'1':'0'); paintVoice();
-  try{ speechSynthesis.cancel(); }catch(e){}
+  stopSpeech();
   if(voiceOn) say(T().vMsg); else $('#vnote').textContent='';
 }
 
@@ -666,7 +558,7 @@ const VM = {
 function listen(onText, onFail, onInterim){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if(!SR){ onFail(T().nomic); return; }
-  try{ speechSynthesis.cancel(); }catch(e){}
+  stopSpeech();
   try{ if(recog) recog.abort(); }catch(e){}
   let done = false, retriedEn = false;
   const finish = (fn, arg) => { if(done) return; done = true; document.querySelectorAll('.mic').forEach(b=>b.classList.remove('rec')); fn(arg); };
@@ -681,7 +573,7 @@ function listen(onText, onFail, onInterim){
       else if(onInterim) onInterim(text);
     };
     r.onerror = e => {
-      const m = VM[lang];
+      const m = VM[lang]||VM.en;
       if(e.error==='language-not-supported' && !retriedEn){ retriedEn = true; start('en-IN'); return; }
       if(e.error==='not-allowed' || e.error==='service-not-allowed') finish(onFail, m.denied);
       else if(e.error==='network') finish(onFail, m.net);
@@ -690,24 +582,74 @@ function listen(onText, onFail, onInterim){
       else finish(onFail, T().noheard);
     };
     r.onend = () => { if(heard && !done) finish(onText, heard); else finish(onFail, T().noheard); };
-    try{ r.start(); }catch(err){ finish(onFail, VM[lang].busy); }
+    try{ r.start(); }catch(err){ finish(onFail, (VM[lang]||VM.en).busy); }
   };
   start(T().code);
 }
 
-// ============ Gemini ============
-async function gemini(system, user){
-  const key = store.get('gkey'); if(!key) return null;
-  try{
-    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',{
-      method:'POST', headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body: JSON.stringify({systemInstruction:{parts:[{text:system}]}, contents:[{role:'user',parts:[{text:user}]}]})});
-    const j = await r.json(); return j.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || null;
-  }catch(e){ return null; }
+// ============ Server API (Gemini key lives on the server, never in the browser) ============
+async function api(path, body){
+  const r = await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok) throw new Error(path+' '+r.status);
+  return r.json();
+}
+
+// ============ More languages: translated on demand by Gemini (via the server) and cached on the device ============
+const EXTRA=[['bn','বাংলা','bn-IN','Bengali'],['mr','मराठी','mr-IN','Marathi'],['gu','ગુજરાતી','gu-IN','Gujarati'],['kn','ಕನ್ನಡ','kn-IN','Kannada'],['ml','മലയാളം','ml-IN','Malayalam'],['pa','ਪੰਜਾਬੀ','pa-IN','Punjabi'],['or','ଓଡ଼ିଆ','or-IN','Odia']];
+const YN_WORDS={bn:['হ্যাঁ|হ্যা|জি','না|নেই|নয়'],mr:['होय|हो|हॉ','नाही|नको'],gu:['હા|જી','ના|નહીં|નથી'],kn:['ಹೌದು|ಹೂ','ಇಲ್ಲ|ಬೇಡ'],ml:['അതെ|ആം|ശരി','ഇല്ല|വേണ്ട'],pa:['ਹਾਂ|ਜੀ','ਨਹੀਂ|ਨਾ'],or:['ହଁ|ହୁଁ','ନାହିଁ|ନା']};
+function collectTranslatable(){
+  const objs = new Set();
+  const walk = x => { if(Array.isArray(x)) x.forEach(walk); else if(x && typeof x==='object' && !(x instanceof RegExp)){ if(typeof x.en==='string') objs.add(x); else Object.values(x).forEach(walk); } };
+  walk(S); walk(PQ);
+  const uKeys = Object.keys(U.en).filter(k=>typeof U.en[k]==='string' && k!=='code' && k!=='sys');
+  const pKeys = Object.keys(PU.en).filter(k=>typeof PU.en[k]==='string');
+  const texts = new Set();
+  objs.forEach(o=>texts.add(o.en)); uKeys.forEach(k=>texts.add(U.en[k])); pKeys.forEach(k=>texts.add(PU.en[k])); STATES.forEach(r=>texts.add(r[1]));
+  return { objs, uKeys, pKeys, texts:[...texts] };
+}
+function applyTranslation(l, map, col){
+  col.objs.forEach(o=>{ o[l] = map[o.en] || o.en; });
+  const x = EXTRA.find(e=>e[0]===l), u = {...U.en};
+  col.uKeys.forEach(k=>{ u[k] = map[U.en[k]] || U.en[k]; });
+  u.code = x[2]; u.sys = x[3];
+  const yn = YN_WORDS[l];
+  if(yn){ u.yesRe = new RegExp(U.en.yesRe.source+'|'+yn[0],'i'); u.noRe = new RegExp(U.en.noRe.source+'|'+yn[1],'i'); }
+  U[l] = u;
+  const pu = {...PU.en}; col.pKeys.forEach(k=>{ pu[k] = map[PU.en[k]] || PU.en[k]; }); PU[l] = pu;
+  const idx = Object.keys(SIDX).length+1; SIDX[l] = idx;
+  STATES.forEach(r=>{ r[idx] = map[r[1]] || r[1]; });
+}
+async function ensureLang(l, onProgress){
+  if(U[l]) return;
+  const key = 'tr_'+l+'_v1', col = collectTranslatable();
+  let map = null; try{ map = JSON.parse(store.get(key)||'null'); }catch(e){}
+  map = map || {};
+  const todo = col.texts.filter(t=>!(t in map));
+  if(todo.length){
+    const batches = []; for(let i=0;i<todo.length;i+=40) batches.push(todo.slice(i,i+40));
+    let done = 0;
+    for(const b of batches){ const r = await api('/api/translate',{lang:l,strings:b}); b.forEach((t,i)=>{ map[t] = r.strings[i]; }); if(onProgress) onProgress(++done,batches.length); }
+    store.set(key, JSON.stringify(map));
+  }
+  applyTranslation(l, map, col);
+}
+async function chooseLang(l){
+  if(!U[l]){
+    const x = EXTRA.find(e=>e[0]===l);
+    main.innerHTML = `<div class="card"><div class="emoji">🗣️</div><div class="big">${esc(x[1])}</div><div class="sub" id="trp" role="status">Translating…</div></div>`;
+    try{ await ensureLang(l,(d,n)=>{ const p=$('#trp'); if(p) p.textContent='Translating… '+d+'/'+n; }); }
+    catch(e){
+      main.innerHTML = `<div class="card"><div class="big">Could not load ${esc(x[3])}</div><div class="sub">This language needs internet and the AI server. Please choose Hindi, Tamil, Telugu or English.</div><button class="btn pink" id="back2">English</button></div>`;
+      $('#back2').onclick = ()=>{ setLang('en'); home(); }; return;
+    }
+  }
+  setLang(l); cur ? flow() : (inProfile ? profScreen() : home());
 }
 
 // ============ Render ============
-const listenBtn = text => `<button class="btn listen" onclick='say(${JSON.stringify(text)})'>${T().listen}</button>`;
+const sayTexts = [];
+const listenBtn = text => `<button class="btn listen" data-say="${sayTexts.push(text)-1}">${T().listen}</button>`;
+document.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if(b) say(sayTexts[+b.dataset.say]); });
 function dots(){
   const el = $('#dots');
   if(!cur){ el.innerHTML=''; return; }
@@ -717,19 +659,50 @@ function dots(){
 function setLang(l){
   lang = l; store.set('lang',l); document.documentElement.lang = l;
   document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===l));
-  paintVoice(); $('#vnote').textContent=''; try{ speechSynthesis.cancel(); }catch(e){}
+  const mo=$('#more'); if(mo) mo.value = EXTRA.some(e=>e[0]===l) ? l : '';
+  paintVoice(); stopSpeech(); note('');
 }
 
 const ART={lpg:['#1a56c7','#5b9bff'],balance:['#0b8a78','#4cc9b0'],jandhan:['#3949ab','#8c9eff'],ayushman:['#c62828','#ff8a80'],ujjwala:['#e8590c','#ffa94d'],pmmvy:['#c2185b','#f48fb1'],sukanya:['#8e24aa','#d29be0'],urimai:['#2e7d32','#86d08a'],skill:['#00838f','#4dd0e1'],widow:['#546e7a','#9db4c0'],scholarship:['#5e35b1','#a48ae0'],shg:['#00796b','#5fc7b9']};
 const artOf=id=>ART[id]||ART.urimai;
-const tileHtml = s => { const g=artOf(s.id); return `<button class="tile" data-id="${s.id}" style="--g1:${g[0]};--g2:${g[1]}"><span class="e">${s.e}</span><span class="t">${s.name[lang]}</span></button>`; };
+/** Flat-illustration scene: sun, layered hills, a soft shadow and the service's own illustration. */
+function sceneSvg(s){
+  const ic = ICONS[EMO[s.e]] || ICONS.flower;
+  return `<svg class="scene" viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <circle cx="160" cy="46" r="28" fill="#fff" opacity=".2"/><circle cx="160" cy="46" r="15" fill="#fff" opacity=".3"/>
+    <path d="M0 150Q50 118 100 138T200 128V250H0Z" fill="#000" opacity=".1"/>
+    <path d="M0 176Q60 150 112 168T200 158V250H0Z" fill="#000" opacity=".14"/>
+    <ellipse cx="100" cy="152" rx="48" ry="8" fill="#000" opacity=".2"/>
+    <g transform="translate(40 34) scale(1.9)">${ic}</g>
+    <circle cx="28" cy="42" r="5" fill="#fff" opacity=".45"/><circle cx="50" cy="22" r="3" fill="#fff" opacity=".4"/><circle cx="178" cy="112" r="4" fill="#fff" opacity=".35"/><circle cx="22" cy="118" r="3" fill="#fff" opacity=".3"/>
+  </svg>`;
+}
+const tileHtml = s => { const g=artOf(s.id); return `<button class="tile" data-id="${s.id}" style="--g1:${g[0]};--g2:${g[1]}">${sceneSvg(s)}<span class="t">${s.name[lang]}</span></button>`; };
+const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" focusable="false">
+  <circle cx="150" cy="150" r="136" fill="#fde7f0"/><circle cx="236" cy="70" r="22" fill="#f5a524"/>
+  <circle cx="58" cy="98" r="9" fill="#f48fb1"/><circle cx="84" cy="52" r="5" fill="#c2185b" opacity=".5"/><circle cx="262" cy="188" r="6" fill="#c2185b" opacity=".4"/>
+  <path d="M70 296c0-62 34-104 80-104s80 42 80 104z" fill="#c2185b"/>
+  <path d="M150 192c30 14 52 46 46 104h-30c6-48-6-74-16-86z" fill="#f48fb1"/>
+  <path d="M112 204q38-24 76 0l-4 22q-34-14-68 0z" fill="#f5a524"/>
+  <rect x="141" y="168" width="18" height="26" rx="8" fill="#d9a083"/>
+  <circle cx="150" cy="140" r="31" fill="#f0b999"/>
+  <path d="M118 138c-4-44 68-44 64 0-8-20-56-20-64 0z" fill="#2b1b22"/><circle cx="150" cy="96" r="13" fill="#2b1b22"/>
+  <circle cx="150" cy="128" r="2.6" fill="#d93025"/><circle cx="138" cy="141" r="2.4" fill="#2b1b22"/><circle cx="162" cy="141" r="2.4" fill="#2b1b22"/>
+  <path d="M141 153q9 8 18 0" stroke="#a33" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M186 226c26 2 40-22 36-56" stroke="#f0b999" stroke-width="15" fill="none" stroke-linecap="round"/>
+  <rect x="208" y="118" width="32" height="56" rx="7" fill="#2b1b22"/><rect x="212" y="124" width="24" height="40" rx="3" fill="#bcd4ee"/>
+  <rect x="221" y="136" width="6" height="12" rx="3" fill="#c2185b"/><path d="M217 146a7 7 0 0 0 14 0M224 153v4" stroke="#c2185b" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M248 126q10 10 0 22M256 118q16 18 0 38" stroke="#c2185b" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>`;
 
 function langScreen(){
   cur = null; inProfile = false; dots();
   const LG=[['hi','हि','हिन्दी',['#c2185b','#f48fb1']],['ta','த','தமிழ்',['#1a56c7','#5b9bff']],['te','తె','తెలుగు',['#2e7d32','#86d08a']],['en','Aa','English',['#e8590c','#ffa94d']]];
   main.innerHTML = `<section class="hero" style="margin:0 auto;text-align:center"><div class="over">Sakhi Saathi · सखी साथी</div><h1>भाषा चुनिए · மொழி · భాష · Language</h1></section>
     <div class="grid" style="max-width:620px;margin:10px auto 0">${LG.map(l=>`<button class="tile" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="font-size:36px;font-weight:700;color:${l[3][0]}">${l[1]}</span><span class="t" style="font-size:22px">${l[2]}</span></button>`).join('')}</div>`;
+  if(API.ai) main.insertAdjacentHTML('beforeend', `<div class="xlangs">${EXTRA.map(e=>`<button class="chip" data-x="${e[0]}">${e[1]}</button>`).join('')}</div>`);
   main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
+  main.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.x));
 }
 
 function profLine(){ return esc(stName(profile.state,lang)) + (profile.district? ', '+esc(profile.district) : ''); }
@@ -741,10 +714,10 @@ function home(){
   const prof = profile
     ? `<div class="pcard"><div><div class="over">${p.mine}</div><div class="pl">${profLine()}</div></div><div class="pbtns"><button class="chip" id="pedit">✏️ ${p.edit}</button><button class="chip" id="pdel">🗑️ ${p.del}</button></div></div>`
     : `<button class="pcta" id="pmk"><span class="pi">👤</span><span class="pt"><b>${p.mk}</b><small>${p.mkSub}</small></span></button>`;
-  main.innerHTML = `<section class="hero"><div class="over">सखी साथी · Sakhi Saathi</div><h1>${t.homeT}</h1><p>${t.homeSub}</p>
+  main.innerHTML = `<section class="hero"><div class="hero-t"><div class="over">सखी साथी · Sakhi Saathi</div><h1>${t.homeT}</h1><p>${t.homeSub}</p>
       <button class="search mic" id="mic" aria-label="${t.need}"><span>${t.need}</span><span class="mb">🎤</span></button>
       <div id="msg" class="sub" role="status" aria-live="polite"></div>
-      <button class="chip" id="hl">${t.listen}</button></section>
+      <button class="chip" id="hl">${t.listen}</button></div>${HERO_ART}</section>
     ${prof}
     <h2 class="sec">${p.basicT}</h2><div class="strip">${basic.map(tileHtml).join('')}</div>
     <h2 class="sec">${profile ? p.forYou : p.popularT}</h2>
@@ -809,13 +782,22 @@ function profSave(){
   $('#ok').onclick = home; autoSay(p.saved);
 }
 
+const FUZZ_SKIP=new Set(['free','your','every','month','book','learn','join','with','from','that','this','money','help','need']);
+function fuzzyScheme(txt){
+  const low = txt.toLowerCase(); let best = null, score = 0;
+  S.forEach(x=>{
+    const words = String(x.name[lang]||'').toLowerCase().split(/[\s,()\/:–-]+/).filter(w=>w.length>=4 && !FUZZ_SKIP.has(w));
+    const n = words.filter(w=>low.includes(w)).length;
+    if(n>score){ score = n; best = x; }
+  });
+  return best;
+}
 async function route(txt){
   // specific services are matched before broad ones ("daughter", "bank", "gas")
   const specific = x => x.stateOnly || ['balance','widow','scholarship','shg','ujjwala'].includes(x.id);
-  let s = [...S.filter(specific), ...S.filter(x=>!specific(x))].find(s=>s.kw.test(txt));
-  if(!s){
-    const id = await gemini('Pick the single best matching service id for the user request (any Indian language). Reply with ONLY the id, or none. Ids: '+S.map(s=>s.id+' = '+s.f.slice(0,60)).join(' | '), txt);
-    s = S.find(s=>id && id.toLowerCase().includes(s.id));
+  let s = [...S.filter(specific), ...S.filter(x=>!specific(x))].find(s=>s.kw.test(txt)) || fuzzyScheme(txt);
+  if(!s && API.ai){
+    try{ const r = await api('/api/route',{q:txt.split(' | ')[0].slice(0,300), services:S.map(x=>({id:x.id,hint:x.name.en.slice(0,120)}))}); s = S.find(x=>x.id===r.id); }catch(e){}
   }
   if(s) open(s.id); else { $('#msg').textContent = T().notfound; autoSay(T().notfound); }
 }
@@ -881,8 +863,8 @@ function askScreen(){
 }
 async function respond(q){
   const t = T(), s = cur; $('#out').innerHTML = `<div class="ans">${t.thinking}</div>`;
-  const sys = `You are Sakhi Saathi, a kind voice assistant for a rural Indian woman with no tech knowledge. Reply ONLY in ${t.sys}, in at most 3 very short, simple sentences, no markdown (and no English words unless replying in English). Use only these facts and say to ask the Anganwadi worker if unsure: ${s.f} Never ask for OTP, passwords or bank details.`;
-  let a = await gemini(sys, q);
+  let a = null;
+  if(API.ai){ try{ a = (await api('/api/ask',{q:q.slice(0,300), lang, facts:s.f})).answer; }catch(e){ a = null; } }
   if(!a){
     if(t.docRe.test(q)) a = s.docs.map(d=>d[1][lang]).join(', ');
     else if(t.whereRe.test(q)) a = s.where[lang];
@@ -894,12 +876,16 @@ async function respond(q){
 
 // ============ Wiring ============
 $('#vt').onclick = toggleVoice;
-document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); cur ? flow() : (inProfile ? profScreen() : home()); });
-let taps=0; $('#logo').onclick=()=>{ if(++taps>=5){ taps=0; $('#set').style.display='block'; $('#key').value=store.get('gkey')||''; } else if(taps===1) setTimeout(()=>taps=0,4000); };
-$('#savekey').onclick=()=>{ store.set('gkey',$('#key').value.trim()); $('#set').style.display='none'; };
+document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.l));
+const more = $('#more');
+more.innerHTML = '<option value="">More languages…</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
+more.onchange = () => { if(more.value) chooseLang(more.value); };
 const sl = store.get('lang'); if(sl&&U[sl]) setLang(sl); else setLang('hi');
 langScreen();
+fetch('/healthz').then(r=>r.ok?r.json():null).then(j=>{
+  API.ai = !!(j && j.ai); more.hidden = !API.ai;
+  if(!API.ai) return;
+  if(main.querySelector('.tile[data-l]')) langScreen();
+  if(sl && EXTRA.some(e=>e[0]===sl) && main.querySelector('.tile[data-l]')) chooseLang(sl);
+}).catch(()=>{ more.hidden = true; });
 iconify(document.getElementById('app'));
-</script>
-</body>
-</html>
