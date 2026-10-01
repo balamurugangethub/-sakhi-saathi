@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mic test</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:520px;margin:20px auto;padding:0 16px;color:#2b1b22;background:#fff5f8}
+button{font-size:18px;padding:14px 18px;border:0;border-radius:12px;background:#d6336c;color:#fff;font-weight:700;margin:6px 6px 6px 0;cursor:pointer}
+.row{background:#fff;border-radius:12px;padding:12px;margin:10px 0;box-shadow:0 2px 8px #d6336c22}
+.ok{color:#2f9e44;font-weight:700}.bad{color:#e03131;font-weight:700}
+#bar{height:18px;background:#eee;border-radius:9px;overflow:hidden}#lvl{height:100%;width:0;background:#2f9e44;transition:width .08s}
+pre{white-space:pre-wrap;background:#fff;padding:10px;border-radius:8px;font-size:14px}
+</style></head><body>
+<h2>Microphone &amp; speech test</h2>
+<div class="row"><b>1. Browser</b><div id="r1"></div></div>
+<div class="row"><b>2. Microphone permission &amp; signal</b><div id="r2">Press the button and say something.</div>
+<button id="b2">Test microphone</button><div id="bar"><div id="lvl"></div></div></div>
+<div class="row"><b>3. Speech recognition</b><div id="r3">Pick a language, press the button and speak clearly.</div>
+<select id="lang"><option value="en-IN">English (India)</option><option value="hi-IN">Hindi</option><option value="ta-IN">Tamil</option><option value="te-IN">Telugu</option></select>
+<button id="b3">Test speech</button></div>
+<h3>Log</h3><pre id="log"></pre>
+<script>
+const $=id=>document.getElementById(id), log=m=>{$('log').textContent+=new Date().toLocaleTimeString()+'  '+m+'\n'};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const ua=navigator.userAgent;
+$('r1').innerHTML=(SR?'<span class="ok">Speech recognition is supported.</span>':'<span class="bad">Speech recognition is NOT supported in this browser. Use Chrome or Edge.</span>')+
+ '<br>Secure page (needed): '+(isSecureContext?'<span class="ok">yes</span>':'<span class="bad">no – open via https or localhost</span>')+
+ '<br>Embedded in a frame: '+(top!==self?'<span class="bad">yes – frames often block the mic, open in its own tab</span>':'<span class="ok">no</span>')+
+ '<br>Online: '+(navigator.onLine?'<span class="ok">yes</span>':'<span class="bad">no</span>')+'<br><small>'+ua+'</small>';
+log('UA: '+ua);
+$('b2').onclick=async()=>{
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({audio:true});
+    const devs=(await navigator.mediaDevices.enumerateDevices()).filter(d=>d.kind==='audioinput').map(d=>d.label||'(unnamed)');
+    log('Mic allowed. Input devices: '+devs.join(' | '));
+    const ac=new AudioContext(), src=ac.createMediaStreamSource(st), an=ac.createAnalyser(); an.fftSize=512; src.connect(an);
+    const buf=new Uint8Array(an.fftSize); let max=0, t0=Date.now();
+    (function tick(){ an.getByteTimeDomainData(buf); let m=0; for(const v of buf) m=Math.max(m,Math.abs(v-128)); max=Math.max(max,m);
+      $('lvl').style.width=Math.min(100,m*2.2)+'%';
+      if(Date.now()-t0<6000) requestAnimationFrame(tick);
+      else{ st.getTracks().forEach(t=>t.stop()); const ok=max>6;
+        $('r2').innerHTML=ok?'<span class="ok">Microphone works – signal level '+max+'.</span>':'<span class="bad">Permission OK but NO sound detected (level '+max+'). Wrong input device, muted, or Windows blocks mic. See fixes below.</span>'; log('Max level '+max); }
+    })();
+    $('r2').textContent='Listening for 6 seconds… speak now.';
+  }catch(e){ $('r2').innerHTML='<span class="bad">'+e.name+': '+e.message+'</span>'; log('getUserMedia failed: '+e.name+' '+e.message); }
+};
+$('b3').onclick=()=>{
+  if(!SR){ $('r3').innerHTML='<span class="bad">Not supported here.</span>'; return; }
+  const r=new SR(); r.lang=$('lang').value; r.interimResults=true; r.maxAlternatives=1;
+  r.onstart=()=>{ $('r3').textContent='Listening… speak now'; log('recognition started ('+r.lang+')'); };
+  r.onaudiostart=()=>log('audio capture started'); r.onspeechstart=()=>log('speech detected'); r.onspeechend=()=>log('speech ended');
+  r.onresult=e=>{ const t=e.results[e.results.length-1][0].transcript; $('r3').innerHTML='Heard: <b>'+t.replace(/</g,'&lt;')+'</b>'+(e.results[e.results.length-1].isFinal?' <span class="ok">(final)</span>':''); log('result: '+t); };
+  r.onerror=e=>{ $('r3').innerHTML='<span class="bad">Error: '+e.error+'</span>'; log('ERROR: '+e.error+(e.message?' – '+e.message:'')); };
+  r.onend=()=>log('recognition ended');
+  try{ r.start(); }catch(e){ log('start() threw: '+e.message); }
+};
+</script>
+<h3>Common fixes</h3>
+<ul>
+<li><b>not-allowed</b>: click the 🔒 next to the address bar → Microphone → Allow → reload.</li>
+<li><b>No sound detected</b> (Windows): Settings → Privacy &amp; security → Microphone → turn on "Let desktop apps access your microphone"; Settings → System → Sound → Input → pick the right mic and check the volume.</li>
+<li><b>network</b>: Chrome sends audio to Google, so it needs internet (no VPN/firewall blocking).</li>
+<li><b>no-speech / nothing heard</b>: speak right after pressing, close to the mic; the browser stops after ~2 seconds of silence.</li>
+<li><b>Not supported</b>: use Google Chrome or Microsoft Edge (not Firefox, Brave, or in-app browsers).</li>
+</ul>
+</body></html>

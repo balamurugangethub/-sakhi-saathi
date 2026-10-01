@@ -42,6 +42,11 @@
   #set{display:none;background:#fff;border-radius:16px;padding:12px;font-size:14px}
   #set input{width:100%;padding:8px;margin:6px 0}
   a.call{text-decoration:none}
+  .inp{width:100%;font-size:24px;padding:16px;border:3px solid #f3c1d1;border-radius:16px;font-family:inherit;margin-top:10px}
+  .inp:focus{outline:3px solid var(--pink);border-color:var(--pink)}
+  .st{font-size:19px;padding:14px 8px;margin-top:0}
+  .grid1{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .btn small{font-size:15px;font-weight:600;display:block}
   .ic{display:inline-block;width:1em;height:1em;vertical-align:-.14em;flex:none}
   .ic svg{width:100%;height:100%;display:block}
   .emoji .ic,.tile .e .ic{vertical-align:middle}
@@ -112,9 +117,14 @@ const ICONS = {
   info:'<circle cx="32" cy="32" r="26" fill="#3b82c4"/><circle cx="32" cy="19" r="3.5" fill="#fff"/><path d="M32 29v16" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
   coin:'<circle cx="32" cy="32" r="26" fill="#f5a524"/><circle cx="32" cy="32" r="19" fill="#ffd43b"/><text x="32" y="40" font-size="22" font-weight="700" text-anchor="middle" fill="#a8650a" font-family="sans-serif">₹</text>',
   play:'<polygon points="16,8 56,32 16,56" fill="currentColor"/>',
-  down:'<path d="M32 8v42M14 34l18 20 18-20" '+ST+'/>'
+  down:'<path d="M32 8v42M14 34l18 20 18-20" '+ST+'/>',
+  elder:'<circle cx="30" cy="16" r="9" fill="#ffe0cc"/><path d="M20 14c2-9 18-9 20 0-6-3-14-3-20 0z" fill="#bdbdbd"/><path d="M12 58c0-17 6-26 18-26s18 9 18 26z" fill="#d6336c"/><path d="M52 30v28" stroke="#4a2a37" stroke-width="4" stroke-linecap="round"/>',
+  group:'<circle cx="12" cy="26" r="6" fill="#ff8fb3"/><path d="M2 50c0-10 4-16 10-16s10 6 10 16z" fill="#ff8fb3"/><circle cx="52" cy="26" r="6" fill="#ff8fb3"/><path d="M42 50c0-10 4-16 10-16s10 6 10 16z" fill="#ff8fb3"/><circle cx="32" cy="18" r="9" fill="#d6336c"/><path d="M16 58c0-14 7-22 16-22s16 8 16 22z" fill="#d6336c"/>',
+  user:'<circle cx="32" cy="20" r="11" fill="currentColor"/><path d="M10 58c0-16 10-24 22-24s22 8 22 24z" fill="currentColor"/>',
+  trash:'<path d="M10 16h44M24 16V8h16v8M16 16l3 42h26l3-42" '+ST+'/>',
+  edit:'<path d="M8 56l4-15L41 12l11 11-29 29z" fill="currentColor"/>'
 };
-const EMO = {'🌸':'flower','🔊':'speaker','🔇':'mute','🎤':'mic','✅':'check','❌':'cross','🎉':'party','🙏':'heart','📞':'call','🏠':'home','⬅':'back','❓':'help','🔁':'again','🗣':'globe','📄':'doc','📍':'pin','ℹ':'info','💰':'coin','🔥':'lpg','🎁':'gift','💵':'cash','🤰':'mother','👧':'girl','🏦':'bank','🏥':'hospital','🧵':'skill','🪪':'id','🧾':'receipt','📕':'book','📱':'phone','📷':'camera','📜':'cert','🎓':'cap','▶':'play','👇':'down'};
+const EMO = {'🌸':'flower','🔊':'speaker','🔇':'mute','🎤':'mic','✅':'check','❌':'cross','🎉':'party','🙏':'heart','📞':'call','🏠':'home','⬅':'back','❓':'help','🔁':'again','🗣':'globe','📄':'doc','📍':'pin','ℹ':'info','💰':'coin','🔥':'lpg','🎁':'gift','💵':'cash','🤰':'mother','👧':'girl','🏦':'bank','🏥':'hospital','🧵':'skill','🪪':'id','🧾':'receipt','📕':'book','📱':'phone','📷':'camera','📜':'cert','🎓':'cap','▶':'play','👇':'down','🧓':'elder','👥':'group','👤':'user','🗑':'trash','✏':'edit','🪙':'coin','🏛':'bank'};
 const EMO_RE = new RegExp('('+Object.keys(EMO).join('|')+')[\\uFE0F\\u200D]?','gu');
 function iconify(root){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), hits = [];
@@ -359,6 +369,204 @@ S.forEach(s=>{const e=EN[s.id]; s.name.en=e.name; s.d.en=e.d; s.where.en=e.where
   (e.qs||[]).forEach((q,i)=>s.qs[i].en=q); e.docs.forEach((d,i)=>s.docs[i][1].en=d);
   s.calls.forEach((c,i)=>{ if(typeof c[0]!=='string') c[0].en=e.calls[i]; });});
 
+
+// ============ Profile (stays on this phone only) + more services ============
+const M4=(en,hi,te,ta)=>({en,hi,te,ta});
+const D={
+  aadhaar:['🪪',M4('Aadhaar card','आधार कार्ड','ఆధార్ కార్డు','ஆதார் அட்டை')],
+  ration:['🧾',M4('Ration card','राशन कार्ड','రేషన్ కార్డు','ரேஷன் அட்டை')],
+  pass:['🏦',M4('Bank passbook (in your name)','बैंक पासबुक (आपके नाम की)','బ్యాంకు పాస్‌బుక్ (మీ పేరు మీద)','வங்கிப் புத்தகம் (உங்கள் பெயரில்)')],
+  mobile:['📱',M4('Mobile number','मोबाइल नंबर','మొబైల్ నంబర్','மொபைல் எண்')],
+  photo:['📷',M4('One photo','एक फ़ोटो','ఒక ఫోటో','ஒரு புகைப்படம்')]
+};
+const HELP181=[[M4('Women helpline','महिला हेल्पलाइन','మహిళా హెల్ప్‌లైన్','பெண்கள் உதவி எண்'),'181']];
+
+const NEW_SCHEMES=[
+ { id:'balance', e:'🪙', basic:true, kw:/balance|बैलेंस|बैलेन्स|कितने पैसे|खाते में कितने|missed call|मिस्ड|இருப்பு|பேலன்ஸ்|బ్యాలెన్స్|ఖాతాలో ఎంత/i,
+   name:M4('Check bank balance','बैंक में पैसे देखें (बैलेंस)','బ్యాంకులో డబ్బు చూడండి (బ్యాలెన్స్)','வங்கியில் பணம் பார்க்க (இருப்பு)'),
+   d:M4('See how much money is in your account with one missed call.','एक मिस्ड कॉल से जानिए खाते में कितने पैसे हैं।','ఒక మిస్డ్ కాల్‌తో ఖాతాలో ఎంత డబ్బు ఉందో తెలుసుకోండి.','ஒரு மிஸ்டு கால் மூலம் கணக்கில் எவ்வளவு பணம் உள்ளது என்று பாருங்கள்.'),
+   qs:[],
+   docs:[D.mobile,['🏦',M4('Your bank name (see your passbook)','आपके बैंक का नाम (पासबुक में देखें)','మీ బ్యాంకు పేరు (పాస్‌బుక్‌లో చూడండి)','உங்கள் வங்கியின் பெயர் (வங்கிப் புத்தகத்தில் பாருங்கள்)')]],
+   where:M4('1) Press your bank number below, from the same mobile number registered with the bank. 2) The call cuts by itself – this is a missed call and it costs nothing. 3) In a few seconds an SMS arrives with your balance. 4) Or dial *99# on any phone and choose balance.',
+            '1) नीचे अपने बैंक का नंबर दबाइए – उसी मोबाइल से जो बैंक में दर्ज है। 2) फ़ोन अपने आप कट जाएगा – यह मिस्ड कॉल है, इसमें पैसे नहीं लगते। 3) कुछ सेकंड में SMS में आपका बैलेंस आ जाएगा। 4) या किसी भी फ़ोन से *99# डायल करके बैलेंस चुनिए।',
+            '1) కింద మీ బ్యాంకు నంబర్ నొక్కండి – బ్యాంకులో నమోదైన అదే మొబైల్ నుండి. 2) కాల్ దానంతట అదే కట్ అవుతుంది – ఇది మిస్డ్ కాల్, డబ్బు ఖర్చు కాదు. 3) కొన్ని సెకన్లలో SMS లో మీ బ్యాలెన్స్ వస్తుంది. 4) లేదా ఏ ఫోన్‌లోనైనా *99# డయల్ చేసి బ్యాలెన్స్ ఎంచుకోండి.',
+            '1) கீழே உங்கள் வங்கி எண்ணை அழுத்துங்கள் – வங்கியில் பதிவான அதே மொபைலிலிருந்து. 2) அழைப்பு தானாகவே கட் ஆகும் – இது மிஸ்டு கால், கட்டணம் இல்லை. 3) சில வினாடிகளில் SMS இல் உங்கள் இருப்பு வரும். 4) அல்லது எந்த போனிலும் *99# அழுத்தி இருப்பைத் தேர்ந்தெடுங்கள்.'),
+   info:M4('The bank never asks for your OTP, PIN or card number on the phone. Never tell anyone. If your bank is not listed, the number is on the back of your ATM card or in your passbook.',
+           'बैंक कभी फ़ोन पर OTP, पिन या कार्ड नंबर नहीं माँगता – किसी को मत बताइए। आपका बैंक यहाँ न दिखे तो नंबर ATM कार्ड के पीछे या पासबुक में लिखा होता है।',
+           'బ్యాంకు ఎప్పుడూ ఫోన్‌లో OTP, పిన్ లేదా కార్డు నంబర్ అడగదు – ఎవరికీ చెప్పకండి. మీ బ్యాంకు ఇక్కడ లేకపోతే నంబర్ ATM కార్డు వెనుక లేదా పాస్‌బుక్‌లో ఉంటుంది.',
+           'வங்கி ஒருபோதும் போனில் OTP, பின் அல்லது கார்டு எண்ணைக் கேட்காது – யாருக்கும் சொல்லாதீர்கள். உங்கள் வங்கி இங்கே இல்லையென்றால் எண் ATM கார்டின் பின்புறம் அல்லது வங்கிப் புத்தகத்தில் இருக்கும்.'),
+   calls:[['SBI','9223766666'],['Bank of Baroda','8468001111'],['Canara Bank','09015483483'],['Union Bank','09223008586'],[M4('Any phone menu','எந்த போனிலும்','ఏ ఫోన్‌లోనైనా','எந்த போனிலும்'),'*99#']],
+   f:'Check bank balance: give a missed call from your bank-registered mobile (SBI 9223766666, Bank of Baroda 8468001111, Canara 09015483483, Union Bank 09223008586) and an SMS with the balance arrives; or dial *99# and choose balance. Banks never ask for OTP, PIN or card number. Confirm the number on your passbook/ATM card.' },
+
+ { id:'widow', e:'🧓', kw:/विधवा|पेंशन|pension|widow|వితంతు|పింఛన్|ఫింఛన్|விதவை|ஓய்வூதியம்/i,
+   name:M4('Monthly pension for widows','विधवा पेंशन (हर महीने)','వితంతు పింఛన్ (ప్రతి నెల)','விதவை ஓய்வூதியம் (மாதம்தோறும்)'),
+   d:M4('Monthly money for poor widows aged 40 and above.','गरीब विधवाओं (40 साल या ज़्यादा) को हर महीने पैसा।','40 ఏళ్లు పైబడిన పేద వితంతువులకు ప్రతి నెల డబ్బు.','40 வயதுக்கு மேற்பட்ட ஏழை விதவைகளுக்கு மாதம்தோறும் பணம்.'),
+   qs:[M4('Are you a widow?','क्या आप विधवा हैं?','మీరు వితంతువా?','நீங்கள் கணவரை இழந்தவரா?'),
+       M4('Are you 40 years or older?','क्या आपकी उम्र 40 साल या ज़्यादा है?','మీ వయసు 40 లేదా ఎక్కువా?','உங்கள் வயது 40 அல்லது அதற்கு மேலா?'),
+       M4('Is your family poor (BPL or poor-family ration card)?','क्या आपका परिवार गरीब है (BPL या गरीब परिवार का राशन कार्ड)?','మీ కుటుంబం పేదదా (BPL లేదా పేద కుటుంబ రేషన్ కార్డు)?','உங்கள் குடும்பம் ஏழையா (BPL அல்லது ஏழைக் குடும்ப ரேஷன் அட்டை)?')],
+   docs:[D.aadhaar,['📜',M4('Husband death certificate','पति का मृत्यु प्रमाण पत्र','భర్త మరణ ధృవపత్రం','கணவரின் இறப்புச் சான்றிதழ்')],D.ration,D.pass],
+   where:M4('Go to your Gram Panchayat, block or tehsil office, ward office or Social Welfare office and ask for the "widow pension (NSAP)" form. Submit your papers. The village secretary can help you fill it.',
+            'अपनी ग्राम पंचायत, ब्लॉक या तहसील दफ़्तर, वार्ड ऑफ़िस या समाज कल्याण विभाग जाइए और "विधवा पेंशन (NSAP)" का फ़ॉर्म माँगिए। कागज़ जमा कीजिए। पंचायत सचिव फ़ॉर्म भरने में मदद करेंगे।',
+            'మీ గ్రామ పంచాయతీ, బ్లాక్ లేదా తహసీల్ కార్యాలయం, వార్డు ఆఫీసు లేదా సామాజిక సంక్షేమ శాఖకు వెళ్ళి "వితంతు పింఛన్ (NSAP)" ఫారం అడగండి. పత్రాలు ఇవ్వండి. పంచాయతీ కార్యదర్శి ఫారం నింపడంలో సహాయం చేస్తారు.',
+            'உங்கள் கிராம பஞ்சாயத்து, வட்டார அல்லது தாலுகா அலுவலகம், வார்டு அலுவலகம் அல்லது சமூக நலத் துறைக்குச் சென்று "விதவை ஓய்வூதியம் (NSAP)" படிவம் கேளுங்கள். ஆவணங்களைக் கொடுங்கள். படிவம் நிரப்ப பஞ்சாயத்துச் செயலர் உதவுவார்.'),
+   info:M4('The pension comes every month to your bank account. The central part is small (about ₹300) and your state adds more, so the amount is different in each state. Confirm locally.',
+           'पेंशन हर महीने सीधे बैंक खाते में आती है। केंद्र का हिस्सा कम है (लगभग ₹300) और राज्य सरकार जोड़ती है, इसलिए रकम हर राज्य में अलग है। स्थानीय दफ़्तर में पक्का कर लीजिए।',
+           'పింఛన్ ప్రతి నెల నేరుగా బ్యాంకు ఖాతాలో వస్తుంది. కేంద్ర వాటా తక్కువ (సుమారు ₹300), రాష్ట్రం కలుపుతుంది, కాబట్టి మొత్తం రాష్ట్రాన్ని బట్టి మారుతుంది. స్థానికంగా నిర్ధారించుకోండి.',
+           'ஓய்வூதியம் ஒவ்வொரு மாதமும் நேரடியாக வங்கிக் கணக்கில் வரும். மத்திய அரசின் பங்கு சிறியது (சுமார் ₹300), மாநில அரசு கூடுதலாகச் சேர்க்கும், எனவே தொகை மாநிலத்துக்கு மாநிலம் மாறும். உள்ளூரில் உறுதி செய்யுங்கள்.'),
+   calls:HELP181,
+   f:'Widow pension (NSAP / Indira Gandhi National Widow Pension Scheme): monthly pension to poor (BPL) widows aged 40+; central share about Rs 300, states add more. Apply at Gram Panchayat / block / ward / social welfare office with Aadhaar, husband death certificate, ration/BPL card, bank passbook. Women helpline 181.' },
+
+ { id:'scholarship', e:'🎓', kw:/छात्रवृत्ति|स्कॉलरशिप|scholarship|స్కాలర్|உதவித்தொகை|ஸ்காலர்/i,
+   name:M4('Scholarship for girls who study','पढ़ने वाली बेटी के लिए छात्रवृत्ति','చదువుతున్న అమ్మాయికి స్కాలర్‌షిప్','படிக்கும் மகளுக்கு உதவித்தொகை'),
+   d:M4('Money for school or college fees for girls from SC, ST, OBC or minority families.','SC, ST, OBC या अल्पसंख्यक परिवार की बेटी की स्कूल-कॉलेज की पढ़ाई के लिए पैसा।','SC, ST, OBC లేదా మైనారిటీ కుటుంబాల అమ్మాయిల చదువుకు డబ్బు.','SC, ST, OBC அல்லது சிறுபான்மைக் குடும்பப் பெண்களின் பள்ளி, கல்லூரிப் படிப்புக்குப் பணம்.'),
+   qs:[M4('Is a girl in your family studying in a school or college?','क्या आपके परिवार की कोई बेटी स्कूल या कॉलेज में पढ़ रही है?','మీ కుటుంబంలో అమ్మాయి స్కూల్ లేదా కాలేజీలో చదువుతోందా?','உங்கள் குடும்பத்தில் பெண் பள்ளி அல்லது கல்லூரியில் படிக்கிறாரா?'),
+       M4('Is your family income low (usually below ₹2.5 lakh a year)?','क्या परिवार की आमदनी कम है (आम तौर पर साल में ₹2.5 लाख से कम)?','కుటుంబ ఆదాయం తక్కువా (సాధారణంగా సంవత్సరానికి ₹2.5 లక్షల లోపు)?','குடும்ப வருமானம் குறைவா (பொதுவாக ஆண்டுக்கு ₹2.5 லட்சத்துக்குள்)?')],
+   docs:[D.aadhaar,['📜',M4('Caste or minority certificate','जाति या अल्पसंख्यक प्रमाण पत्र','కుల లేదా మైనారిటీ ధృవపత్రం','சாதி அல்லது சிறுபான்மைச் சான்றிதழ்')],['🧾',M4('Income certificate','आय प्रमाण पत्र','ఆదాయ ధృవపత్రం','வருமானச் சான்றிதழ்')],['🎓',M4('Marksheet, fee receipt and student bank passbook','मार्कशीट, फ़ीस रसीद और छात्रा की बैंक पासबुक','మార్క్‌షీట్, ఫీజు రసీదు, విద్యార్థిని బ్యాంకు పాస్‌బుక్','மதிப்பெண் பட்டியல், கட்டண ரசீது, மாணவியின் வங்கிப் புத்தகம்')]],
+   where:M4('Ask the school or college office to help you apply, or go to a common service centre (CSC). Applications are made on the National Scholarship Portal (scholarships.gov.in) every year before the last date.',
+            'स्कूल या कॉलेज के दफ़्तर से आवेदन में मदद माँगिए, या जन सेवा केंद्र (CSC) जाइए। आवेदन हर साल अंतिम तारीख से पहले नेशनल स्कॉलरशिप पोर्टल (scholarships.gov.in) पर होता है।',
+            'దరఖాస్తుకు సహాయం కోసం స్కూల్ లేదా కాలేజీ ఆఫీసును అడగండి, లేదా కామన్ సర్వీస్ సెంటర్ (CSC) కు వెళ్ళండి. ప్రతి సంవత్సరం చివరి తేదీలోపు నేషనల్ స్కాలర్‌షిప్ పోర్టల్ (scholarships.gov.in) లో దరఖాస్తు చేయాలి.',
+            'விண்ணப்பிக்க உதவிக்கு பள்ளி அல்லது கல்லூரி அலுவலகத்தைக் கேளுங்கள், அல்லது பொது சேவை மையத்துக்கு (CSC) செல்லுங்கள். ஒவ்வொரு ஆண்டும் கடைசி தேதிக்கு முன் தேசிய உதவித்தொகை இணையதளத்தில் (scholarships.gov.in) விண்ணப்பிக்க வேண்டும்.'),
+   info:M4('The amount depends on the class and the scheme. Money goes to the student bank account. Do not pay anyone to apply. Your state may also have its own scholarships – ask at school.',
+           'रकम कक्षा और योजना पर निर्भर करती है। पैसा छात्रा के बैंक खाते में आता है। आवेदन के लिए किसी को पैसे मत दीजिए। आपके राज्य की अपनी छात्रवृत्तियाँ भी हो सकती हैं – स्कूल में पूछिए।',
+           'మొత్తం తరగతి, పథకాన్ని బట్టి ఉంటుంది. డబ్బు విద్యార్థిని బ్యాంకు ఖాతాలో వస్తుంది. దరఖాస్తుకు ఎవరికీ డబ్బు ఇవ్వకండి. మీ రాష్ట్రానికి సొంత స్కాలర్‌షిప్‌లు కూడా ఉండవచ్చు – స్కూల్‌లో అడగండి.',
+           'தொகை வகுப்பு, திட்டத்தைப் பொறுத்தது. பணம் மாணவியின் வங்கிக் கணக்கில் வரும். விண்ணப்பிக்க யாருக்கும் பணம் கொடுக்காதீர்கள். உங்கள் மாநிலத்துக்கு சொந்த உதவித்தொகைகளும் இருக்கலாம் – பள்ளியில் கேளுங்கள்.'),
+   calls:[[M4('Scholarship portal helpline','உதவித்தொகை உதவி எண்','స్కాలర్‌షిప్ హెల్ప్‌లైన్','உதவித்தொகை உதவி எண்'),'01206619540']].map(c=>c).concat(HELP181),
+   f:'National Scholarship Portal (scholarships.gov.in): pre-matric/post-matric and merit scholarships for SC, ST, OBC and minority students, usually family income below Rs 2.5 lakh; apply every year via school/college or CSC with Aadhaar, caste/minority and income certificates, marksheet, fee receipt, student bank passbook. Money goes to student bank account. Many states have extra scholarships.' },
+
+ { id:'shg', e:'👥', kw:/समूह|shg|self help|लखपति|lakhpati|संघం|సంఘం|లక్‌పతి|குழு|லக்பதி|savings group|बचत समूह/i,
+   name:M4('Join a women savings group (Lakhpati Didi)','महिला बचत समूह से जुड़ें (लखपति दीदी)','మహిళా పొదుపు సంఘంలో చేరండి (లక్‌పతి దీదీ)','மகளிர் சேமிப்புக் குழுவில் சேருங்கள் (லக்பதி தீதி)'),
+   d:M4('Save together, get low-interest loans and training to start your own work.','साथ मिलकर बचत कीजिए, कम ब्याज पर लोन और अपना काम शुरू करने की ट्रेनिंग पाइए।','కలిసి పొదుపు చేయండి, తక్కువ వడ్డీకి రుణం, సొంత పని మొదలుపెట్టడానికి శిక్షణ పొందండి.','சேர்ந்து சேமியுங்கள், குறைந்த வட்டியில் கடன், சொந்தத் தொழில் தொடங்கப் பயிற்சி பெறுங்கள்.'),
+   qs:[M4('Do you live in a village?','क्या आप गाँव में रहती हैं?','మీరు గ్రామంలో ఉంటారా?','நீங்கள் கிராமத்தில் வசிக்கிறீர்களா?'),
+       M4('Do you want to join a group of women to save money and earn?','क्या आप महिलाओं के समूह से जुड़कर बचत करना और कमाना चाहती हैं?','మహిళల సంఘంలో చేరి పొదుపు చేసి సంపాదించాలనుకుంటున్నారా?','பெண்கள் குழுவில் சேர்ந்து சேமித்து சம்பாதிக்க விரும்புகிறீர்களா?')],
+   docs:[D.aadhaar,D.pass,D.photo,D.mobile],
+   where:M4('Ask at your Gram Panchayat, block office or Anganwadi about the "Self Help Group (SHG)" under the National Rural Livelihoods Mission (Aajeevika). Join a group of 10 to 20 women who meet and save every week.',
+            'अपनी ग्राम पंचायत, ब्लॉक दफ़्तर या आंगनवाड़ी में राष्ट्रीय ग्रामीण आजीविका मिशन (आजीविका) के "स्वयं सहायता समूह (SHG)" के बारे में पूछिए। 10 से 20 महिलाओं के समूह से जुड़िए जो हर हफ़्ते मिलकर बचत करती हैं।',
+            'మీ గ్రామ పంచాయతీ, బ్లాక్ ఆఫీసు లేదా అంగన్‌వాడీలో జాతీయ గ్రామీణ జీవనోపాధి మిషన్ (ఆజీవిక) కింద "స్వయం సహాయక సంఘం (SHG)" గురించి అడగండి. ప్రతి వారం కలిసి పొదుపు చేసే 10 నుండి 20 మంది మహిళల సంఘంలో చేరండి.',
+            'உங்கள் கிராம பஞ்சாயத்து, வட்டார அலுவலகம் அல்லது அங்கன்வாடியில் தேசிய ஊரக வாழ்வாதார இயக்கத்தின் (ஆஜீவிகா) "சுய உதவிக் குழு (SHG)" பற்றிக் கேளுங்கள். ஒவ்வொரு வாரமும் சந்தித்துச் சேமிக்கும் 10 முதல் 20 பெண்கள் குழுவில் சேருங்கள்.'),
+   info:M4('Each woman saves a small amount every week. The group opens a bank account and gets loans at low interest, and training to start work. The aim of Lakhpati Didi is to earn at least ₹1 lakh every year.',
+           'हर महिला हर हफ़्ते थोड़ी बचत करती है। समूह बैंक खाता खोलता है, कम ब्याज पर लोन और काम शुरू करने की ट्रेनिंग मिलती है। लखपति दीदी का लक्ष्य हर साल कम से कम ₹1 लाख कमाना है।',
+           'ప్రతి మహిళ ప్రతి వారం కొంచెం పొదుపు చేస్తుంది. సంఘం బ్యాంకు ఖాతా తెరుస్తుంది, తక్కువ వడ్డీకి రుణం, పని మొదలుపెట్టడానికి శిక్షణ దొరుకుతాయి. లక్‌పతి దీదీ లక్ష్యం ప్రతి సంవత్సరం కనీసం ₹1 లక్ష సంపాదించడం.',
+           'ஒவ்வொரு பெண்ணும் ஒவ்வொரு வாரமும் சிறிது சேமிக்கிறார். குழு வங்கிக் கணக்கு தொடங்கி, குறைந்த வட்டியில் கடன், தொழில் தொடங்கப் பயிற்சி பெறுகிறது. லக்பதி தீதியின் இலக்கு ஆண்டுக்கு குறைந்தது ₹1 லட்சம் சம்பாதிப்பது.'),
+   calls:HELP181,
+   f:'Self Help Groups under DAY-NRLM (Aajeevika) and the Lakhpati Didi goal: rural women form groups of 10-20, save weekly, get bank loans at low interest and training, aim to earn at least Rs 1 lakh a year. Ask at Gram Panchayat / block office / Anganwadi.' }
+];
+// Basic services come first in the list; the rest follow
+S.splice(1,0,NEW_SCHEMES[0]); S.push(NEW_SCHEMES[1],NEW_SCHEMES[2],NEW_SCHEMES[3]);
+S.find(x=>x.id==='lpg').basic = true; S.find(x=>x.id==='jandhan').basic = true;
+
+// ----- State monthly-cash schemes, built from one template per language -----
+const STATES=[
+ ['AN','Andaman & Nicobar','अंडमान और निकोबार','அந்தமான் நிக்கோபார்','అండమాన్ నికోబార్'],['AP','Andhra Pradesh','आंध्र प्रदेश','ஆந்திரப் பிரதேசம்','ఆంధ్రప్రదేశ్'],
+ ['AR','Arunachal Pradesh','अरुणाचल प्रदेश','அருணாசலப் பிரதேசம்','అరుణాచల్ ప్రదేశ్'],['AS','Assam','असम','அசாம்','అస్సాం'],
+ ['BR','Bihar','बिहार','பீகார்','బీహార్'],['CH','Chandigarh','चंडीगढ़','சண்டிகர்','చండీగఢ్'],
+ ['CG','Chhattisgarh','छत्तीसगढ़','சத்தீஸ்கர்','ఛత్తీస్‌గఢ్'],['DN','Dadra, Nagar Haveli, Daman & Diu','दादरा नगर हवेली, दमन और दीव','தாத்ரா நகர் ஹவேலி, டாமன் டையூ','దాద్రా నగర్ హవేలీ, డామన్ డయ్యూ'],
+ ['DL','Delhi','दिल्ली','டெல்லி','ఢిల్లీ'],['GA','Goa','गोवा','கோவா','గోవా'],
+ ['GJ','Gujarat','गुजरात','குஜராத்','గుజరాత్'],['HR','Haryana','हरियाणा','ஹரியானா','హరియాణా'],
+ ['HP','Himachal Pradesh','हिमाचल प्रदेश','இமாசலப் பிரதேசம்','హిమాచల్ ప్రదేశ్'],['JK','Jammu & Kashmir','जम्मू और कश्मीर','ஜம்மு காஷ்மீர்','జమ్మూ కశ్మీర్'],
+ ['JH','Jharkhand','झारखंड','ஜார்க்கண்ட்','జార్ఖండ్'],['KA','Karnataka','कर्नाटक','கர்நாடகம்','కర్ణాటక'],
+ ['KL','Kerala','केरल','கேரளம்','కేరళ'],['LA','Ladakh','लद्दाख','லடாக்','లద్దాఖ్'],
+ ['LD','Lakshadweep','लक्षद्वीप','லட்சத்தீவு','లక్షద్వీప్'],['MP','Madhya Pradesh','मध्य प्रदेश','மத்தியப் பிரதேசம்','మధ్యప్రదేశ్'],
+ ['MH','Maharashtra','महाराष्ट्र','மகாராஷ்டிரம்','మహారాష్ట్ర'],['MN','Manipur','मणिपुर','மணிப்பூர்','మణిపూర్'],
+ ['ML','Meghalaya','मेघालय','மேகாலயா','మేఘాలయ'],['MZ','Mizoram','मिज़ोरम','மிசோரம்','మిజోరం'],
+ ['NL','Nagaland','नागालैंड','நாகாலாந்து','నాగాలాండ్'],['OD','Odisha','ओडिशा','ஒடிசா','ఒడిశా'],
+ ['PY','Puducherry','पुदुचेरी','புதுச்சேரி','పుదుచ్చేరి'],['PB','Punjab','पंजाब','பஞ்சாப்','పంజాబ్'],
+ ['RJ','Rajasthan','राजस्थान','ராஜஸ்தான்','రాజస్థాన్'],['SK','Sikkim','सिक्किम','சிக்கிம்','సిక్కిం'],
+ ['TN','Tamil Nadu','तमिलनाडु','தமிழ்நாடு','తమిళనాడు'],['TG','Telangana','तेलंगाना','தெலங்கானா','తెలంగాణ'],
+ ['TR','Tripura','त्रिपुरा','திரிபுரா','త్రిపుర'],['UP','Uttar Pradesh','उत्तर प्रदेश','உத்தரப் பிரதேசம்','ఉత్తరప్రదేశ్'],
+ ['UK','Uttarakhand','उत्तराखंड','உத்தராகண்ட்','ఉత్తరాఖండ్'],['WB','West Bengal','पश्चिम बंगाल','மேற்கு வங்கம்','పశ్చిమ బెంగాల్']
+];
+const SIDX={en:1,hi:2,ta:3,te:4};
+const stName=(c,l)=>{ const r=STATES.find(x=>x[0]===c); return r? r[SIDX[l]] : ''; };
+
+const CASH={
+ MH:{n:'Mukhyamantri Majhi Ladki Bahin Yojana',a:'₹1,500',per:'m',lo:21,hi:65,k:'inc',kw:/ladki bahin|लाड़की बहन|लाडकी बहीण|लाडकी बहिण|माझी लाडकी/i},
+ KA:{n:'Gruha Lakshmi',a:'₹2,000',per:'m',lo:18,hi:100,k:'head',kw:/gruha lakshmi|गृह लक्ष्मी|గృహలక్ష్మి|கிருஹ லட்சுமி|gruhalakshmi/i},
+ WB:{n:'Lakshmir Bhandar',a:'₹1,000 (₹1,200 SC/ST)',per:'m',lo:25,hi:60,k:'none',kw:/lakshmir|लक्ष्मीर|lokkhir|laxmir/i},
+ MP:{n:'Ladli Behna Yojana',a:'₹1,250+',per:'m',lo:21,hi:60,k:'inc',kw:/ladli behna|लाडली बहना|लाड़ली बहना|ladli behena/i},
+ OD:{n:'Subhadra Yojana',a:'₹10,000',per:'y',lo:21,hi:60,k:'none',kw:/subhadra|सुभद्रा|సుభద్ర|சுபத்ரா/i}
+};
+const CT={
+ en:{per:{m:'every month',y:'every year'},d:(t,st,pr)=>`${t.a} ${pr} for eligible women of ${st}.`,qA:t=>`Are you between ${t.lo} and ${t.hi} years old?`,qO:t=>`Are you ${t.lo} years or older?`,
+     qI:'Is your family income low (the scheme has an income limit, usually about ₹2.5 lakh a year)?',qH:'Are you the woman head of the family (named as head on the ration card)?',
+     where:t=>`Ask your Anganwadi worker, Gram Panchayat or ward office when and where applications for "${t.n}" are taken (camp, app or website). Take the papers listed above. It is free – do not pay anyone.`,
+     info:(t,pr)=>`${t.a} ${pr} comes straight to your bank account (keep it linked with Aadhaar). Amount and rules can change, so confirm locally.`},
+ hi:{per:{m:'हर महीने',y:'हर साल'},d:(t,st,pr)=>`${st} की पात्र महिलाओं को ${pr} ${t.a}।`,qA:t=>`क्या आपकी उम्र ${t.lo} से ${t.hi} साल के बीच है?`,qO:t=>`क्या आपकी उम्र ${t.lo} साल या ज़्यादा है?`,
+     qI:'क्या परिवार की आमदनी कम है (योजना में आमदनी की सीमा होती है, आम तौर पर साल में लगभग ₹2.5 लाख)?',qH:'क्या आप परिवार की मुखिया महिला हैं (राशन कार्ड में मुखिया के रूप में नाम)?',
+     where:t=>`अपनी आंगनवाड़ी दीदी, ग्राम पंचायत या वार्ड कार्यालय से पूछिए कि "${t.n}" का आवेदन कब और कहाँ होता है (कैंप, ऐप या वेबसाइट)। ऊपर लिखे कागज़ साथ ले जाइए। यह मुफ़्त है – किसी को पैसे मत दीजिए।`,
+     info:(t,pr)=>`${t.a} ${pr} सीधे आपके बैंक खाते में आते हैं (खाते को आधार से जुड़ा रखिए)। रकम और नियम बदल सकते हैं, इसलिए स्थानीय दफ़्तर में पक्का कर लीजिए।`},
+ te:{per:{m:'ప్రతి నెల',y:'ప్రతి సంవత్సరం'},d:(t,st,pr)=>`${st} లోని అర్హులైన మహిళలకు ${pr} ${t.a}.`,qA:t=>`మీ వయసు ${t.lo} నుండి ${t.hi} సంవత్సరాల మధ్య ఉందా?`,qO:t=>`మీ వయసు ${t.lo} లేదా ఎక్కువా?`,
+     qI:'కుటుంబ ఆదాయం తక్కువా (పథకానికి ఆదాయ పరిమితి ఉంటుంది, సాధారణంగా సంవత్సరానికి సుమారు ₹2.5 లక్షలు)?',qH:'మీరు కుటుంబ పెద్ద మహిళా (రేషన్ కార్డులో పెద్దగా పేరు)?',
+     where:t=>`"${t.n}" దరఖాస్తు ఎప్పుడు, ఎక్కడ తీసుకుంటారో (శిబిరం, యాప్ లేదా వెబ్‌సైట్) మీ అంగన్‌వాడీ టీచర్, గ్రామ పంచాయతీ లేదా వార్డు కార్యాలయంలో అడగండి. పైన చెప్పిన పత్రాలు తీసుకెళ్ళండి. ఇది ఉచితం – ఎవరికీ డబ్బు ఇవ్వకండి.`,
+     info:(t,pr)=>`${t.a} ${pr} నేరుగా మీ బ్యాంకు ఖాతాలో వస్తాయి (ఖాతాను ఆధార్‌తో లింక్ చేసి ఉంచండి). మొత్తం, నియమాలు మారవచ్చు, స్థానికంగా నిర్ధారించుకోండి.`},
+ ta:{per:{m:'மாதம்தோறும்',y:'ஆண்டுதோறும்'},d:(t,st,pr)=>`${st} பகுதியில் தகுதியான பெண்களுக்கு ${pr} ${t.a}.`,qA:t=>`உங்கள் வயது ${t.lo} முதல் ${t.hi} வரை உள்ளதா?`,qO:t=>`உங்கள் வயது ${t.lo} அல்லது அதற்கு மேலா?`,
+     qI:'குடும்ப வருமானம் குறைவா (திட்டத்துக்கு வருமான வரம்பு உண்டு, பொதுவாக ஆண்டுக்கு சுமார் ₹2.5 லட்சம்)?',qH:'நீங்கள் குடும்பத் தலைவியா (ரேஷன் அட்டையில் தலைவராகப் பெயர்)?',
+     where:t=>`"${t.n}" விண்ணப்பம் எப்போது, எங்கே பெறப்படுகிறது (முகாம், ஆப் அல்லது இணையதளம்) என்று அங்கன்வாடி பணியாளர், கிராம பஞ்சாயத்து அல்லது வார்டு அலுவலகத்தில் கேளுங்கள். மேலே உள்ள ஆவணங்களை எடுத்துச் செல்லுங்கள். இது இலவசம் – யாருக்கும் பணம் கொடுக்காதீர்கள்.`,
+     info:(t,pr)=>`${t.a} ${pr} நேரடியாக உங்கள் வங்கிக் கணக்கில் வரும் (கணக்கை ஆதாருடன் இணைத்து வைத்திருங்கள்). தொகையும் விதிகளும் மாறலாம், உள்ளூரில் உறுதி செய்யுங்கள்.`}
+};
+const L4=['en','hi','te','ta'];
+const FIT={};
+const ageR=a=>({u18:[0,17],a18:[18,20],a21:[21,39],a40:[40,59],a60:[60,120]})[a]||[0,120];
+Object.keys(CASH).forEach(code=>{
+  const t=CASH[code], by=f=>{const o={}; L4.forEach(l=>o[l]=f(l)); return o;};
+  const qs=[ by(l=> t.hi>=100? CT[l].qO(t) : CT[l].qA(t)) ];
+  if(t.k==='inc') qs.push(by(l=>CT[l].qI)); if(t.k==='head') qs.push(by(l=>CT[l].qH));
+  S.push({id:'cash_'+code,e:'💵',stateOnly:true,kw:t.kw,
+    name:by(l=>`${t.n}: ${t.a}`), d:by(l=>CT[l].d(t,stName(code,l),CT[l].per[t.per])), qs,
+    docs:[D.aadhaar,D.ration,D.pass,D.mobile],
+    where:by(l=>CT[l].where(t)), info:by(l=>CT[l].info(t,CT[l].per[t.per])), calls:HELP181,
+    f:`${t.n} (${stName(code,'en')}): ${t.a} ${CT.en.per[t.per]} for women aged ${t.lo}-${t.hi}. Apply via Anganwadi / Gram Panchayat / ward office or the state portal with Aadhaar, ration card, Aadhaar-linked bank passbook. Rules and amounts can change; confirm locally. Women helpline 181.`});
+  FIT['cash_'+code]=p=>p.state===code && ageR(p.age)[1]>=t.lo && ageR(p.age)[0]<=t.hi;
+});
+Object.assign(FIT,{
+  lpg:()=>true, balance:()=>true, jandhan:()=>true,
+  ujjwala:p=>p.poor!=='no' && ageR(p.age)[1]>=18,
+  urimai:p=>!p.state||p.state==='TN',
+  pmmvy:p=>p.preg!=='no' && ageR(p.age)[1]>=19 && p.age!=='a60',
+  sukanya:p=>p.daughter!=='no',
+  ayushman:p=>p.poor!=='no',
+  skill:p=>ageR(p.age)[1]>=18 && ageR(p.age)[0]<=45,
+  widow:p=>(p.marital===undefined||p.marital==='widow') && ageR(p.age)[1]>=40 && p.poor!=='no',
+  scholarship:p=>p.student!=='no' && ageR(p.age)[0]<=40 && (['SC','ST','OBC'].includes(p.cat)||p.minority==='yes'||(p.cat===undefined&&p.minority===undefined)),
+  shg:p=>p.area!=='urban' && p.poor!=='no' && ageR(p.age)[1]>=18
+});
+const fit=(s,p)=>{ const f=FIT[s.id]; try{ return f? f(p) : true; }catch(e){ return true; } };
+
+// ----- Profile UI strings -----
+const PU={
+ en:{title:'My profile',priv:'Your answers stay only on this phone. They are never sent or saved anywhere else. You can skip any question and delete everything any time.',start:'Start',skip:"Don't want to say",skipQ:'Skip',next:'Next',done:'Done',
+   basicT:'Basic services – no profile needed',forYou:'Schemes for you',popularT:'Popular schemes',mk:'Make my profile',mkSub:'Answer a few questions to see schemes made for you (optional)',edit:'Edit profile',del:'Delete my data',
+   stateQ:'Which state do you live in?',distQ:'Which district? (optional)',distPh:'District name',saved:'Profile saved. See the schemes made for you.',mine:'My profile',none:'No scheme matches yet. Ask at your Panchayat or Anganwadi.',sayState:'🎤 Say your state'},
+ hi:{title:'मेरी प्रोफ़ाइल',priv:'आपके जवाब सिर्फ़ इसी फ़ोन में रहेंगे। इन्हें कहीं भेजा या रखा नहीं जाता। आप किसी भी सवाल को छोड़ सकती हैं और कभी भी सब मिटा सकती हैं।',start:'शुरू करें',skip:'बताना नहीं चाहती',skipQ:'छोड़ें',next:'आगे',done:'पूरा हुआ',
+   basicT:'आम सेवाएँ – प्रोफ़ाइल की ज़रूरत नहीं',forYou:'आपके लिए योजनाएँ',popularT:'लोकप्रिय योजनाएँ',mk:'अपनी प्रोफ़ाइल बनाएँ',mkSub:'कुछ सवालों के जवाब दीजिए और अपने लिए योजनाएँ देखिए (ज़रूरी नहीं)',edit:'प्रोफ़ाइल बदलें',del:'मेरी जानकारी मिटाएँ',
+   stateQ:'आप किस राज्य में रहती हैं?',distQ:'कौन सा ज़िला? (ज़रूरी नहीं)',distPh:'ज़िले का नाम',saved:'प्रोफ़ाइल सेव हो गई। अपने लिए योजनाएँ देखिए।',mine:'मेरी प्रोफ़ाइल',none:'अभी कोई योजना नहीं मिली। पंचायत या आंगनवाड़ी में पूछिए।',sayState:'🎤 राज्य का नाम बोलिए'},
+ ta:{title:'என் சுயவிவரம்',priv:'உங்கள் பதில்கள் இந்த போனிலேயே இருக்கும். வேறு எங்கும் அனுப்பப்படாது, சேமிக்கப்படாது. எந்தக் கேள்வியையும் தவிர்க்கலாம், எப்போது வேண்டுமானாலும் அழிக்கலாம்.',start:'தொடங்குங்கள்',skip:'சொல்ல விரும்பவில்லை',skipQ:'தவிர்',next:'அடுத்து',done:'முடிந்தது',
+   basicT:'அடிப்படைச் சேவைகள் – சுயவிவரம் தேவையில்லை',forYou:'உங்களுக்கான திட்டங்கள்',popularT:'பிரபலமான திட்டங்கள்',mk:'என் சுயவிவரத்தை உருவாக்கு',mkSub:'சில கேள்விகளுக்குப் பதில் சொல்லி உங்களுக்கான திட்டங்களைப் பாருங்கள் (விருப்பம்)',edit:'சுயவிவரத்தை மாற்று',del:'என் தகவலை அழி',
+   stateQ:'நீங்கள் எந்த மாநிலத்தில் வசிக்கிறீர்கள்?',distQ:'எந்த மாவட்டம்? (விருப்பம்)',distPh:'மாவட்டப் பெயர்',saved:'சுயவிவரம் சேமிக்கப்பட்டது. உங்களுக்கான திட்டங்களைப் பாருங்கள்.',mine:'என் சுயவிவரம்',none:'இன்னும் பொருந்தும் திட்டம் இல்லை. பஞ்சாயத்து அல்லது அங்கன்வாடியில் கேளுங்கள்.',sayState:'🎤 மாநிலத்தின் பெயரைச் சொல்லுங்கள்'},
+ te:{title:'నా ప్రొఫైల్',priv:'మీ సమాధానాలు ఈ ఫోన్‌లోనే ఉంటాయి. వేరే ఎక్కడికీ పంపబడవు, నిల్వ చేయబడవు. ఏ ప్రశ్ననైనా వదిలేయవచ్చు, ఎప్పుడైనా తొలగించవచ్చు.',start:'మొదలుపెట్టండి',skip:'చెప్పదలచుకోలేదు',skipQ:'వదిలేయి',next:'తరువాత',done:'పూర్తయింది',
+   basicT:'ప్రాథమిక సేవలు – ప్రొఫైల్ అవసరం లేదు',forYou:'మీ కోసం పథకాలు',popularT:'ప్రసిద్ధ పథకాలు',mk:'నా ప్రొఫైల్ చేయండి',mkSub:'కొన్ని ప్రశ్నలకు సమాధానం ఇచ్చి మీ కోసం పథకాలు చూడండి (ఐచ్ఛికం)',edit:'ప్రొఫైల్ మార్చండి',del:'నా సమాచారం తొలగించు',
+   stateQ:'మీరు ఏ రాష్ట్రంలో ఉంటారు?',distQ:'ఏ జిల్లా? (ఐచ్ఛికం)',distPh:'జిల్లా పేరు',saved:'ప్రొఫైల్ సేవ్ అయింది. మీ కోసం పథకాలు చూడండి.',mine:'నా ప్రొఫైల్',none:'ఇంకా సరిపోయే పథకం లేదు. పంచాయతీ లేదా అంగన్‌వాడీలో అడగండి.',sayState:'🎤 రాష్ట్రం పేరు చెప్పండి'}
+};
+const YN=(k,en,hi,te,ta)=>({k,q:M4(en,hi,te,ta),o:[['yes',null],['no',null]]});
+const PQ=[
+ {k:'age',q:M4('How old are you?','आपकी उम्र कितनी है?','మీ వయసు ఎంత?','உங்கள் வயது என்ன?'),
+  o:[['u18',M4('Under 18','18 साल से कम','18 లోపు','18க்குக் கீழ்')],['a18',M4('18 to 20','18 से 20 साल','18 నుండి 20','18 முதல் 20')],['a21',M4('21 to 39','21 से 39 साल','21 నుండి 39','21 முதல் 39')],['a40',M4('40 to 59','40 से 59 साल','40 నుండి 59','40 முதல் 59')],['a60',M4('60 or more','60 साल या ज़्यादा','60 లేదా ఎక్కువ','60 அல்லது மேல்')]]},
+ {k:'marital',q:M4('Are you married, unmarried or a widow?','आप शादीशुदा हैं, अविवाहित हैं या विधवा?','మీరు వివాహితా, అవివాహితా, లేక వితంతువా?','நீங்கள் திருமணமானவரா, திருமணமாகாதவரா, அல்லது கணவரை இழந்தவரா?'),
+  o:[['married',M4('Married','शादीशुदा','వివాహిత','திருமணமானவர்')],['single',M4('Unmarried','अविवाहित','అవివాహిత','திருமணமாகாதவர்')],['widow',M4('Widow','विधवा','వితంతువు','கணவரை இழந்தவர்')]]},
+ {k:'cat',q:M4('Which category is your family? (This helps find scholarships and benefits.)','आपका परिवार किस वर्ग में आता है? (इससे छात्रवृत्ति और लाभ ढूँढने में मदद मिलती है)','మీ కుటుంబం ఏ వర్గం? (స్కాలర్‌షిప్‌లు, పథకాలు కనుగొనడానికి ఉపయోగపడుతుంది)','உங்கள் குடும்பம் எந்தப் பிரிவு? (உதவித்தொகை, நலத்திட்டங்களைக் கண்டறிய உதவும்)'),
+  o:[['GEN',M4('General','सामान्य','జనరల్','பொது')],['OBC',M4('OBC','OBC','OBC','OBC')],['SC',M4('SC','SC','SC','SC')],['ST',M4('ST','ST','ST','ST')]]},
+ YN('minority','Does your family belong to a minority religion (Muslim, Christian, Sikh, Buddhist, Jain or Parsi)?','क्या आपका परिवार अल्पसंख्यक धर्म (मुस्लिम, ईसाई, सिख, बौद्ध, जैन या पारसी) का है?','మీ కుటుంబం మైనారిటీ మతానికి (ముస్లిం, క్రైస్తవ, సిక్కు, బౌద్ధ, జైన, పార్సీ) చెందినదా?','உங்கள் குடும்பம் சிறுபான்மை மதத்தைச் (முஸ்லிம், கிறிஸ்தவம், சீக்கியம், பௌத்தம், சமணம், பார்சி) சேர்ந்ததா?'),
+ YN('poor','Does your family have a ration card for poor families (BPL / AAY / priority)?','क्या आपके पास गरीब परिवार का राशन कार्ड (BPL / अंत्योदय / प्राथमिकता) है?','మీ దగ్గర పేద కుటుంబాల రేషన్ కార్డు (BPL / AAY / ప్రాధాన్యత) ఉందా?','உங்களிடம் ஏழைக் குடும்பத்துக்கான ரேஷன் அட்டை (BPL / AAY / முன்னுரிமை) உள்ளதா?'),
+ {k:'area',q:M4('Do you live in a village or a city?','आप गाँव में रहती हैं या शहर में?','మీరు గ్రామంలో ఉంటారా, పట్టణంలోనా?','நீங்கள் கிராமத்தில் வசிக்கிறீர்களா, நகரத்திலா?'),
+  o:[['rural',M4('Village','गाँव','గ్రామం','கிராமம்')],['urban',M4('City / town','शहर','పట్టణం','நகரம்')]]},
+ YN('preg','Are you pregnant, or is your baby under 6 months old?','क्या आप गर्भवती हैं, या आपका बच्चा 6 महीने से छोटा है?','మీరు గర్భవతా, లేదా మీ బిడ్డ 6 నెలల లోపు వయసా?','நீங்கள் கர்ப்பமாக இருக்கிறீர்களா, அல்லது உங்கள் குழந்தை 6 மாதத்துக்குள் உள்ளதா?'),
+ YN('daughter','Do you have a daughter under 10 years old?','क्या आपकी 10 साल से छोटी बेटी है?','మీకు 10 సంవత్సరాల లోపు కూతురు ఉందా?','உங்களுக்கு 10 வயதுக்குள் மகள் இருக்கிறாளா?'),
+ YN('student','Is a girl in your family studying in a school or college?','क्या आपके परिवार की कोई बेटी स्कूल या कॉलेज में पढ़ रही है?','మీ కుటుంబంలో అమ్మాయి స్కూల్ లేదా కాలేజీలో చదువుతోందా?','உங்கள் குடும்பத்தில் பெண் பள்ளி அல்லது கல்லூரியில் படிக்கிறாரா?')
+];
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+let profile=null; try{ profile=JSON.parse(localStorage.getItem('profile')||'null'); }catch(e){ profile=null; }
+const saveProfile=()=>{ try{ localStorage.setItem('profile', profile? JSON.stringify(profile):''); }catch(e){} };
+let draft={}, pstep=0, inProfile=false;
+
 // ============ State ============
 let lang = 'hi', cur = null, step = 0, eligible = true, recog = null;
 const $ = s => document.querySelector(s);
@@ -471,21 +679,86 @@ function langScreen(){
   main.querySelectorAll('.btn[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
 }
 
+const tileHtml = s => `<button class="tile" data-id="${s.id}"><span class="e">${s.e}</span>${s.name[lang]}</button>`;
+function profLine(){ return esc(stName(profile.state,lang)) + (profile.district? ', '+esc(profile.district) : ''); }
 function home(){
-  cur = null; step = 0; dots();
-  const t = T();
+  cur = null; step = 0; inProfile = false; dots();
+  const t = T(), p = PU[lang];
+  const basic = S.filter(x=>x.basic);
+  const list = S.filter(x=>!x.basic && (profile ? fit(x,profile) : !x.stateOnly));
+  const prof = profile
+    ? `<div class="ans" style="text-align:center"><b>👤 ${p.mine}</b><br>${profLine()}</div>
+       <div class="row"><button class="btn ghost" id="pedit">✏️ ${p.edit}</button><button class="btn ghost" id="pdel">🗑️ ${p.del}</button></div>`
+    : `<button class="btn ghost" id="pmk">👤 ${p.mk}<small>${p.mkSub}</small></button>`;
   main.innerHTML = `<div class="card"><div class="big">${t.homeT}</div><div class="sub">${t.homeSub}</div>
-    <button class="btn pink mic" id="mic">${t.need}</button><div id="msg" class="sub"></div>
-    ${listenBtn(t.homeV)}
-    <div class="grid">${S.map(s=>`<button class="tile" data-id="${s.id}"><span class="e">${s.e}</span>${s.name[lang]}</button>`).join('')}</div></div>`;
+    <button class="btn pink mic" id="mic">${t.need}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>${listenBtn(t.homeV)}
+    <div class="sub" style="margin-top:14px"><b>${p.basicT}</b></div><div class="grid">${basic.map(tileHtml).join('')}</div>
+    <div class="sub" style="margin-top:18px"><b>${profile ? p.forYou : p.popularT}</b></div>
+    ${list.length ? `<div class="grid">${list.map(tileHtml).join('')}</div>` : `<div class="sub">${p.none}</div>`}
+    <div style="margin-top:16px">${prof}</div></div>`;
   main.querySelectorAll('.tile').forEach(b=>b.onclick=()=>open(b.dataset.id));
+  if($('#pmk')) $('#pmk').onclick = ()=>profFlow(false);
+  if($('#pedit')) $('#pedit').onclick = ()=>profFlow(true);
+  if($('#pdel')) $('#pdel').onclick = ()=>{ profile = null; saveProfile(); home(); };
   $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
     listen(async txt=>{ $('#msg').textContent='“'+txt.split(' | ')[0]+'”'; await route(txt); }, m=>{ $('#msg').textContent=m; }, w=>{ $('#msg').textContent='“'+w+'”'; }); };
   autoSay(t.homeV);
 }
 
+// ---------- Profile wizard: intro → state → district → one question at a time ----------
+function profFlow(edit){ draft = edit && profile ? {...profile} : {}; pstep = 0; inProfile = true; cur = null; profScreen(); }
+function profScreen(){
+  dots(); const p = PU[lang], t = T(), total = 2 + PQ.length;
+  const prog = pstep>0 ? `<div class="note">${pstep} / ${total}</div>` : '';
+  if(pstep===0){
+    main.innerHTML = `<div class="card"><div class="emoji">👤</div><div class="big">${p.title}</div><div class="sub">${p.priv}</div>${listenBtn(p.priv)}
+      <button class="btn yes" id="go">${p.start}</button><button class="btn ghost" id="home">${t.home}</button></div>`;
+    $('#go').onclick=()=>{pstep=1;profScreen();}; $('#home').onclick=home; autoSay(p.priv); return;
+  }
+  if(pstep===1){
+    main.innerHTML = `<div class="card">${prog}<div class="big">${p.stateQ}</div>
+      <button class="btn pink mic" id="mic">${p.sayState}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
+      <div class="grid1">${STATES.map(r=>`<button class="btn ghost st" data-c="${r[0]}">${r[SIDX[lang]]}</button>`).join('')}</div>
+      <button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
+    const pick=c=>{ if(c) draft.state=c; else delete draft.state; pstep=2; profScreen(); };
+    main.querySelectorAll('.st').forEach(b=>b.onclick=()=>pick(b.dataset.c)); $('#sk').onclick=()=>pick(null);
+    $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
+      listen(txt=>{ const low=txt.toLowerCase(); const r=STATES.find(r=>r.slice(1).some(n=>low.includes(n.toLowerCase())) || low.includes(r[0].toLowerCase()+' ') );
+        if(r) pick(r[0]); else $('#msg').textContent=t.noheard; }, m=>{ $('#msg').textContent=m; }, w=>{ $('#msg').textContent='“'+w+'”'; }); };
+    autoSay(p.stateQ); return;
+  }
+  if(pstep===2){
+    main.innerHTML = `<div class="card">${prog}<div class="big">${p.distQ}</div>
+      <input class="inp" id="dist" maxlength="40" autocomplete="off" lang="${lang}" aria-label="${p.distPh}" placeholder="${p.distPh}" value="${esc(draft.district||'')}">
+      <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
+      <button class="btn yes" id="nx">${p.next}</button><button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
+    const go=v=>{ v=(v||'').trim().slice(0,40); if(v) draft.district=v; else delete draft.district; pstep=3; profScreen(); };
+    $('#nx').onclick=()=>go($('#dist').value); $('#sk').onclick=()=>go('');
+    $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
+      listen(txt=>{ $('#dist').value=txt.split(' | ')[0]; $('#msg').textContent=''; }, m=>{ $('#msg').textContent=m; }, w=>{ $('#dist').value=w; }); };
+    autoSay(p.distQ); return;
+  }
+  const i = pstep-3;
+  if(i >= PQ.length){ return profSave(); }
+  const q = PQ[i], qt = q.q[lang];
+  const opts = q.o.map(o=>`<button class="btn pink" data-v="${o[0]}">${o[1]? o[1][lang] : (o[0]==='yes'? t.yes : t.no)}</button>`).join('');
+  main.innerHTML = `<div class="card">${prog}<div class="big">${qt}</div>${listenBtn(qt)}${opts}<button class="btn ghost" id="sk">${p.skip}</button></div>`;
+  const next=v=>{ if(v) draft[q.k]=v; else delete draft[q.k]; pstep++; profScreen(); };
+  main.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>next(b.dataset.v)); $('#sk').onclick=()=>next(null);
+  autoSay(qt);
+}
+function profSave(){
+  profile = {...draft}; saveProfile(); dots();
+  const p = PU[lang];
+  main.innerHTML = `<div class="card"><div class="emoji">✅</div><div class="big">${p.saved}</div><div class="ans" style="text-align:center">${profile.state? profLine() : '—'}</div>
+    <button class="btn yes" id="ok">${p.forYou}</button></div>`;
+  $('#ok').onclick = home; autoSay(p.saved);
+}
+
 async function route(txt){
-  let s = S.find(s=>s.kw.test(txt));
+  // specific services are matched before broad ones ("daughter", "bank", "gas")
+  const specific = x => x.stateOnly || ['balance','widow','scholarship','shg','ujjwala'].includes(x.id);
+  let s = [...S.filter(specific), ...S.filter(x=>!specific(x))].find(s=>s.kw.test(txt));
   if(!s){
     const id = await gemini('Pick the single best matching service id for the user request (any Indian language). Reply with ONLY the id, or none. Ids: '+S.map(s=>s.id+' = '+s.f.slice(0,60)).join(' | '), txt);
     s = S.find(s=>id && id.toLowerCase().includes(s.id));
@@ -515,7 +788,7 @@ function flow(){
 }
 
 function callsHtml(s){
-  return s.calls.map(c=>`<a class="call" href="tel:${c[1]}"><button class="btn ghost">📞 ${lbl(c[0])}<br>${c[1]}</button></a>`).join('');
+  return s.calls.map(c=>`<a class="call" href="tel:${encodeURIComponent(c[1])}"><button class="btn ghost">📞 ${lbl(c[0])}<br>${c[1]}</button></a>`).join('');
 }
 
 function result(){
@@ -567,7 +840,7 @@ async function respond(q){
 
 // ============ Wiring ============
 $('#vt').onclick = toggleVoice;
-document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); cur ? flow() : home(); });
+document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); cur ? flow() : (inProfile ? profScreen() : home()); });
 let taps=0; $('#logo').onclick=()=>{ if(++taps>=5){ taps=0; $('#set').style.display='block'; $('#key').value=store.get('gkey')||''; } else if(taps===1) setTimeout(()=>taps=0,4000); };
 $('#savekey').onclick=()=>{ store.set('gkey',$('#key').value.trim()); $('#set').style.display='none'; };
 const sl = store.get('lang'); if(sl&&U[sl]) setLang(sl); else setLang('hi');
