@@ -3,7 +3,7 @@
 
 > A first-time woman user with no English and no tech background can independently find and use essential government services – by **voice or one tap, in her own language**.
 
-**Live demo (Cloud Run):** _add URL here_
+**Live demo (Google Cloud Run):** https://sakhi-saathi-567566086238.asia-south1.run.app
 
 ## The problem
 48% of rural girls in India have never used the internet, and most who have were guided by a male family member. Women are locked out of digital systems by design, not capability.
@@ -70,4 +70,4 @@ gcloud run deploy sakhi-saathi --source . --region asia-south1 --allow-unauthent
 Scheme amounts, helpline numbers and eligibility rules were compiled from public guidelines and **must be confirmed locally** (the app says so). District is stored for display only; district-level offices are not bundled. Extra-language translations are machine-generated and should be reviewed by a native speaker before wide use.
 
 ## Model names
-Defaults: text `gemini-3.8-flash`, voice `gemini-3.8-flash-preview-tts` (override with `GEMINI_MODEL` / `GEMINI_TTS_MODEL`). If Google retires a model (HTTP 404) the server lists the models available to the key, switches to the newest suitable one, remembers it and retries – so a model rename does not take the app down. Details are written to the server log only.
+Defaults: text `gemini-3.1-flash-lite`, voice `gemini-3.8-flash-preview-tts` (override with `GEMINI_MODEL` / `GEMINI_TTS_MODEL`). If Google retires a model (HTTP 404) the server lists the models available to the key, switches to the newest suitable one, remembers it and retries – so a model rename does not take the app down. Details are written to the server log only.

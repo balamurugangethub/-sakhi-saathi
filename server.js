@@ -43,7 +43,7 @@ const deps = { fetch: (...a) => globalThis.fetch(...a) };
 
 const cfg = () => ({
   key: process.env.GEMINI_API_KEY || '',
-  model: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
+  model: process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite',
   ttsModel: process.env.GEMINI_TTS_MODEL || 'gemini-3.8-flash-preview-tts',
   ttsVoice: process.env.GEMINI_TTS_VOICE || 'Kore'
 });
