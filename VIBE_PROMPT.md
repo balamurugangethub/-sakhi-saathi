@@ -21,7 +21,7 @@ Tiles must be easy to extend (a data array), so more schemes (Mudra loans, Lakhp
 1. Spoken intro (text-to-speech) + one-line description.
 2. 1–3 big **✅ Yes / ❌ No** eligibility questions (tap OR say yes/no by voice). LPG booking has no questions, it goes straight to steps.
 3. Result screen: 🎉 eligible message, **documents to carry** (icon list), **where to go / what to do** (numbered, very short sentences), **what she gets / important safety tip**, one-tap **📞 call buttons** (tel: links), and a **🔊 Listen** button that reads the whole page aloud.
-4. "❓ Ask something" → she speaks a question → Gemini (`gemini-2.5-flash`) answers in her language in ≤3 very short sentences using ONLY the facts about that scheme; if no API key or offline, fall back to built-in answers for "documents / where / how much". Never ask for OTP, passwords or bank details.
+4. "❓ Ask something" → she speaks a question → Gemini (`gemini-3.8-flash`) answers in her language in ≤3 very short sentences using ONLY the facts about that scheme; if no API key or offline, fall back to built-in answers for "documents / where / how much". Never ask for OTP, passwords or bank details.
 5. Voice router on home: she says "gas" / "bank" / "மகளிர் உரிமைத் தொகை" → open the matching service (keywords first, Gemini as fallback).
 Not-eligible screen: kind message, link back home, helpline numbers. Never dead-end.
 
@@ -51,7 +51,7 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 ## Judging requirements (the platform auto-scores these – satisfy ALL)
 - **Deployable on Google Cloud Run**: include a `Dockerfile` (small Node image, listens on `$PORT`, 0.0.0.0) and a `/healthz` endpoint. The deployed URL must stay working.
 - **Security**: the Gemini API key is read ONLY on the server from `process.env.GEMINI_API_KEY` (never in client code or the repo). The client calls our own `POST /api/ask` endpoint. Server validates input (type, max 300 chars), rate-limits per IP, sets security headers (CSP, X-Content-Type-Options, Referrer-Policy), escapes all output (no innerHTML with user text), has no secrets in git (`.gitignore`, `.env.example`).
-- **Google services**: Gemini API (`gemini-2.5-flash`) for answers, intent routing and translation; deployed on Cloud Run; optionally Google Cloud Text-to-Speech / Translation as an upgrade over browser voices.
+- **Google services**: Gemini API (`gemini-3.8-flash`) for answers, intent routing and translation; deployed on Cloud Run; optionally Google Cloud Text-to-Speech / Translation as an upgrade over browser voices.
 - **Testing**: automated tests (e.g. `node --test` or Vitest) for scheme data completeness (every scheme has hi/ta/te text, docs, calls), the keyword router, input validation on `/api/ask`, and the health endpoint. `npm test` must pass.
 - **Accessibility**: semantic HTML, `lang` attribute switching per language, aria-labels, visible focus rings, ≥4.5:1 contrast, 56px touch targets, works at 200% zoom, `prefers-reduced-motion`, screen-reader announcements (`aria-live`) for spoken results.
 - **Efficiency**: no frameworks, total page < 100 KB, no external fonts, gzip enabled, cache headers for static files.

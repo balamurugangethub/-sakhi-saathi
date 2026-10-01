@@ -68,3 +68,6 @@ gcloud run deploy sakhi-saathi --source . --region asia-south1 --allow-unauthent
 
 ## Honest limits
 Scheme amounts, helpline numbers and eligibility rules were compiled from public guidelines and **must be confirmed locally** (the app says so). District is stored for display only; district-level offices are not bundled. Extra-language translations are machine-generated and should be reviewed by a native speaker before wide use.
+
+## Model names
+Defaults: text `gemini-3.8-flash`, voice `gemini-3.8-flash-preview-tts` (override with `GEMINI_MODEL` / `GEMINI_TTS_MODEL`). If Google retires a model (HTTP 404) the server lists the models available to the key, switches to the newest suitable one, remembers it and retries – so a model rename does not take the app down. Details are written to the server log only.

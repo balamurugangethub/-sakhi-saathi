@@ -147,3 +147,27 @@ test('static files revalidate with ETag so a new deploy is never stale', async (
   assert.ok(again.headers.get('content-security-policy'));
   assert.match((await fetch(base + '/icon-512.png')).headers.get('cache-control'), /max-age=86400/);
 });
+
+
+test('a retired model is replaced automatically: 404 -> discover -> retry -> remembered', async () => {
+  for (const k of Object.keys(srv.modelCache)) delete srv.modelCache[k];
+  const calls = [];
+  srv.deps.fetch = async url => {
+    calls.push(String(url).replace(/^https?:\/\/[^/]+/, ''));
+    if (/\/v1beta\/models\?/.test(url)) return { ok: true, status: 200, json: async () => ({ models: [
+      { name: 'models/gemini-9-flash-preview', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/gemini-9-flash', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/gemini-9-flash-tts', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/embedding-1', supportedGenerationMethods: ['embedContent'] }] }) };
+    if (/gemini-3\.8-flash/.test(url)) return { ok: false, status: 404, text: async () => '{"error":{"message":"no longer available"}}' };
+    return geminiReply([{ text: 'Answer from the new model.' }]);
+  };
+  const r = await post('/api/ask', { q: 'hello', lang: 'en', facts: 'x' });
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), { answer: 'Answer from the new model.' });
+  assert.equal(srv.modelCache.text, 'gemini-9-flash');      // stable chosen over preview, never a tts/embedding model
+  const before = calls.length;
+  await post('/api/ask', { q: 'again', lang: 'en', facts: 'x' });
+  assert.equal(calls.length - before, 1);                    // remembered: no second discovery
+  for (const k of Object.keys(srv.modelCache)) delete srv.modelCache[k];
+});

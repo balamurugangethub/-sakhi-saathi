@@ -43,8 +43,8 @@ const deps = { fetch: (...a) => globalThis.fetch(...a) };
 
 const cfg = () => ({
   key: process.env.GEMINI_API_KEY || '',
-  model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
-  ttsModel: process.env.GEMINI_TTS_MODEL || 'gemini-2.5-flash-preview-tts',
+  model: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
+  ttsModel: process.env.GEMINI_TTS_MODEL || 'gemini-3.8-flash-preview-tts',
   ttsVoice: process.env.GEMINI_TTS_VOICE || 'Kore'
 });
 
@@ -90,28 +90,66 @@ function validateTts(b) {
 }
 
 // ---------------------------------------------------------------- Gemini helpers
-async function gemini(model, body, timeoutMs = 30000) {
-  const c = cfg();
-  if (!c.key) { const e = new Error('AI not configured'); e.status = 503; throw e; }
+const baseUrl = () => process.env.GEMINI_BASE || 'https://generativelanguage.googleapis.com';
+/** Model names that worked (or were discovered) at runtime, per kind: 'text' | 'tts'. */
+const modelCache = {};
+
+/** Ask Google which models this key can use and pick the newest suitable one (stable before preview). */
+async function discoverModel(kind, avoid) {
+  const r = await deps.fetch(`${baseUrl()}/v1beta/models?pageSize=200`, { headers: { 'x-goog-api-key': cfg().key } });
+  if (!r.ok) return null;
+  const j = await r.json();
+  const names = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => String(m.name).replace(/^models\//, ''));
+  const pool = kind === 'tts'
+    ? names.filter(n => /tts/i.test(n))
+    : names.filter(n => /flash/i.test(n) && !/(tts|image|live|audio|lite|embed|robotics|computer)/i.test(n));
+  const preview = n => (/preview|exp/i.test(n) ? 1 : 0);
+  pool.sort((x, y) => preview(x) - preview(y) || y.localeCompare(x, 'en', { numeric: true }));
+  return pool.find(n => n !== avoid) || null;
+}
+
+async function callModel(model, body, timeoutMs) {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), timeoutMs);
   try {
-    const r = await deps.fetch(`${process.env.GEMINI_BASE || 'https://generativelanguage.googleapis.com'}/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    const r = await deps.fetch(`${baseUrl()}/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: 'POST', signal: ctl.signal,
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': c.key },
+      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': cfg().key },
       body: JSON.stringify(body)
     });
-    if (!r.ok) {
-      let detail = ''; try { detail = (await r.text()).slice(0, 400); } catch (x) { /* ignore */ }
-      console.error(JSON.stringify({ severity: 'ERROR', event: 'gemini_error', model, status: r.status, detail }));
-      const e = new Error('upstream ' + r.status); e.status = 502; throw e;
-    }
-    return await r.json();
+    if (r.ok) return { status: r.status, json: await r.json() };
+    let detail = ''; try { detail = (await r.text()).slice(0, 400); } catch (x) { /* ignore */ }
+    return { status: r.status, detail };
   } catch (err) {
-    if (err.status) throw err;
     console.error(JSON.stringify({ severity: 'ERROR', event: 'gemini_unreachable', model, message: String(err.message).slice(0, 200) }));
     const e = new Error('upstream unavailable'); e.status = 502; throw e;
   } finally { clearTimeout(timer); }
+}
+
+/**
+ * Calls Gemini for a kind of work ('text' or 'tts'). If the configured model has been retired (404),
+ * discovers a working one once, remembers it, and retries – so a model rename never takes the app down.
+ * Upstream details go to the server log only, never to the browser.
+ */
+async function gemini(kind, body, timeoutMs = 30000) {
+  const c = cfg();
+  if (!c.key) { const e = new Error('AI not configured'); e.status = 503; throw e; }
+  let model = modelCache[kind] || (kind === 'tts' ? c.ttsModel : c.model);
+  let res = await callModel(model, body, timeoutMs);
+  if (res.status === 404) {
+    console.error(JSON.stringify({ severity: 'WARNING', event: 'gemini_model_missing', kind, model, detail: res.detail }));
+    let alt = null; try { alt = await discoverModel(kind, model); } catch (x) { /* fall through */ }
+    if (alt) {
+      console.error(JSON.stringify({ severity: 'NOTICE', event: 'gemini_model_switch', kind, from: model, to: alt }));
+      model = alt; res = await callModel(model, body, timeoutMs);
+      if (res.json) modelCache[kind] = model;
+    }
+  }
+  if (!res.json) {
+    console.error(JSON.stringify({ severity: 'ERROR', event: 'gemini_error', model, status: res.status, detail: res.detail }));
+    const e = new Error('upstream ' + res.status); e.status = 502; throw e;
+  }
+  return res.json;
 }
 const textOf = j => (j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts || []).map(p => p.text || '').join('').trim();
 
@@ -126,7 +164,7 @@ function pcmToWav(pcm, sampleRate = 24000) {
 
 async function apiAsk(b) {
   const sys = `You are Sakhi Saathi, a kind voice assistant for a rural Indian woman with no tech knowledge. Reply ONLY in ${LANGS[b.lang]}, in at most 3 very short, simple sentences, no markdown. Use only these facts and say to ask the Anganwadi worker if unsure: ${clean(b.facts || '')} Never ask for OTP, passwords, PIN or bank details, and never give investment or legal advice.`;
-  const j = await gemini(cfg().model, { systemInstruction: { parts: [{ text: sys }] }, contents: [{ role: 'user', parts: [{ text: clean(b.q) }] }] });
+  const j = await gemini('text', { systemInstruction: { parts: [{ text: sys }] }, contents: [{ role: 'user', parts: [{ text: clean(b.q) }] }] });
   const answer = textOf(j);
   if (!answer) { const e = new Error('empty answer'); e.status = 502; throw e; }
   return { answer };
@@ -135,7 +173,7 @@ async function apiAsk(b) {
 async function apiRoute(b) {
   const list = b.services.map(s => `${s.id} = ${clean(s.hint || '')}`).join(' | ');
   const sys = 'Pick the single best matching service id for the woman\'s request (any Indian language or English). Reply with ONLY the id, or the word none. Services: ' + list;
-  const j = await gemini(cfg().model, { systemInstruction: { parts: [{ text: sys }] }, contents: [{ role: 'user', parts: [{ text: clean(b.q) }] }] });
+  const j = await gemini('text', { systemInstruction: { parts: [{ text: sys }] }, contents: [{ role: 'user', parts: [{ text: clean(b.q) }] }] });
   const raw = textOf(j).toLowerCase();
   const hit = b.services.find(s => raw.includes(s.id.toLowerCase()));
   return { id: hit ? hit.id : null };
@@ -150,7 +188,7 @@ async function apiTranslate(b) {
   });
   if (todo.length) {
     const sys = `You translate short UI and government-scheme text for a rural Indian woman who has never used the internet. Translate every string in the JSON array into simple, spoken, respectful ${LANGS[b.lang]}. Keep numbers, the rupee sign, phone numbers, URLs, and names of schemes/banks/documents (Aadhaar, Ujjwala, Jan Dhan, SBI, MCP, OTP, UPI, CSC, VAO, PMKVY) recognisable; you may write them in the target script. Return ONLY a JSON array of strings with exactly ${todo.length} items, same order.`;
-    const j = await gemini(cfg().model, {
+    const j = await gemini('text', {
       systemInstruction: { parts: [{ text: sys }] },
       contents: [{ role: 'user', parts: [{ text: JSON.stringify(todo) }] }],
       generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
@@ -169,7 +207,7 @@ async function apiTts(b) {
   const key = crypto.createHash('sha1').update(b.lang + '|' + b.text).digest('hex');
   if (ttsCache.has(key)) return ttsCache.get(key);
   const c = cfg();
-  const j = await gemini(c.ttsModel, {
+  const j = await gemini('tts', {
     contents: [{ parts: [{ text: clean(b.text) }] }],
     generationConfig: { responseModalities: ['AUDIO'], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: c.ttsVoice } } } }
   }, 45000);
@@ -265,4 +303,4 @@ if (require.main === module) {
   process.on('SIGTERM', () => server.close(() => process.exit(0)));
 }
 
-module.exports = { createServer, handler, pcmToWav, allow, validateAsk, validateRoute, validateTranslate, validateTts, deps, LANGS, SECURITY_HEADERS };
+module.exports = { modelCache, createServer, handler, pcmToWav, allow, validateAsk, validateRoute, validateTranslate, validateTts, deps, LANGS, SECURITY_HEADERS };
