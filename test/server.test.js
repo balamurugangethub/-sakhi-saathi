@@ -151,6 +151,7 @@ test('static files revalidate with ETag so a new deploy is never stale', async (
 
 test('a retired model is replaced automatically: 404 -> discover -> retry -> remembered', async () => {
   for (const k of Object.keys(srv.modelCache)) delete srv.modelCache[k];
+  process.env.GEMINI_MODEL = 'gemini-3.8-flash';
   const calls = [];
   srv.deps.fetch = async url => {
     calls.push(String(url).replace(/^https?:\/\/[^/]+/, ''));
@@ -170,6 +171,7 @@ test('a retired model is replaced automatically: 404 -> discover -> retry -> rem
   await post('/api/ask', { q: 'again', lang: 'en', facts: 'x' });
   assert.equal(calls.length - before, 1);                    // remembered: no second discovery
   for (const k of Object.keys(srv.modelCache)) delete srv.modelCache[k];
+  process.env.GEMINI_MODEL = 'gemini-3.8-flash';
 });
 
 
@@ -206,4 +208,5 @@ test('temporary overload (503) is retried, then a backup model is tried', async 
   assert.equal(r.status, 502);
   assert.doesNotMatch(await r.text(), /secret|503|UNAVAILABLE/);
   delete process.env.GEMINI_RETRY_MS;
+  delete process.env.GEMINI_MODEL;
 });
