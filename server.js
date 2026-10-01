@@ -95,14 +95,14 @@ const baseUrl = () => process.env.GEMINI_BASE || 'https://generativelanguage.goo
 const modelCache = {};
 
 /** Ask Google which models this key can use and pick the newest suitable one (stable before preview). */
-async function discoverModel(kind, avoid) {
+async function discoverModel(kind, avoid, loose = false) {
   const r = await deps.fetch(`${baseUrl()}/v1beta/models?pageSize=200`, { headers: { 'x-goog-api-key': cfg().key } });
   if (!r.ok) return null;
   const j = await r.json();
   const names = (j.models || []).filter(m => (m.supportedGenerationMethods || []).includes('generateContent')).map(m => String(m.name).replace(/^models\//, ''));
   const pool = kind === 'tts'
     ? names.filter(n => /tts/i.test(n))
-    : names.filter(n => /flash/i.test(n) && !/(tts|image|live|audio|lite|embed|robotics|computer)/i.test(n));
+    : names.filter(n => /flash/i.test(n) && !/(tts|image|live|audio|embed|robotics|computer)/i.test(n) && (loose || !/lite/i.test(n)));
   const preview = n => (/preview|exp/i.test(n) ? 1 : 0);
   pool.sort((x, y) => preview(x) - preview(y) || y.localeCompare(x, 'en', { numeric: true }));
   return pool.find(n => n !== avoid) || null;
@@ -131,11 +131,17 @@ async function callModel(model, body, timeoutMs) {
  * discovers a working one once, remembers it, and retries – so a model rename never takes the app down.
  * Upstream details go to the server log only, never to the browser.
  */
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const TRANSIENT = new Set([429, 500, 502, 503, 504]);
+const RETRY_DELAYS = () => (process.env.GEMINI_RETRY_MS ? process.env.GEMINI_RETRY_MS.split(',').map(Number) : [700, 1800]);
+
 async function gemini(kind, body, timeoutMs = 30000) {
   const c = cfg();
   if (!c.key) { const e = new Error('AI not configured'); e.status = 503; throw e; }
   let model = modelCache[kind] || (kind === 'tts' ? c.ttsModel : c.model);
   let res = await callModel(model, body, timeoutMs);
+
+  // 1) retired model (404): discover a working one, remember it, retry
   if (res.status === 404) {
     console.error(JSON.stringify({ severity: 'WARNING', event: 'gemini_model_missing', kind, model, detail: res.detail }));
     let alt = null; try { alt = await discoverModel(kind, model); } catch (x) { /* fall through */ }
@@ -143,6 +149,21 @@ async function gemini(kind, body, timeoutMs = 30000) {
       console.error(JSON.stringify({ severity: 'NOTICE', event: 'gemini_model_switch', kind, from: model, to: alt }));
       model = alt; res = await callModel(model, body, timeoutMs);
       if (res.json) modelCache[kind] = model;
+    }
+  }
+  // 2) temporary overload / rate limit (503, 429 ...): back off and retry the same model
+  for (const delay of RETRY_DELAYS()) {
+    if (res.json || !TRANSIENT.has(res.status)) break;
+    console.error(JSON.stringify({ severity: 'WARNING', event: 'gemini_retry', kind, model, status: res.status }));
+    await sleep(delay);
+    res = await callModel(model, body, timeoutMs);
+  }
+  // 3) still overloaded: try one different model (not remembered, the outage is temporary)
+  if (!res.json && TRANSIENT.has(res.status)) {
+    let alt = null; try { alt = await discoverModel(kind, model, true); } catch (x) { /* none */ }
+    if (alt) {
+      console.error(JSON.stringify({ severity: 'WARNING', event: 'gemini_fallback_model', kind, from: model, to: alt }));
+      res = await callModel(alt, body, timeoutMs); model = alt;
     }
   }
   if (!res.json) {

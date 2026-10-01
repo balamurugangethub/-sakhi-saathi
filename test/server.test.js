@@ -171,3 +171,39 @@ test('a retired model is replaced automatically: 404 -> discover -> retry -> rem
   assert.equal(calls.length - before, 1);                    // remembered: no second discovery
   for (const k of Object.keys(srv.modelCache)) delete srv.modelCache[k];
 });
+
+
+test('temporary overload (503) is retried, then a backup model is tried', async () => {
+  process.env.GEMINI_RETRY_MS = '1,1';
+  for (const k of Object.keys(srv.modelCache)) delete srv.modelCache[k];
+  let n = 0;
+  srv.deps.fetch = async url => {
+    if (/\/v1beta\/models\?/.test(url)) return { ok: true, status: 200, json: async () => ({ models: [
+      { name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/gemini-3.8-flash-lite', supportedGenerationMethods: ['generateContent'] }] }) };
+    n++;
+    if (/gemini-3\.8-flash-lite/.test(url)) return geminiReply([{ text: 'Backup model answer.' }]);
+    if (/gemini-3\.8-flash/.test(url) && n === 2) return geminiReply([{ text: 'Recovered on retry.' }]);
+    return { ok: false, status: 503, text: async () => '{"error":{"status":"UNAVAILABLE"}}' };
+  };
+  // first call: 503, then retry succeeds
+  let r = await post('/api/ask', { q: 'hi', lang: 'en', facts: 'x' });
+  assert.deepEqual(await r.json(), { answer: 'Recovered on retry.' });
+  // second scenario: the main model stays overloaded -> backup model answers
+  srv.deps.fetch = async url => {
+    if (/\/v1beta\/models\?/.test(url)) return { ok: true, status: 200, json: async () => ({ models: [
+      { name: 'models/gemini-3.8-flash', supportedGenerationMethods: ['generateContent'] },
+      { name: 'models/gemini-3.8-flash-lite', supportedGenerationMethods: ['generateContent'] }] }) };
+    if (/lite/.test(url)) return geminiReply([{ text: 'Backup model answer.' }]);
+    return { ok: false, status: 503, text: async () => '{}' };
+  };
+  r = await post('/api/ask', { q: 'hi', lang: 'en', facts: 'x' });
+  assert.deepEqual(await r.json(), { answer: 'Backup model answer.' });
+  assert.equal(srv.modelCache.text, undefined);          // a temporary outage is not remembered
+  // third scenario: everything down -> clean 502, no upstream details leaked
+  srv.deps.fetch = async () => ({ ok: false, status: 503, text: async () => 'secret upstream text' });
+  r = await post('/api/ask', { q: 'hi', lang: 'en', facts: 'x' });
+  assert.equal(r.status, 502);
+  assert.doesNotMatch(await r.text(), /secret|503|UNAVAILABLE/);
+  delete process.env.GEMINI_RETRY_MS;
+});
