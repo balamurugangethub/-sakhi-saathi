@@ -188,3 +188,20 @@ test('installable PWA: valid manifest, real PNG icons, service worker that never
   assert.match(sw, /healthz/);
   assert.ok(win.document.querySelector('link[rel="manifest"]'));
 });
+
+test('every service links to an official HTTPS website that opens safely in a new tab', async () => {
+  const ok = /(\.gov\.in|\.nic\.in|indianoil\.in|ebharatgas\.com|myhpgas\.in|npci\.org\.in)$/;
+  const bad = ev(`S.filter(s=>!s.links.length).map(s=>s.id)`);
+  assert.deepEqual(Array.from(bad), []);
+  const urls = Array.from(ev(`S.flatMap(s=>s.links.map(l=>l[1]))`));
+  assert.ok(urls.length >= 17);
+  for (const u of urls) { const x = new URL(u); assert.equal(x.protocol, 'https:', u); assert.match(x.hostname, ok, u); }
+  for (const l of ['hi', 'ta', 'te', 'en']) {
+    ev(`setLang('${l}'); open('lpg')`); await tick();
+    const a = Array.from(win.document.querySelectorAll('a.site'));
+    assert.equal(a.length, 3);                                   // one button per gas company
+    a.forEach(x => { assert.equal(x.getAttribute('target'), '_blank'); assert.equal(x.getAttribute('rel'), 'noopener noreferrer'); });
+    const msg = decodeURIComponent(win.document.querySelector('#wa').getAttribute('href').split('text=')[1]);
+    assert.match(msg, /https:\/\/cx\.indianoil\.in/);          // the WhatsApp message carries the link too
+  }
+});

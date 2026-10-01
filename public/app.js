@@ -43,7 +43,7 @@ const ICONS = {
   trash:'<path d="M10 16h44M24 16V8h16v8M16 16l3 42h26l3-42" '+ST+'/>',
   edit:'<path d="M8 56l4-15L41 12l11 11-29 29z" fill="currentColor"/>'
 };
-const EMO = {'🌸':'flower','🔊':'speaker','🔇':'mute','🎤':'mic','✅':'check','❌':'cross','🎉':'party','🙏':'heart','📞':'call','🏠':'home','⬅':'back','❓':'help','🔁':'again','🗣':'globe','📄':'doc','📍':'pin','ℹ':'info','💰':'coin','🔥':'lpg','🎁':'gift','💵':'cash','🤰':'mother','👧':'girl','🏦':'bank','🏥':'hospital','🧵':'skill','🪪':'id','🧾':'receipt','📕':'book','📱':'phone','📷':'camera','📜':'cert','🎓':'cap','▶':'play','👇':'down','📤':'share','🧓':'elder','👥':'group','👤':'user','🗑':'trash','✏':'edit','🪙':'coin','🏛':'bank'};
+const EMO = {'🌸':'flower','🔊':'speaker','🔇':'mute','🎤':'mic','✅':'check','❌':'cross','🎉':'party','🙏':'heart','📞':'call','🏠':'home','⬅':'back','❓':'help','🔁':'again','🗣':'globe','📄':'doc','📍':'pin','ℹ':'info','💰':'coin','🔥':'lpg','🎁':'gift','💵':'cash','🤰':'mother','👧':'girl','🏦':'bank','🏥':'hospital','🧵':'skill','🪪':'id','🧾':'receipt','📕':'book','📱':'phone','📷':'camera','📜':'cert','🎓':'cap','▶':'play','👇':'down','📤':'share','🌐':'globe','🧓':'elder','👥':'group','👤':'user','🗑':'trash','✏':'edit','🪙':'coin','🏛':'bank'};
 const EMO_RE = new RegExp('('+Object.keys(EMO).join('|')+')[\\uFE0F\\u200D]?','gu');
 function iconify(root){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), hits = [];
@@ -63,7 +63,7 @@ const lbl = x => typeof x==='string' ? x : x[lang];
 
 // ============ UI strings per language ============
 const U = {
-  hi:{share:'WhatsApp पर भेजें',stepBtn:'एक-एक करके सुनें',stepOf:'कदम',nextS:'आगे',bigOn:'बड़े अक्षर',install:'ऐप इंस्टॉल करें',shareHead:'सखी साथी से जानकारी',vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
+  hi:{site:'सरकारी वेबसाइट',siteBtn:'वेबसाइट खोलें',siteNote:'यह सरकारी वेबसाइट है। वापस आने के लिए फ़ोन का बैक बटन दबाइए। अपना OTP या पिन किसी को न बताइए।',share:'WhatsApp पर भेजें',stepBtn:'एक-एक करके सुनें',stepOf:'कदम',nextS:'आगे',bigOn:'बड़े अक्षर',install:'ऐप इंस्टॉल करें',shareHead:'सखी साथी से जानकारी',vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
     pick:'अपनी भाषा चुनिए',
     homeT:'आपको किस काम में मदद चाहिए?',homeSub:'तस्वीर दबाइए, या बोलकर बताइए',
     homeV:'नमस्ते बहन! मैं सखी साथी हूँ। नीचे तस्वीर दबाइए, या माइक दबाकर बोलिए कि आपको क्या चाहिए। जैसे: गैस सिलेंडर, बैंक खाता, या इलाज।',
@@ -78,7 +78,7 @@ const U = {
     fb:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या नीचे के नंबर पर फ़ोन कीजिए।',
     docRe:/कागज|दस्तावेज|डॉक्यूमेंट|क्या ले|क्या-क्या/,whereRe:/कहाँ|कहां|कैसे|फ़ॉर्म|फॉर्म|आवेदन|क्या करना/,moneyRe:/पैसे|रुपये|रुपए|कितना|किस्त|फायदा|लाभ|मिलेगा/,
     yesRe:/हाँ|हां|हा\b|जी|ठीक|सही|yes|yeah/i,noRe:/नहीं|नही|ना\b|no\b/i},
-  ta:{share:'WhatsApp இல் பகிருங்கள்',stepBtn:'ஒவ்வொன்றாகக் கேளுங்கள்',stepOf:'படி',nextS:'அடுத்து',bigOn:'பெரிய எழுத்து',install:'ஆப்பை நிறுவுங்கள்',shareHead:'சகி சாத்தி தகவல்',vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
+  ta:{site:'அரசு இணையதளம்',siteBtn:'இணையதளத்தைத் திற',siteNote:'இது அரசு இணையதளம். திரும்பி வர போனின் பேக் பொத்தானை அழுத்துங்கள். உங்கள் OTP அல்லது பின்னை யாருக்கும் சொல்லாதீர்கள்.',share:'WhatsApp இல் பகிருங்கள்',stepBtn:'ஒவ்வொன்றாகக் கேளுங்கள்',stepOf:'படி',nextS:'அடுத்து',bigOn:'பெரிய எழுத்து',install:'ஆப்பை நிறுவுங்கள்',shareHead:'சகி சாத்தி தகவல்',vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
     pick:'உங்கள் மொழியைத் தேர்ந்தெடுங்கள்',
     homeT:'உங்களுக்கு என்ன உதவி வேண்டும்?',homeSub:'படத்தை அழுத்துங்கள், அல்லது பேசிச் சொல்லுங்கள்',
     homeV:'வணக்கம் அக்கா! நான் சகி சாத்தி. கீழே உள்ள படத்தை அழுத்துங்கள், அல்லது மைக்கை அழுத்தி உங்களுக்கு என்ன வேண்டும் என்று சொல்லுங்கள். உதாரணம்: கேஸ் சிலிண்டர், வங்கிக் கணக்கு, மகளிர் உரிமைத் தொகை.',
@@ -93,7 +93,7 @@ const U = {
     fb:'இதைப் பற்றி அங்கன்வாடி பணியாளரிடம் கேளுங்கள், அல்லது கீழே உள்ள எண்ணை அழையுங்கள்.',
     docRe:/ஆவண|காகிதம்|என்ன எடுத்து|என்ன கொண்டு/,whereRe:/எங்கே|எங்க|எப்படி|படிவம்|விண்ணப்ப|என்ன செய்ய/,moneyRe:/பணம்|ரூபாய்|எவ்வளவு|தவணை|பலன்|கிடைக்கும்/,
     yesRe:/ஆம்|ஆமா|ஆமாம்|சரி|yes/i,noRe:/இல்லை|இல்ல|வேண்டாம்|no\b/i},
-  te:{share:'WhatsApp లో షేర్ చేయండి',stepBtn:'ఒక్కొక్కటిగా వినండి',stepOf:'దశ',nextS:'తరువాత',bigOn:'పెద్ద అక్షరాలు',install:'యాప్ ఇన్‌స్టాల్ చేయండి',shareHead:'సఖి సాథి సమాచారం',vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
+  te:{site:'ప్రభుత్వ వెబ్‌సైట్',siteBtn:'వెబ్‌సైట్ తెరవండి',siteNote:'ఇది ప్రభుత్వ వెబ్‌సైట్. తిరిగి రావడానికి ఫోన్ బ్యాక్ బటన్ నొక్కండి. మీ OTP లేదా పిన్ ఎవరికీ చెప్పకండి.',share:'WhatsApp లో షేర్ చేయండి',stepBtn:'ఒక్కొక్కటిగా వినండి',stepOf:'దశ',nextS:'తరువాత',bigOn:'పెద్ద అక్షరాలు',install:'యాప్ ఇన్‌స్టాల్ చేయండి',shareHead:'సఖి సాథి సమాచారం',vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
     pick:'మీ భాషను ఎంచుకోండి',
     homeT:'మీకు ఏ సహాయం కావాలి?',homeSub:'బొమ్మ నొక్కండి, లేదా మాట్లాడి చెప్పండి',
     homeV:'నమస్కారం అక్కా! నేను సఖి సాథిని. కింద బొమ్మ నొక్కండి, లేదా మైక్ నొక్కి మీకు ఏం కావాలో చెప్పండి. ఉదాహరణ: గ్యాస్ సిలిండర్, బ్యాంకు ఖాతా, వైద్యం.',
@@ -108,7 +108,7 @@ const U = {
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
     docRe:/పత్రాలు|కాగితాలు|ఏమి తీసుకె|ఏం తీసుకె/,whereRe:/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు|ఏం చేయాలి/,moneyRe:/డబ్బు|రూపాయ|ఎంత|విడత|లాభం|వస్తుంది/,
     yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i},
-  en:{share:'Share on WhatsApp',stepBtn:'Listen step by step',stepOf:'Step',nextS:'Next',bigOn:'Large text',install:'Install app',shareHead:'From Sakhi Saathi',vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
+  en:{site:'Official website',siteBtn:'Open website',siteNote:'This is the government website. Press your phone Back button to return. Never tell anyone your OTP or PIN.',share:'Share on WhatsApp',stepBtn:'Listen step by step',stepOf:'Step',nextS:'Next',bigOn:'Large text',install:'Install app',shareHead:'From Sakhi Saathi',vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
     pick:'Choose your language',
     homeT:'What help do you need?',homeSub:'Tap a picture, or speak',
     homeV:'Hello sister! I am Sakhi Saathi. Tap a picture below, or press the mic and tell me what you need. For example: gas cylinder, bank account, or treatment.',
@@ -448,6 +448,27 @@ Object.assign(FIT,{
   scholarship:p=>p.student!=='no' && ageR(p.age)[0]<=40 && (['SC','ST','OBC'].includes(p.cat)||p.minority==='yes'||(p.cat===undefined&&p.minority===undefined)),
   shg:p=>p.area!=='urban' && p.poor!=='no' && ageR(p.age)[1]>=18
 });
+/** Official websites (HTTPS, government or the gas companies' own booking sites). */
+const LINKS={
+  lpg:[['Indane (IndianOil)','https://cx.indianoil.in'],['Bharat Gas','https://my.ebharatgas.com'],['HP Gas','https://myhpgas.in']],
+  balance:[['NPCI *99#','https://www.npci.org.in']],
+  jandhan:[['pmjdy.gov.in','https://pmjdy.gov.in']],
+  ujjwala:[['pmuy.gov.in','https://www.pmuy.gov.in']],
+  urimai:[['kmut.tn.gov.in','https://kmut.tn.gov.in']],
+  pmmvy:[['pmmvy.wcd.gov.in','https://pmmvy.wcd.gov.in']],
+  sukanya:[['India Post','https://www.indiapost.gov.in']],
+  ayushman:[['pmjay.gov.in','https://pmjay.gov.in']],
+  skill:[['skillindiadigital.gov.in','https://www.skillindiadigital.gov.in']],
+  widow:[['nsap.nic.in','https://nsap.nic.in']],
+  scholarship:[['scholarships.gov.in','https://scholarships.gov.in']],
+  shg:[['aajeevika.gov.in','https://aajeevika.gov.in']],
+  cash_MH:[['ladakibahin.maharashtra.gov.in','https://ladakibahin.maharashtra.gov.in']],
+  cash_KA:[['Seva Sindhu','https://sevasindhugs.karnataka.gov.in']],
+  cash_WB:[['socialsecurity.wb.gov.in','https://socialsecurity.wb.gov.in']],
+  cash_MP:[['cmladlibahna.mp.gov.in','https://cmladlibahna.mp.gov.in']],
+  cash_OD:[['subhadra.odisha.gov.in','https://subhadra.odisha.gov.in']]
+};
+S.forEach(x=>{ x.links = LINKS[x.id] || []; });
 const fit=(s,p)=>{ const f=FIT[s.id]; try{ return f? f(p) : true; }catch(e){ return true; } };
 
 // ----- Profile UI strings -----
@@ -832,7 +853,7 @@ function callsHtml(s){
 
 function shareText(s){
   const t = T(), origin = /^https?:/.test(location.origin) ? location.origin : '';
-  return [t.shareHead+': '+s.name[lang], '', t.docsL+':', ...s.docs.map(d=>'• '+d[1][lang]), '', s.where[lang], '', s.info[lang], '', ...s.calls.map(c=>lbl(c[0])+': '+c[1]), ...(origin?['',origin]:[])].join('\n');
+  return [t.shareHead+': '+s.name[lang], '', t.docsL+':', ...s.docs.map(d=>'• '+d[1][lang]), '', s.where[lang], '', s.info[lang], '', ...s.calls.map(c=>lbl(c[0])+': '+c[1]), ...(s.links||[]).map(l=>l[1]), ...(origin?['',origin]:[])].join('\n');
 }
 const waUrl = s => 'https://wa.me/?text=' + encodeURIComponent(shareText(s));
 
@@ -854,6 +875,12 @@ function stepScreen(i){
   say(txt);   // she asked to be read to, so speak even if the voice toggle is off
 }
 
+function linksHtml(s){
+  const L = s.links || []; if(!L.length) return '';
+  return `<div class="sub" style="margin-top:14px"><b>🌐 ${T().site}</b></div><div class="ans" style="margin-top:6px">${T().siteNote}</div>`
+    + L.map(l=>`<a class="btn site" href="${l[1]}" target="_blank" rel="noopener noreferrer">🌐 ${T().siteBtn}<small>${esc(l[0])}</small></a>`).join('');
+}
+
 function result(){
   dots();
   const t = T(), s = cur;
@@ -871,6 +898,7 @@ function result(){
     <div class="sub"><b>${t.whereT}</b></div><div class="ans">${s.where[lang]}</div>
     <div class="sub" style="margin-top:14px"><b>${t.infoT}</b></div><div class="ans">${s.info[lang]}</div>
     ${callsHtml(s)}
+    ${linksHtml(s)}
     <a class="btn yes" id="wa" href="${waUrl(s)}" target="_blank" rel="noopener noreferrer">📤 ${t.share}</a>
     <button class="btn ghost" id="steps">🔊 ${t.stepBtn}</button>
     <button class="btn pink" id="ask">${t.ask}</button>

@@ -14,6 +14,7 @@
 - **Schemes:** Matru Vandana, Ujjwala, Sukanya Samriddhi, Ayushman Bharat, Skill India, widow pension, girls' scholarships, women's savings groups (Lakhpati Didi), Tamil Nadu Magalir Urimai Thogai and monthly-cash schemes for Maharashtra, Karnataka, West Bengal, Madhya Pradesh and Odisha.
 - **Optional profile** (state, district, age, category …) that filters "Schemes for you". It lives **only in the phone's localStorage**, is never sent anywhere (not even to Gemini) and can be deleted in one tap.
 - **Voice in:** Web Speech API with live transcript and specific, translated error messages. **Voice out:** off by default; uses a device voice when one exists for the language, otherwise **Gemini text-to-speech** from the server (this is what makes Tamil/Telugu work on PCs that have no such voice).
+- **Official website button** on every service (pmuy.gov.in, pmmvy.wcd.gov.in, scholarships.gov.in, the gas companies' booking sites, state portals …): opens in a new tab with a safety note ("press Back to return; never share your OTP or PIN") and is included in the WhatsApp message.
 - **Share on WhatsApp:** one tap sends the checklist (documents, where to go, helplines) in her language, so she can show it at the Anganwadi or send it to a relative.
 - **Listen step by step:** reads one short instruction at a time with Next/Back, for slow listeners.
 - **Installable and offline-ready (PWA):** "Install app" puts an icon on the home screen; the core app works offline in the four built-in languages.
@@ -36,7 +37,7 @@ Browser (public/)  ──►  Node server (server.js, zero dependencies)  ──
 ```bash
 npm install          # only needed for tests (jsdom)
 GEMINI_API_KEY=your_key node server.js     # http://localhost:8080
-npm test             # 28 tests: server, security, content completeness, eligibility rules, a11y
+npm test             # 29 tests: server, security, content completeness, eligibility rules, a11y
 ```
 Without a key everything still works in the four core languages (scripted answers, browser voices); AI answers, extra languages and server voice need `GEMINI_API_KEY`.
 To try the AI paths without a key: `node tools/mock-gemini.js` and `GEMINI_BASE=http://localhost:9090 GEMINI_API_KEY=test node server.js`.

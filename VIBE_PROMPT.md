@@ -100,3 +100,6 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - **PWA**: web manifest, 192/512 PNG icons, service worker (stale-while-revalidate for the shell; never cache `/api/*` or `/healthz`), and an "Install app" button on `beforeinstallprompt`.
 - **Large-text toggle (A+)** for helpers; remembered locally; `aria-pressed`.
 - Serve static code with `Cache-Control: no-cache` + ETag so new deployments are never stale.
+
+## Official website links
+- Every service result shows an "Open official website" button (blue, `target="_blank" rel="noopener noreferrer"`) to the scheme's official HTTPS portal (government domains, or the gas companies' own booking sites for LPG – one button per company), with a note in her language: this is the government website, press Back to return, never share OTP or PIN. Include the link in the WhatsApp share text. Test that every service has a link and every host is on an allow-list.
