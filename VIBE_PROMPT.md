@@ -3,7 +3,7 @@
 Build a mobile-first, single-page web app called **"Sakhi Saathi" (सखी साथी)** for the "Invisible Woman" challenge (SDG 5, 4, 10). It helps a first-time smartphone user in rural India (a woman with no English, no tech background, no one to ask) independently access government services and schemes using **voice or very simple text in her own language**. It must need zero prior digital knowledge.
 
 ## Languages
-Hindi, Tamil, Telugu. First screen = three huge language buttons labelled in their own script (हिन्दी / தமிழ் / తెలుగు). Remember the choice. Easy to add a language later (all text lives in one translations object).
+Hindi, Tamil, Telugu and English. First screen = four huge language buttons labelled in their own script (हिन्दी / தமிழ் / తెలుగు / English). Remember the choice. Easy to add a language later (all text lives in one translations object).
 
 ## Home screen (most popular first)
 Title in her language: "What help do you need?" with one big 🎤 mic button ("say what you need") and a 2-column grid of large picture tiles (emoji/icon + max 5 words), ordered by popularity among Indian women:
@@ -41,7 +41,7 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - One task per screen, one primary button per screen, big back/home buttons, progress dots. No typing needed anywhere.
 - Fast and light on any device: single HTML file, no frameworks or heavy libraries or large images (use emoji/SVG), system fonts with Noto fallbacks for Devanagari/Tamil/Telugu, no layout shift, no animation except a gentle mic pulse; honour `prefers-reduced-motion`. Works on a ₹6,000 Android phone on 3G, in Chrome/Safari/Firefox/Samsung Internet, tablet and desktop (centered max-width 480px column on large screens).
 - Responsive from 320px up; respect safe-area insets; works in portrait and landscape; supports 200% text zoom; keyboard and screen-reader accessible (semantic buttons, aria-labels, lang attributes).
-- Text-to-speech and speech-to-text via Web Speech API (`hi-IN`, `ta-IN`, `te-IN`); if voice isn't supported, everything still works by tapping.
+- Text-to-speech and speech-to-text via Web Speech API (`hi-IN`, `ta-IN`, `te-IN`, `en-IN`); if voice isn't supported, everything still works by tapping.
 
 ## Tech/security
 - Gemini API key must NEVER be hard-coded or committed. Read it from an input in a hidden settings panel (tap the logo 5 times), store only in localStorage. The app must be fully usable without a key.
@@ -56,4 +56,4 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - **Accessibility**: semantic HTML, `lang` attribute switching per language, aria-labels, visible focus rings, ≥4.5:1 contrast, 56px touch targets, works at 200% zoom, `prefers-reduced-motion`, screen-reader announcements (`aria-live`) for spoken results.
 - **Efficiency**: no frameworks, total page < 100 KB, no external fonts, gzip enabled, cache headers for static files.
 - **Code quality**: small modules (data / ui / voice / api), JSDoc comments, ESLint-clean, a README with problem statement, SDG alignment (5.1, 5.b, 4.3, 4.4, 10.2), architecture, how to run/test/deploy.
-- **Problem alignment**: one-sentence statement in README: "A first-time woman user with no English or tech background can independently access essential services by voice in Hindi, Tamil or Telugu."
+- **Problem alignment**: one-sentence statement in README: "A first-time woman user with no English or tech background can independently access essential services by voice in Hindi, Tamil, Telugu or English."

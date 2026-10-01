@@ -51,6 +51,7 @@
       <button class="lang" data-l="hi">हिन्दी</button>
       <button class="lang" data-l="ta">தமிழ்</button>
       <button class="lang" data-l="te">తెలుగు</button>
+      <button class="lang" data-l="en">English</button>
     </div>
   </header>
   <div class="dots" id="dots"></div>
@@ -115,7 +116,22 @@ const U = {
     notfound:'అర్థం కాలేదు. దయచేసి కింద బొమ్మ నొక్కండి.',
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
     docRe:/పత్రాలు|కాగితాలు|ఏమి తీసుకె|ఏం తీసుకె/,whereRe:/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు|ఏం చేయాలి/,moneyRe:/డబ్బు|రూపాయ|ఎంత|విడత|లాభం|వస్తుంది/,
-    yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i}
+    yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i},
+  en:{code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
+    pick:'Choose your language',
+    homeT:'What help do you need?',homeSub:'Tap a picture, or speak',
+    homeV:'Hello sister! I am Sakhi Saathi. Tap a picture below, or press the mic and tell me what you need. For example: gas cylinder, bank account, or treatment.',
+    need:'🎤 Say what you need',startBtn:'Start',
+    okT:'Congratulations! 🎉 You are eligible',okV:'Congratulations sister! You are eligible.',stepsT:'What to do next 👇',
+    noT:'Sorry 🙏',noV:'Sorry sister, you are not eligible for this scheme right now. Do not worry. Look at the other services, or ask your Anganwadi worker.',
+    docsT:'📄 Carry with you',docsL:'You need to carry these things',whereT:'📍 Where to go / what to do',infoT:'ℹ️ Important',
+    ask:'❓ Want to ask something?',askV:'Please say what you want to ask.',askT:'Say your question',
+    home:'🏠 See other services',back:'⬅️ Back',again:'🔁 Again',
+    listening:'Listening…',noheard:'I could not hear. Please speak again.',thinking:'Thinking…',nomic:'Speaking is not available on this phone. Please tap a picture.',
+    notfound:'I did not understand. Please tap a picture below.',
+    fb:'Please ask your Anganwadi worker about this, or call the number below.',
+    docRe:/document|paper|carry|bring|what do i need/i,whereRe:/where|how|form|apply|what to do/i,moneyRe:/money|rupee|how much|instal|benefit/i,
+    yesRe:/\byes\b|yeah|yep|sure|\bok\b/i,noRe:/\bno\b|nope|\bnot\b/i}
 };
 
 // ============ Schemes (id, keywords, per-language content) ============
@@ -209,7 +225,7 @@ const S = [
    calls:[[M('जन धन हेल्पलाइन','జన్ ధన్ హెల్ప్‌లైన్','ஜன் தன் உதவி எண்'),'18001800']],
    f:'PM Jan Dhan Yojana: zero-balance bank account in own name with RuPay debit card, Rs 2 lakh accident insurance, direct benefit transfers, overdraft facility after good use. Open at any bank branch, Bank Mitra/CSC or post office with Aadhaar (or other ID), photo, mobile. Helpline 1800-11-0001 / 1800-180-1111.' },
 
- { id:'ayushman', e:'🏥', kw:/इलाज|अस्पताल|आयुष्मान|दवा|health|hospital|వైద్య|ఆసుపత్రి|ఆయుష్మాన్|சிகிச்சை|மருத்துவ|ஆயுஷ்மான்|மருத்துவமனை/i,
+ { id:'ayushman', e:'🏥', kw:/इलाज|अस्पताल|आयुष्मान|दवा|health|hospital|treatment|medical|వైద్య|ఆసుపత్రి|ఆయుష్మాన్|சிகிச்சை|மருத்துவ|ஆயுஷ்மான்|மருத்துவமனை/i,
    name:M('₹5 लाख तक मुफ़्त इलाज (आयुष्मान)','₹5 లక్షల వరకు ఉచిత వైద్యం (ఆయుష్మాన్)','₹5 லட்சம் வரை இலவச சிகிச்சை (ஆயுஷ்மான்)'),
    d:M('बड़े अस्पताल में भी परिवार का मुफ़्त इलाज।','పెద్ద ఆసుపత్రిలో కూడా కుటుంబానికి ఉచిత వైద్యం.','பெரிய மருத்துவமனையிலும் குடும்பத்துக்கு இலவச சிகிச்சை.'),
    qs:[M('क्या आपके पास आधार कार्ड और राशन कार्ड है, और परिवार की आमदनी कम है?','మీ దగ్గర ఆధార్, రేషన్ కార్డు ఉన్నాయా, కుటుంబ ఆదాయం తక్కువా?','உங்களிடம் ஆதார், ரேஷன் அட்டை உள்ளதா, குடும்ப வருமானம் குறைவா?')],
@@ -233,6 +249,53 @@ const S = [
    calls:[[M('स्किल इंडिया हेल्पलाइन','స్కిల్ ఇండియా హెల్ప్‌లైన్','ஸ்கில் இந்தியா உதவி எண்'),'08800055555']],
    f:'Skill India / PMKVY: free short-term skill training (tailoring, beauty, computer, etc.) with government certificate and placement help. Visit nearest training centre / CSC / panchayat with Aadhaar, bank passbook, photo. Helpline 08800055555.' }
 ];
+
+
+const EN = {
+ lpg:{name:'Book a gas cylinder',d:'Learn to book a cylinder by phone from home.',
+  docs:['Gas book or consumer number printed on the cylinder','Mobile number registered with the gas agency','Cash on delivery or UPI'],
+  where:'1) Press your gas company number below to call (the company written on your cylinder). 2) Follow the voice and press the buttons it says – you will need your gas number or mobile number. 3) The cylinder will come home in one or two days. 4) At delivery, tell the code (OTP) and take a receipt.',
+  info:'Do not pay more than the fixed price. If you smell gas, do not touch fire or electric switches, open doors and windows and call 1906. Check the number with your gas book or agency to be sure.',
+  calls:['','','','Gas leak – emergency']},
+ ujjwala:{name:'Free gas connection (Ujjwala)',d:'Free gas connection for a woman from a poor family.',
+  qs:['Does your home not have a gas connection yet?','Are you above 18 and do you have a ration card (poor family)?'],
+  docs:['Aadhaar card','Ration card / BPL card','Bank passbook','One photo'],
+  where:'Go to the nearest gas agency (distributor) and ask for the "Ujjwala form". Fill it and submit your papers. The Anganwadi worker or panchayat can also help.',
+  info:'The connection is free and a subsidy on cylinders may also be available. If any agent asks for money, do not pay.',calls:['Gas helpline']},
+ urimai:{name:'Magalir Urimai Thogai ₹1,000 every month (Tamil Nadu)',d:'₹1,000 every month for the woman head of the family in Tamil Nadu.',
+  qs:['Do you live in Tamil Nadu and are you the head of your family (named on the ration card)?','Are you 21 years or older?','Is your family income below ₹2.5 lakh a year, with no government employee or income-tax payer at home?'],
+  docs:['Ration card','Aadhaar card','Bank passbook (in your name)','Mobile number linked to Aadhaar'],
+  where:'Ask at your ration shop or Village Administrative Officer (VAO) when the application camp is in your area. Show your papers there and get the form filled. You can also ask at an e-Sevai centre. It costs nothing.',
+  info:'₹1,000 comes straight to your bank account every month. This is a Tamil Nadu government scheme, only for Tamil Nadu. Do not pay anyone to apply. Rules can change, so confirm at the camp.',calls:['Tamil Nadu helpline']},
+ pmmvy:{name:'₹5,000 for pregnant mothers (Matru Vandana)',d:'₹5,000 in three instalments straight to your bank account for the first child.',
+  qs:['Are you pregnant, or is your baby less than 6 months old?','Is this your first child?','Are you 19 years or older?'],
+  docs:['Aadhaar card','Bank passbook (in your name)','Mother and child card (MCP)','Mobile number'],
+  where:'Go to your village Anganwadi centre or ASHA worker and get Form 1-A filled. It costs nothing – it is free.',
+  info:'Total ₹5,000 in three instalments: ₹1,000 on registering the pregnancy, ₹2,000 after a check-up at six months, ₹2,000 after registering the birth and the first vaccine.',calls:['Helpline']},
+ sukanya:{name:'Savings account for your daughter (Sukanya)',d:"A higher-interest account for your daughter's education and marriage.",
+  qs:['Is your daughter under 10 years old?'],
+  docs:["Daughter's birth certificate","Mother's or father's Aadhaar card",'Photo and address proof','₹250 to start'],
+  where:'Go to your nearest post office or bank and ask for the "Sukanya Samriddhi account" form.',
+  info:'You can open the account with just ₹250 and deposit up to ₹1.5 lakh a year. The government sets the interest, which is higher than normal savings. After the girl turns 18, some money can be taken out for her studies.',calls:['Post office helpline']},
+ jandhan:{name:'Free bank account (Jan Dhan)',d:'A bank account in your own name with no money needed – government money comes straight to you.',
+  qs:['Do you not have a bank account in your own name yet?'],
+  docs:['Aadhaar card (or voter card)','One photo','Mobile number'],
+  where:'Go to the nearest bank, Bank Mitra (CSC) or post office and say "I want to open a Jan Dhan account". They will fill the form there.',
+  info:'Keeping ₹0 in the account is fine. You get a RuPay debit card and ₹2 lakh accident insurance. Money from all government schemes comes into this account.',calls:['Jan Dhan helpline']},
+ ayushman:{name:'Free treatment up to ₹5 lakh (Ayushman)',d:'Free treatment for the family, even in big hospitals.',
+  qs:['Do you have an Aadhaar card and ration card, and is your family income low?'],
+  docs:['Aadhaar card','Ration card','Mobile number'],
+  where:'Go to the "Ayushman Mitra" desk at the nearest government hospital, or a common service centre (CSC). They will check your name and make a free Ayushman card.',
+  info:'One family gets cashless treatment up to ₹5 lakh a year. Making the card costs nothing.',calls:['Ayushman helpline']},
+ skill:{name:'Learn a skill free and earn',d:'Free courses like tailoring, beauty and computers, with a certificate.',
+  qs:['Are you above 18 and do you want to learn a skill to earn money?'],
+  docs:['Aadhaar card','Bank passbook','One photo','Education paper (if you have)'],
+  where:'Go to the nearest Skill India (PMKVY) training centre, common service centre (CSC) or panchayat and ask which course is free.',
+  info:'The course is free, you get a government certificate when you finish, and help to find a job or start your own work.',calls:['Skill India helpline']}
+};
+S.forEach(s=>{const e=EN[s.id]; s.name.en=e.name; s.d.en=e.d; s.where.en=e.where; s.info.en=e.info;
+  (e.qs||[]).forEach((q,i)=>s.qs[i].en=q); e.docs.forEach((d,i)=>s.docs[i][1].en=d);
+  s.calls.forEach((c,i)=>{ if(typeof c[0]!=='string') c[0].en=e.calls[i]; });});
 
 // ============ State ============
 let lang = 'hi', cur = null, step = 0, eligible = true, recog = null;
@@ -287,7 +350,7 @@ function dots(){
   el.innerHTML = Array.from({length:n},(_,i)=>`<div class="dot ${i<=step?'on':''}"></div>`).join('');
 }
 function setLang(l){
-  lang = l; store.set('lang',l); document.documentElement.lang = ({hi:'hi',ta:'ta',te:'te'})[l];
+  lang = l; store.set('lang',l); document.documentElement.lang = l;
   document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===l));
 }
 
@@ -296,7 +359,8 @@ function langScreen(){
   main.innerHTML = `<div class="card"><div class="emoji">🌸</div><div class="big">भाषा चुनिए · மொழி · భాష</div>
     <button class="btn pink" data-l="hi">🗣️ हिन्दी</button>
     <button class="btn pink" data-l="ta">🗣️ தமிழ்</button>
-    <button class="btn pink" data-l="te">🗣️ తెలుగు</button></div>`;
+    <button class="btn pink" data-l="te">🗣️ తెలుగు</button>
+    <button class="btn pink" data-l="en">🗣️ English</button></div>`;
   main.querySelectorAll('.btn[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
 }
 
@@ -383,7 +447,7 @@ function askScreen(){
 }
 async function respond(q){
   const t = T(), s = cur; $('#out').innerHTML = `<div class="ans">${t.thinking}</div>`;
-  const sys = `You are Sakhi Saathi, a kind voice assistant for a rural Indian woman with no tech knowledge. Reply ONLY in ${t.sys}, in at most 3 very short, simple sentences, no English words except numbers, no markdown. Use only these facts and say to ask the Anganwadi worker if unsure: ${s.f} Never ask for OTP, passwords or bank details.`;
+  const sys = `You are Sakhi Saathi, a kind voice assistant for a rural Indian woman with no tech knowledge. Reply ONLY in ${t.sys}, in at most 3 very short, simple sentences, no markdown (and no English words unless replying in English). Use only these facts and say to ask the Anganwadi worker if unsure: ${s.f} Never ask for OTP, passwords or bank details.`;
   let a = await gemini(sys, q);
   if(!a){
     if(t.docRe.test(q)) a = s.docs.map(d=>d[1][lang]).join(', ');
