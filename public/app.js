@@ -722,7 +722,7 @@ const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" 
 function langScreen(){
   cur = null; inProfile = false; dots();
   const LG=[['hi','हि','हिन्दी',['#c2185b','#f48fb1']],['ta','த','தமிழ்',['#1a56c7','#5b9bff']],['te','తె','తెలుగు',['#2e7d32','#86d08a']],['en','Aa','English',['#e8590c','#ffa94d']]];
-  main.innerHTML = `<section class="hero" style="margin:0 auto;text-align:center"><div class="over">Sakhi Saathi · सखी साथी</div><h1>भाषा चुनिए · மொழி · భాష · Language</h1></section>
+  main.innerHTML = `<section class="hero" style="display:block;margin:0 auto;text-align:center"><div class="over">Sakhi Saathi · सखी साथी</div><h1>भाषा चुनिए · மொழி · భాష · Language</h1></section>
     <div class="grid" style="max-width:620px;margin:10px auto 0">${LG.map(l=>`<button class="tile" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="font-size:36px;font-weight:700;color:${l[3][0]}">${l[1]}</span><span class="t" style="font-size:22px">${l[2]}</span></button>`).join('')}</div>`;
   if(API.ai) main.insertAdjacentHTML('beforeend', `<div class="xlangs">${EXTRA.map(e=>`<button class="chip" data-x="${e[0]}">${e[1]}</button>`).join('')}</div>`);
   main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
