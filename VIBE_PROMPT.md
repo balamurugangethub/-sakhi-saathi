@@ -57,3 +57,9 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - **Efficiency**: no frameworks, total page < 100 KB, no external fonts, gzip enabled, cache headers for static files.
 - **Code quality**: small modules (data / ui / voice / api), JSDoc comments, ESLint-clean, a README with problem statement, SDG alignment (5.1, 5.b, 4.3, 4.4, 10.2), architecture, how to run/test/deploy.
 - **Problem alignment**: one-sentence statement in README: "A first-time woman user with no English or tech background can independently access essential services by voice in Hindi, Tamil, Telugu or English."
+
+## Voice behaviour (important)
+- Voice output is **OFF by default**: nothing may speak automatically on page load. A clear 🔊 "Voice on / 🔇 Voice off" toggle (label in the selected language, `aria-pressed`) is shown at the top and remembered in localStorage. Turning it on speaks a short confirmation.
+- When ON, each screen is read aloud automatically; the 🔊 "Listen again" button on every screen always works manually, even when the toggle is off.
+- The spoken language MUST match the selected language (`hi-IN`, `ta-IN`, `te-IN`, `en-IN`): pick a matching `SpeechSynthesisVoice`, and never read Hindi/Tamil/Telugu text with an English voice. If no matching voice exists on the device, show a short message in that language explaining how to install one, instead of speaking in the wrong language.
+- Changing language or leaving a screen cancels any speech in progress.

@@ -41,6 +41,8 @@
   #set{display:none;background:#fff;border-radius:16px;padding:12px;font-size:14px}
   #set input{width:100%;padding:8px;margin:6px 0}
   a.call{text-decoration:none}
+  .vtoggle{align-self:center;border:2px solid var(--pink);background:#fff;color:var(--pink-d);border-radius:24px;padding:10px 22px;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;min-height:48px}
+  .vtoggle[aria-pressed="true"]{background:var(--pink);color:#fff}
 </style>
 </head>
 <body>
@@ -54,6 +56,8 @@
       <button class="lang" data-l="en">English</button>
     </div>
   </header>
+  <button class="vtoggle" id="vt" aria-pressed="false"></button>
+  <div id="vnote" class="note" role="status" aria-live="polite"></div>
   <div class="dots" id="dots"></div>
   <main id="main"></main>
   <div id="set">
@@ -72,7 +76,7 @@ const lbl = x => typeof x==='string' ? x : x[lang];
 
 // ============ UI strings per language ============
 const U = {
-  hi:{code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
+  hi:{vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
     pick:'अपनी भाषा चुनिए',
     homeT:'आपको किस काम में मदद चाहिए?',homeSub:'तस्वीर दबाइए, या बोलकर बताइए',
     homeV:'नमस्ते बहन! मैं सखी साथी हूँ। नीचे तस्वीर दबाइए, या माइक दबाकर बोलिए कि आपको क्या चाहिए। जैसे: गैस सिलेंडर, बैंक खाता, या इलाज।',
@@ -87,7 +91,7 @@ const U = {
     fb:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या नीचे के नंबर पर फ़ोन कीजिए।',
     docRe:/कागज|दस्तावेज|डॉक्यूमेंट|क्या ले|क्या-क्या/,whereRe:/कहाँ|कहां|कैसे|फ़ॉर्म|फॉर्म|आवेदन|क्या करना/,moneyRe:/पैसे|रुपये|रुपए|कितना|किस्त|फायदा|लाभ|मिलेगा/,
     yesRe:/हाँ|हां|हा\b|जी|ठीक|सही|yes|yeah/i,noRe:/नहीं|नही|ना\b|no\b/i},
-  ta:{code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
+  ta:{vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
     pick:'உங்கள் மொழியைத் தேர்ந்தெடுங்கள்',
     homeT:'உங்களுக்கு என்ன உதவி வேண்டும்?',homeSub:'படத்தை அழுத்துங்கள், அல்லது பேசிச் சொல்லுங்கள்',
     homeV:'வணக்கம் அக்கா! நான் சகி சாத்தி. கீழே உள்ள படத்தை அழுத்துங்கள், அல்லது மைக்கை அழுத்தி உங்களுக்கு என்ன வேண்டும் என்று சொல்லுங்கள். உதாரணம்: கேஸ் சிலிண்டர், வங்கிக் கணக்கு, மகளிர் உரிமைத் தொகை.',
@@ -102,7 +106,7 @@ const U = {
     fb:'இதைப் பற்றி அங்கன்வாடி பணியாளரிடம் கேளுங்கள், அல்லது கீழே உள்ள எண்ணை அழையுங்கள்.',
     docRe:/ஆவண|காகிதம்|என்ன எடுத்து|என்ன கொண்டு/,whereRe:/எங்கே|எங்க|எப்படி|படிவம்|விண்ணப்ப|என்ன செய்ய/,moneyRe:/பணம்|ரூபாய்|எவ்வளவு|தவணை|பலன்|கிடைக்கும்/,
     yesRe:/ஆம்|ஆமா|ஆமாம்|சரி|yes/i,noRe:/இல்லை|இல்ல|வேண்டாம்|no\b/i},
-  te:{code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
+  te:{vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
     pick:'మీ భాషను ఎంచుకోండి',
     homeT:'మీకు ఏ సహాయం కావాలి?',homeSub:'బొమ్మ నొక్కండి, లేదా మాట్లాడి చెప్పండి',
     homeV:'నమస్కారం అక్కా! నేను సఖి సాథిని. కింద బొమ్మ నొక్కండి, లేదా మైక్ నొక్కి మీకు ఏం కావాలో చెప్పండి. ఉదాహరణ: గ్యాస్ సిలిండర్, బ్యాంకు ఖాతా, వైద్యం.',
@@ -117,7 +121,7 @@ const U = {
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
     docRe:/పత్రాలు|కాగితాలు|ఏమి తీసుకె|ఏం తీసుకె/,whereRe:/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు|ఏం చేయాలి/,moneyRe:/డబ్బు|రూపాయ|ఎంత|విడత|లాభం|వస్తుంది/,
     yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i},
-  en:{code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
+  en:{vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
     pick:'Choose your language',
     homeT:'What help do you need?',homeSub:'Tap a picture, or speak',
     homeV:'Hello sister! I am Sakhi Saathi. Tap a picture below, or press the mic and tell me what you need. For example: gas cylinder, bank account, or treatment.',
@@ -313,8 +317,22 @@ function say(text){
     const vs = speechSynthesis.getVoices();
     const v = vs.find(v=>v.lang.replace('_','-').toLowerCase()===T().code.toLowerCase()) || vs.find(v=>v.lang.toLowerCase().startsWith(lang));
     if(v) u.voice = v;
+    else if(vs.length && lang!=='en') $('#vnote').textContent = T().vNone;
+    if(v) $('#vnote').textContent = '';
     speechSynthesis.speak(u);
   }catch(e){}
+}
+
+// Voice is OFF until she (or a helper) turns it on; the 🔊 Listen buttons always work.
+let voiceOn = store.get('voice')==='1';
+const autoSay = text => { if(voiceOn) say(text); };
+function paintVoice(){
+  const b=$('#vt'); b.textContent = voiceOn ? T().vOn : T().vOff; b.setAttribute('aria-pressed', String(voiceOn));
+}
+function toggleVoice(){
+  voiceOn = !voiceOn; store.set('voice', voiceOn?'1':'0'); paintVoice();
+  try{ speechSynthesis.cancel(); }catch(e){}
+  if(voiceOn) say(T().vMsg); else $('#vnote').textContent='';
 }
 
 // ============ Voice in ============
@@ -352,6 +370,7 @@ function dots(){
 function setLang(l){
   lang = l; store.set('lang',l); document.documentElement.lang = l;
   document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===l));
+  paintVoice(); $('#vnote').textContent=''; try{ speechSynthesis.cancel(); }catch(e){}
 }
 
 function langScreen(){
@@ -374,7 +393,7 @@ function home(){
   main.querySelectorAll('.tile').forEach(b=>b.onclick=()=>open(b.dataset.id));
   $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
     listen(async txt=>{ $('#msg').textContent='“'+txt+'”'; await route(txt); }, m=>{ $('#msg').textContent=m; }); };
-  say(t.homeV);
+  autoSay(t.homeV);
 }
 
 async function route(txt){
@@ -383,7 +402,7 @@ async function route(txt){
     const id = await gemini('Pick the single best matching service id for the user request (any Indian language). Reply with ONLY the id, or none. Ids: '+S.map(s=>s.id+' = '+s.f.slice(0,60)).join(' | '), txt);
     s = S.find(s=>id && id.toLowerCase().includes(s.id));
   }
-  if(s) open(s.id); else { $('#msg').textContent = T().notfound; say(T().notfound); }
+  if(s) open(s.id); else { $('#msg').textContent = T().notfound; autoSay(T().notfound); }
 }
 
 function open(id){ cur = S.find(s=>s.id===id); step = 0; eligible = true; flow(); }
@@ -404,7 +423,7 @@ function flow(){
   $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
     listen(txt=>{ if(t.yesRe.test(txt)&&!t.noRe.test(txt)) answer(true); else if(t.noRe.test(txt)) answer(false); else $('#msg').textContent=t.noheard; },
            m=>{ $('#msg').textContent=m; }); };
-  say((step===0 ? s.name[lang]+'. '+s.d[lang]+' ' : '') + q);
+  autoSay((step===0 ? s.name[lang]+'. '+s.d[lang]+' ' : '') + q);
 }
 
 function callsHtml(s){
@@ -417,7 +436,7 @@ function result(){
   if(!eligible){
     main.innerHTML = `<div class="card"><div class="emoji">🙏</div><div class="big">${t.noT}</div>${listenBtn(t.noV)}
       <button class="btn pink" id="home">${t.home}</button>${callsHtml(s)}</div>`;
-    $('#home').onclick = home; say(t.noV); return;
+    $('#home').onclick = home; autoSay(t.noV); return;
   }
   const docsTxt = s.docs.map(d=>d[1][lang]).join(', ');
   const full = (s.qs.length? t.okV+' ':'') + s.name[lang]+'. '+t.docsL+': '+docsTxt+'. '+s.where[lang]+' '+s.info[lang];
@@ -431,7 +450,7 @@ function result(){
     <button class="btn pink" id="ask">${t.ask}</button>
     <button class="btn ghost" id="home">${t.home}</button></div>`;
   $('#ask').onclick = askScreen; $('#home').onclick = home;
-  say(full);
+  autoSay(full);
 }
 
 // ============ Ask a question about the current scheme ============
@@ -442,8 +461,8 @@ function askScreen(){
     <button class="btn ghost" id="back">${t.back}</button></div>`;
   $('#back').onclick = result;
   $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
-    listen(async q=>{ $('#msg').textContent='“'+q+'”'; await respond(q); }, m=>{ $('#msg').textContent=m; say(m); }); };
-  say(t.askV);
+    listen(async q=>{ $('#msg').textContent='“'+q+'”'; await respond(q); }, m=>{ $('#msg').textContent=m; autoSay(m); }); };
+  autoSay(t.askV);
 }
 async function respond(q){
   const t = T(), s = cur; $('#out').innerHTML = `<div class="ans">${t.thinking}</div>`;
@@ -459,6 +478,7 @@ async function respond(q){
 }
 
 // ============ Wiring ============
+$('#vt').onclick = toggleVoice;
 document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); cur ? flow() : home(); });
 let taps=0; $('#logo').onclick=()=>{ if(++taps>=5){ taps=0; $('#set').style.display='block'; $('#key').value=store.get('gkey')||''; } else if(taps===1) setTimeout(()=>taps=0,4000); };
 $('#savekey').onclick=()=>{ store.set('gkey',$('#key').value.trim()); $('#set').style.display='none'; };
