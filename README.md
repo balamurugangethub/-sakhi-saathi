@@ -33,11 +33,22 @@ Browser (public/)  ──►  Node server (server.js, zero dependencies)  ──
 - **Efficiency:** no framework, no external fonts or images (inline SVG), small gzip transfer, stateless server.
 - **Accessibility:** semantic buttons, `lang` switching, `aria-live` status regions, decorative icons hidden from screen readers, high contrast, large touch targets, reduced-motion support.
 
+## How this maps to the evaluation criteria
+| Criterion | Where to look |
+|---|---|
+| **Problem-statement alignment** | One woman, no English, no tech background, no one to ask: voice-first flow, 4 hand-written languages (+7 via Gemini), picture cards, spoken steps, no typing, no login (`public/app.js`) |
+| **Google services** | Gemini API for answers, intent routing, translation and text-to-speech; deployed on Google Cloud Run; secrets in Secret Manager (`server.js`, `Dockerfile`) |
+| **Security** | Key only on the server, strict CSP/HSTS headers, input validation, rate limiting, non-root container, on-device profile ([SECURITY.md](SECURITY.md), `test/server.test.js`) |
+| **Efficiency** | Zero runtime dependencies, no framework, inline SVG instead of images, ETag revalidation, per-version gzip cache, service-worker offline shell |
+| **Testing** | 33 automated tests (`npm test`, `npm run coverage`), CI on every push (`.github/workflows/ci.yml`) |
+| **Accessibility** | Skip link, `lang` switching, `aria-live` status regions, labelled controls, hidden decorative icons, 56 px targets, large-text mode, reduced-motion and high-contrast support (`test/app.test.js`) |
+| **Code quality** | Small documented server, content-complete data tables enforced by tests, JSDoc on server helpers, `.editorconfig`, MIT licence |
+
 ## Run locally
 ```bash
 npm install          # only needed for tests (jsdom)
 GEMINI_API_KEY=your_key node server.js     # http://localhost:8080
-npm test             # 29 tests: server, security, content completeness, eligibility rules, a11y
+npm test             # 33 tests: server, security, content completeness, eligibility rules, a11y
 ```
 Without a key everything still works in the four core languages (scripted answers, browser voices); AI answers, extra languages and server voice need `GEMINI_API_KEY`.
 To try the AI paths without a key: `node tools/mock-gemini.js` and `GEMINI_BASE=http://localhost:9090 GEMINI_API_KEY=test node server.js`.

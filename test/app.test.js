@@ -205,3 +205,12 @@ test('every service links to an official HTTPS website that opens safely in a ne
     assert.match(msg, /https:\/\/cx\.indianoil\.in/);          // the WhatsApp message carries the link too
   }
 });
+
+
+test('keyboard users get a skip link that targets a focusable main landmark', () => {
+  const d = win.document;
+  const skip = d.querySelector('a.skip');
+  assert.ok(skip);
+  assert.equal(skip.getAttribute('href'), '#main');
+  assert.equal(d.querySelector('main#main').getAttribute('tabindex'), '-1');
+});

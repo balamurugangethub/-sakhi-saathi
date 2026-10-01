@@ -35,7 +35,9 @@ const SECURITY_HEADERS = {
   'Referrer-Policy': 'no-referrer',
   'Permissions-Policy': 'microphone=(self), camera=(), geolocation=(), payment=()',
   'Cross-Origin-Opener-Policy': 'same-origin',
-  'X-Frame-Options': 'DENY'
+  'X-Frame-Options': 'DENY',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Cross-Origin-Resource-Policy': 'same-origin'
 };
 
 /** Replaceable in tests. */
@@ -284,6 +286,14 @@ async function handleApi(req, res, pathname) {
   }
 }
 
+/** gzip once per file version (keyed by ETag) instead of on every request. */
+const gzCache = new Map();
+const gzipCached = (etag, data) => {
+  let z = gzCache.get(etag);
+  if (!z) { z = zlib.gzipSync(data); gzCache.set(etag, z); if (gzCache.size > 50) gzCache.delete(gzCache.keys().next().value); }
+  return z;
+};
+
 function serveStatic(req, res, pathname) {
   if (req.method !== 'GET' && req.method !== 'HEAD') return send(res, 405, 'Method not allowed', { Allow: 'GET, HEAD' });
   let rel;
@@ -300,7 +310,7 @@ function serveStatic(req, res, pathname) {
     const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', ETag: etag, 'Cache-Control': ['.png', '.jpg', '.webp', '.ico'].includes(ext) ? 'public, max-age=86400' : 'no-cache' };
     if (req.headers['if-none-match'] === etag) return send(res, 304, undefined, headers);
     if (COMPRESSIBLE.has(ext) && /\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
-      data = zlib.gzipSync(data); headers['Content-Encoding'] = 'gzip'; headers.Vary = 'Accept-Encoding';
+      data = gzipCached(etag, data); headers['Content-Encoding'] = 'gzip'; headers.Vary = 'Accept-Encoding';
     }
     headers['Content-Length'] = data.length;
     send(res, 200, req.method === 'HEAD' ? undefined : data, headers);

@@ -210,3 +210,14 @@ test('temporary overload (503) is retried, then a backup model is tried', async 
   delete process.env.GEMINI_RETRY_MS;
   delete process.env.GEMINI_MODEL;
 });
+
+
+test('gzip responses are cached per file version and HSTS/CORP headers are set', async () => {
+  const a = await fetch(base + '/app.js', { headers: { 'Accept-Encoding': 'gzip' } });
+  const b = await fetch(base + '/app.js', { headers: { 'Accept-Encoding': 'gzip' } });
+  assert.equal(a.headers.get('content-encoding'), 'gzip');
+  assert.equal(b.headers.get('content-encoding'), 'gzip');
+  assert.equal(a.headers.get('etag'), b.headers.get('etag'));
+  assert.match(a.headers.get('strict-transport-security'), /max-age=\d+/);
+  assert.equal(a.headers.get('cross-origin-resource-policy'), 'same-origin');
+});

@@ -111,3 +111,9 @@ html.big body{zoom:1.2}
 
 .btn.site{background:#1a56c7;flex-direction:column;gap:2px}
 .btn.site small{opacity:.9}
+
+/* keyboard / screen-reader users: skip the header controls */
+.skip{position:absolute;left:-9999px;top:8px;z-index:100;background:#fff;color:var(--accent-d);font-weight:700;padding:12px 18px;border-radius:12px;border:2px solid var(--accent);text-decoration:none}
+.skip:focus{left:8px}
+#main:focus{outline:none}
+@media(prefers-contrast:more){:root{--muted:#333;--line:#999}}

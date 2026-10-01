@@ -5,12 +5,30 @@
   "private": true,
   "license": "MIT",
   "main": "server.js",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "start": "node server.js",
-    "test": "node --test \"test/*.test.js\""
+    "test": "node --test \"test/*.test.js\"",
+    "check": "node --check server.js && node --check public/app.js && node --check public/sw.js",
+    "coverage": "node --test --experimental-test-coverage \"test/*.test.js\""
   },
   "devDependencies": {
     "jsdom": "^25.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/balamurugangethub/-sakhi-saathi.git"
+  },
+  "keywords": [
+    "accessibility",
+    "voice",
+    "gemini",
+    "cloud-run",
+    "india",
+    "women",
+    "government-schemes",
+    "pwa"
+  ]
 }
