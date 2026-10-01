@@ -127,3 +127,23 @@ test('rate limiter blocks after the limit and recovers after the window', () => 
   assert.equal(srv.allow('9.9.9.9', 'x', 3, 1000, now + 5000), true);
   assert.equal(srv.allow('8.8.8.8', 'x', 3, 1000, now + 10), true);
 });
+
+test('PWA files are served with correct types and the service worker is never browser-cached', async () => {
+  const m = await fetch(base + '/manifest.webmanifest');
+  assert.match(m.headers.get('content-type'), /manifest\+json/);
+  assert.equal((await fetch(base + '/icon-192.png')).headers.get('content-type'), 'image/png');
+  const sw = await fetch(base + '/sw.js');
+  assert.match(sw.headers.get('content-type'), /javascript/);
+  assert.equal(sw.headers.get('cache-control'), 'no-cache');
+});
+
+test('static files revalidate with ETag so a new deploy is never stale', async () => {
+  const r = await fetch(base + '/app.js');
+  const etag = r.headers.get('etag');
+  assert.ok(etag);
+  assert.equal(r.headers.get('cache-control'), 'no-cache');
+  const again = await fetch(base + '/app.js', { headers: { 'If-None-Match': etag } });
+  assert.equal(again.status, 304);
+  assert.ok(again.headers.get('content-security-policy'));
+  assert.match((await fetch(base + '/icon-512.png')).headers.get('cache-control'), /max-age=86400/);
+});

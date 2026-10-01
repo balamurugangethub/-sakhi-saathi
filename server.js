@@ -25,7 +25,7 @@ const LIMITS = { body: 120 * 1024, question: 300, facts: 1600, ttsText: 1500, st
 const MIME = {
   '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg',
-  '.webp': 'image/webp', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8'
+  '.webp': 'image/webp', '.webmanifest': 'application/manifest+json', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8'
 };
 const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.txt']);
 
@@ -231,7 +231,10 @@ function serveStatic(req, res, pathname) {
   fs.readFile(file, (err, data) => {
     if (err) return send(res, 404, 'Not found', { 'Content-Type': 'text/plain; charset=utf-8' });
     const ext = path.extname(file).toLowerCase();
-    const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=3600' };
+    // code and pages always revalidate (cheap 304 via ETag) so a new deploy shows up immediately; images may be cached
+    const etag = '"' + crypto.createHash('sha1').update(data).digest('base64url').slice(0, 20) + '"';
+    const headers = { 'Content-Type': MIME[ext] || 'application/octet-stream', ETag: etag, 'Cache-Control': ['.png', '.jpg', '.webp', '.ico'].includes(ext) ? 'public, max-age=86400' : 'no-cache' };
+    if (req.headers['if-none-match'] === etag) return send(res, 304, undefined, headers);
     if (COMPRESSIBLE.has(ext) && /\bgzip\b/.test(req.headers['accept-encoding'] || '')) {
       data = zlib.gzipSync(data); headers['Content-Encoding'] = 'gzip'; headers.Vary = 'Accept-Encoding';
     }

@@ -132,3 +132,59 @@ test('no inline event handlers or secrets in the shipped HTML/JS', () => {
   assert.doesNotMatch(js + html, /AIza[0-9A-Za-z_-]{20,}/);
   assert.doesNotMatch(html, /<script(?![^>]*\bsrc=)[^>]*>/i);
 });
+
+test('WhatsApp share link carries documents, steps, notes and helplines in the chosen language', async () => {
+  for (const l of ['hi', 'ta', 'te', 'en']) {
+    ev(`setLang('${l}'); open('lpg')`); await tick();
+    const href = win.document.querySelector('#wa').getAttribute('href');
+    assert.match(href, /^https:\/\/wa\.me\/\?text=/);
+    const msg = decodeURIComponent(href.split('text=')[1]);
+    assert.match(msg, /7718955555/);            // Indane booking number
+    assert.match(msg, /1906/);                  // gas-leak emergency number
+    assert.ok(msg.split('\n').length > 6);
+    assert.equal(win.document.querySelector('#wa').getAttribute('rel'), 'noopener noreferrer');
+  }
+});
+
+test('step-by-step mode splits instructions and walks through them', async () => {
+  ev(`setLang('en'); open('lpg')`); await tick();
+  const n = ev('stepsOf(cur).length');
+  assert.ok(n >= 6);                            // carry list + 4 steps + note
+  win.document.querySelector('#steps').click(); await tick();
+  assert.match(win.document.querySelector('.over').textContent, new RegExp('1 / ' + n));
+  win.document.querySelector('#sn').click(); await tick();
+  assert.match(win.document.querySelector('.over').textContent, new RegExp('2 / ' + n));
+  win.document.querySelector('#sp').click(); await tick();
+  assert.match(win.document.querySelector('.over').textContent, new RegExp('1 / ' + n));
+  ev(`stepScreen(${n - 1})`); await tick();
+  win.document.querySelector('#sd').click(); await tick();
+  assert.ok(win.document.querySelector('#wa'));  // back on the result screen
+  ev(`setLang('hi'); open('pmmvy')`); await tick();   // sentence-based split (no numbered steps)
+  assert.ok(ev('stepsOf(cur).length') >= 3);
+});
+
+test('large text mode toggles and is announced', () => {
+  const b = win.document.querySelector('#bt');
+  b.click();
+  assert.equal(b.getAttribute('aria-pressed'), 'true');
+  assert.ok(win.document.documentElement.classList.contains('big'));
+  b.click();
+  assert.ok(!win.document.documentElement.classList.contains('big'));
+  assert.ok(b.getAttribute('aria-label'));
+});
+
+test('installable PWA: valid manifest, real PNG icons, service worker that never caches the API', () => {
+  const root = path.join(__dirname, '..', 'public');
+  const m = JSON.parse(fs.readFileSync(path.join(root, 'manifest.webmanifest'), 'utf8'));
+  assert.equal(m.display, 'standalone');
+  assert.ok(m.name && m.short_name && m.start_url && m.theme_color);
+  for (const ic of m.icons) {
+    const png = fs.readFileSync(path.join(root, ic.src));
+    assert.equal(png.toString('hex', 0, 8), '89504e470d0a1a0a');
+    assert.equal(png.readUInt32BE(16), parseInt(ic.sizes));
+  }
+  const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+  assert.match(sw, /\/api\//);
+  assert.match(sw, /healthz/);
+  assert.ok(win.document.querySelector('link[rel="manifest"]'));
+});

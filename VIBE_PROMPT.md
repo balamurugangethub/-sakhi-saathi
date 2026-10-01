@@ -93,3 +93,10 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - **More languages** beyond Hindi/Tamil/Telugu/English (Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Odia): translate all UI/scheme strings on demand through `/api/translate`, cache in localStorage, show a progress message, and fall back gracefully offline.
 - Tests (`npm test`): server security/validation/TTS/translate, content completeness per language, eligibility rules, routing, accessibility, no secrets. Dockerfile for Cloud Run.
 - **Look:** flat illustration style — each service card is a gradient "scene" (sun, layered hills, soft shadow) holding that service's own flat illustration; the home hero shows a flat illustration of a woman speaking to her phone.
+
+## Helper features
+- **Share on WhatsApp** (`https://wa.me/?text=` link, `rel="noopener noreferrer"`) with the service name, documents, steps, important note and helplines in the selected language.
+- **Listen step by step**: split the instructions into short steps (carry list, each step, important note) shown one per screen with Next/Back and spoken on each step.
+- **PWA**: web manifest, 192/512 PNG icons, service worker (stale-while-revalidate for the shell; never cache `/api/*` or `/healthz`), and an "Install app" button on `beforeinstallprompt`.
+- **Large-text toggle (A+)** for helpers; remembered locally; `aria-pressed`.
+- Serve static code with `Cache-Control: no-cache` + ETag so new deployments are never stale.

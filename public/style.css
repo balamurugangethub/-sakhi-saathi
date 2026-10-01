@@ -99,3 +99,12 @@
   .ic{display:inline-block;width:1em;height:1em;vertical-align:-.14em;flex:none}
   .ic svg{width:100%;height:100%;display:block}
   .emoji .ic,.tile .e .ic,.pi .ic,.mb .ic{vertical-align:middle}
+
+/* helper features */
+a.btn{text-decoration:none}
+.sizebtn{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;min-width:44px;min-height:44px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}
+.sizebtn[aria-pressed="true"]{background:var(--accent-w);border-color:var(--accent);color:var(--accent-d)}
+.hbar #inst{margin-top:0;min-height:44px}
+.hbar #inst[hidden]{display:none}
+html.big body{zoom:1.2}
+@media(max-width:639px){.hbar #inst{order:4}.sizebtn{order:2;min-height:40px}}

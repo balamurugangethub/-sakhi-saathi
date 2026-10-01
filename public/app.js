@@ -35,6 +35,7 @@ const ICONS = {
   info:'<circle cx="32" cy="32" r="26" fill="#3b82c4"/><circle cx="32" cy="19" r="3.5" fill="#fff"/><path d="M32 29v16" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
   coin:'<circle cx="32" cy="32" r="26" fill="#f5a524"/><circle cx="32" cy="32" r="19" fill="#ffd43b"/><text x="32" y="40" font-size="22" font-weight="700" text-anchor="middle" fill="#a8650a" font-family="sans-serif">₹</text>',
   play:'<polygon points="16,8 56,32 16,56" fill="currentColor"/>',
+  share:'<path d="M32 38V6M18 20L32 6l14 14M14 30v26h36V30" '+ST+'/>',
   down:'<path d="M32 8v42M14 34l18 20 18-20" '+ST+'/>',
   elder:'<circle cx="30" cy="16" r="9" fill="#ffe0cc"/><path d="M20 14c2-9 18-9 20 0-6-3-14-3-20 0z" fill="#bdbdbd"/><path d="M12 58c0-17 6-26 18-26s18 9 18 26z" fill="#d6336c"/><path d="M52 30v28" stroke="#4a2a37" stroke-width="4" stroke-linecap="round"/>',
   group:'<circle cx="12" cy="26" r="6" fill="#ff8fb3"/><path d="M2 50c0-10 4-16 10-16s10 6 10 16z" fill="#ff8fb3"/><circle cx="52" cy="26" r="6" fill="#ff8fb3"/><path d="M42 50c0-10 4-16 10-16s10 6 10 16z" fill="#ff8fb3"/><circle cx="32" cy="18" r="9" fill="#d6336c"/><path d="M16 58c0-14 7-22 16-22s16 8 16 22z" fill="#d6336c"/>',
@@ -42,7 +43,7 @@ const ICONS = {
   trash:'<path d="M10 16h44M24 16V8h16v8M16 16l3 42h26l3-42" '+ST+'/>',
   edit:'<path d="M8 56l4-15L41 12l11 11-29 29z" fill="currentColor"/>'
 };
-const EMO = {'🌸':'flower','🔊':'speaker','🔇':'mute','🎤':'mic','✅':'check','❌':'cross','🎉':'party','🙏':'heart','📞':'call','🏠':'home','⬅':'back','❓':'help','🔁':'again','🗣':'globe','📄':'doc','📍':'pin','ℹ':'info','💰':'coin','🔥':'lpg','🎁':'gift','💵':'cash','🤰':'mother','👧':'girl','🏦':'bank','🏥':'hospital','🧵':'skill','🪪':'id','🧾':'receipt','📕':'book','📱':'phone','📷':'camera','📜':'cert','🎓':'cap','▶':'play','👇':'down','🧓':'elder','👥':'group','👤':'user','🗑':'trash','✏':'edit','🪙':'coin','🏛':'bank'};
+const EMO = {'🌸':'flower','🔊':'speaker','🔇':'mute','🎤':'mic','✅':'check','❌':'cross','🎉':'party','🙏':'heart','📞':'call','🏠':'home','⬅':'back','❓':'help','🔁':'again','🗣':'globe','📄':'doc','📍':'pin','ℹ':'info','💰':'coin','🔥':'lpg','🎁':'gift','💵':'cash','🤰':'mother','👧':'girl','🏦':'bank','🏥':'hospital','🧵':'skill','🪪':'id','🧾':'receipt','📕':'book','📱':'phone','📷':'camera','📜':'cert','🎓':'cap','▶':'play','👇':'down','📤':'share','🧓':'elder','👥':'group','👤':'user','🗑':'trash','✏':'edit','🪙':'coin','🏛':'bank'};
 const EMO_RE = new RegExp('('+Object.keys(EMO).join('|')+')[\\uFE0F\\u200D]?','gu');
 function iconify(root){
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), hits = [];
@@ -62,7 +63,7 @@ const lbl = x => typeof x==='string' ? x : x[lang];
 
 // ============ UI strings per language ============
 const U = {
-  hi:{vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
+  hi:{share:'WhatsApp पर भेजें',stepBtn:'एक-एक करके सुनें',stepOf:'कदम',nextS:'आगे',bigOn:'बड़े अक्षर',install:'ऐप इंस्टॉल करें',shareHead:'सखी साथी से जानकारी',vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
     pick:'अपनी भाषा चुनिए',
     homeT:'आपको किस काम में मदद चाहिए?',homeSub:'तस्वीर दबाइए, या बोलकर बताइए',
     homeV:'नमस्ते बहन! मैं सखी साथी हूँ। नीचे तस्वीर दबाइए, या माइक दबाकर बोलिए कि आपको क्या चाहिए। जैसे: गैस सिलेंडर, बैंक खाता, या इलाज।',
@@ -77,7 +78,7 @@ const U = {
     fb:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या नीचे के नंबर पर फ़ोन कीजिए।',
     docRe:/कागज|दस्तावेज|डॉक्यूमेंट|क्या ले|क्या-क्या/,whereRe:/कहाँ|कहां|कैसे|फ़ॉर्म|फॉर्म|आवेदन|क्या करना/,moneyRe:/पैसे|रुपये|रुपए|कितना|किस्त|फायदा|लाभ|मिलेगा/,
     yesRe:/हाँ|हां|हा\b|जी|ठीक|सही|yes|yeah/i,noRe:/नहीं|नही|ना\b|no\b/i},
-  ta:{vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
+  ta:{share:'WhatsApp இல் பகிருங்கள்',stepBtn:'ஒவ்வொன்றாகக் கேளுங்கள்',stepOf:'படி',nextS:'அடுத்து',bigOn:'பெரிய எழுத்து',install:'ஆப்பை நிறுவுங்கள்',shareHead:'சகி சாத்தி தகவல்',vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
     pick:'உங்கள் மொழியைத் தேர்ந்தெடுங்கள்',
     homeT:'உங்களுக்கு என்ன உதவி வேண்டும்?',homeSub:'படத்தை அழுத்துங்கள், அல்லது பேசிச் சொல்லுங்கள்',
     homeV:'வணக்கம் அக்கா! நான் சகி சாத்தி. கீழே உள்ள படத்தை அழுத்துங்கள், அல்லது மைக்கை அழுத்தி உங்களுக்கு என்ன வேண்டும் என்று சொல்லுங்கள். உதாரணம்: கேஸ் சிலிண்டர், வங்கிக் கணக்கு, மகளிர் உரிமைத் தொகை.',
@@ -92,7 +93,7 @@ const U = {
     fb:'இதைப் பற்றி அங்கன்வாடி பணியாளரிடம் கேளுங்கள், அல்லது கீழே உள்ள எண்ணை அழையுங்கள்.',
     docRe:/ஆவண|காகிதம்|என்ன எடுத்து|என்ன கொண்டு/,whereRe:/எங்கே|எங்க|எப்படி|படிவம்|விண்ணப்ப|என்ன செய்ய/,moneyRe:/பணம்|ரூபாய்|எவ்வளவு|தவணை|பலன்|கிடைக்கும்/,
     yesRe:/ஆம்|ஆமா|ஆமாம்|சரி|yes/i,noRe:/இல்லை|இல்ல|வேண்டாம்|no\b/i},
-  te:{vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
+  te:{share:'WhatsApp లో షేర్ చేయండి',stepBtn:'ఒక్కొక్కటిగా వినండి',stepOf:'దశ',nextS:'తరువాత',bigOn:'పెద్ద అక్షరాలు',install:'యాప్ ఇన్‌స్టాల్ చేయండి',shareHead:'సఖి సాథి సమాచారం',vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
     pick:'మీ భాషను ఎంచుకోండి',
     homeT:'మీకు ఏ సహాయం కావాలి?',homeSub:'బొమ్మ నొక్కండి, లేదా మాట్లాడి చెప్పండి',
     homeV:'నమస్కారం అక్కా! నేను సఖి సాథిని. కింద బొమ్మ నొక్కండి, లేదా మైక్ నొక్కి మీకు ఏం కావాలో చెప్పండి. ఉదాహరణ: గ్యాస్ సిలిండర్, బ్యాంకు ఖాతా, వైద్యం.',
@@ -107,7 +108,7 @@ const U = {
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
     docRe:/పత్రాలు|కాగితాలు|ఏమి తీసుకె|ఏం తీసుకె/,whereRe:/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు|ఏం చేయాలి/,moneyRe:/డబ్బు|రూపాయ|ఎంత|విడత|లాభం|వస్తుంది/,
     yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i},
-  en:{vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
+  en:{share:'Share on WhatsApp',stepBtn:'Listen step by step',stepOf:'Step',nextS:'Next',bigOn:'Large text',install:'Install app',shareHead:'From Sakhi Saathi',vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
     pick:'Choose your language',
     homeT:'What help do you need?',homeSub:'Tap a picture, or speak',
     homeV:'Hello sister! I am Sakhi Saathi. Tap a picture below, or press the mic and tell me what you need. For example: gas cylinder, bank account, or treatment.',
@@ -661,6 +662,8 @@ function setLang(l){
   document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===l));
   const mo=$('#more'); if(mo) mo.value = EXTRA.some(e=>e[0]===l) ? l : '';
   paintVoice(); stopSpeech(); note('');
+  if(typeof paintBig==='function') paintBig();
+  const ib=$('#inst'); if(ib) ib.textContent = T().install;
 }
 
 const ART={lpg:['#1a56c7','#5b9bff'],balance:['#0b8a78','#4cc9b0'],jandhan:['#3949ab','#8c9eff'],ayushman:['#c62828','#ff8a80'],ujjwala:['#e8590c','#ffa94d'],pmmvy:['#c2185b','#f48fb1'],sukanya:['#8e24aa','#d29be0'],urimai:['#2e7d32','#86d08a'],skill:['#00838f','#4dd0e1'],widow:['#546e7a','#9db4c0'],scholarship:['#5e35b1','#a48ae0'],shg:['#00796b','#5fc7b9']};
@@ -827,6 +830,30 @@ function callsHtml(s){
   return s.calls.map(c=>`<a class="call" href="tel:${encodeURIComponent(c[1])}"><button class="btn ghost">📞 ${lbl(c[0])}<br>${c[1]}</button></a>`).join('');
 }
 
+function shareText(s){
+  const t = T(), origin = /^https?:/.test(location.origin) ? location.origin : '';
+  return [t.shareHead+': '+s.name[lang], '', t.docsL+':', ...s.docs.map(d=>'• '+d[1][lang]), '', s.where[lang], '', s.info[lang], '', ...s.calls.map(c=>lbl(c[0])+': '+c[1]), ...(origin?['',origin]:[])].join('\n');
+}
+const waUrl = s => 'https://wa.me/?text=' + encodeURIComponent(shareText(s));
+
+/** One short instruction per screen: what to carry, each step of "where to go", then the important note. */
+function stepsOf(s){
+  const w = s.where[lang];
+  const parts = /\d\)/.test(w) ? w.split(/\s*\d\)\s*/).filter(Boolean) : w.split(/(?<=[.।!?])\s+/).filter(Boolean);
+  return [T().docsL+': '+s.docs.map(d=>d[1][lang]).join(', '), ...parts, s.info[lang]];
+}
+function stepScreen(i){
+  const t = T(), list = stepsOf(cur); i = Math.max(0, Math.min(i, list.length-1)); const txt = list[i];
+  main.innerHTML = `<div class="card"><div class="over">${t.stepOf} ${i+1} / ${list.length}</div><div class="big">${esc(txt)}</div>${listenBtn(txt)}
+    <div class="row">${i>0 ? `<button class="btn ghost" id="sp">${t.back}</button>` : '<span></span>'}${i<list.length-1 ? `<button class="btn pink" id="sn">${t.nextS}</button>` : `<button class="btn yes" id="sd">${PU[lang].done}</button>`}</div>
+    <button class="btn ghost" id="sb">${t.home}</button></div>`;
+  if($('#sp')) $('#sp').onclick = ()=>stepScreen(i-1);
+  if($('#sn')) $('#sn').onclick = ()=>stepScreen(i+1);
+  if($('#sd')) $('#sd').onclick = result;
+  $('#sb').onclick = home;
+  say(txt);   // she asked to be read to, so speak even if the voice toggle is off
+}
+
 function result(){
   dots();
   const t = T(), s = cur;
@@ -844,9 +871,11 @@ function result(){
     <div class="sub"><b>${t.whereT}</b></div><div class="ans">${s.where[lang]}</div>
     <div class="sub" style="margin-top:14px"><b>${t.infoT}</b></div><div class="ans">${s.info[lang]}</div>
     ${callsHtml(s)}
+    <a class="btn yes" id="wa" href="${waUrl(s)}" target="_blank" rel="noopener noreferrer">📤 ${t.share}</a>
+    <button class="btn ghost" id="steps">🔊 ${t.stepBtn}</button>
     <button class="btn pink" id="ask">${t.ask}</button>
     <button class="btn ghost" id="home">${t.home}</button></div>`;
-  $('#ask').onclick = askScreen; $('#home').onclick = home;
+  $('#ask').onclick = askScreen; $('#home').onclick = home; $('#steps').onclick = ()=>stepScreen(0);
   autoSay(full);
 }
 
@@ -874,12 +903,27 @@ async function respond(q){
   $('#out').innerHTML = `<div class="ans">${a.replace(/</g,'&lt;')}</div>`; say(a);
 }
 
+// ============ Large text (for a helper or weak eyesight) ============
+let big = store.get('big')==='1';
+function paintBig(){
+  document.documentElement.classList.toggle('big', big);
+  const b = $('#bt'); b.setAttribute('aria-pressed', String(big)); b.setAttribute('aria-label', T().bigOn); b.title = T().bigOn;
+}
+$('#bt').onclick = () => { big = !big; store.set('big', big?'1':'0'); paintBig(); };
+
+// ============ Install to home screen (Chrome/Edge/Android) ============
+let installEvt = null;
+addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; const b=$('#inst'); b.hidden = false; b.textContent = T().install; });
+$('#inst').onclick = async () => { if(!installEvt) return; installEvt.prompt(); try{ await installEvt.userChoice; }catch(e){} installEvt = null; $('#inst').hidden = true; };
+if('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator.serviceWorker.register('/sw.js').catch(()=>{});
+
 // ============ Wiring ============
 $('#vt').onclick = toggleVoice;
 document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.l));
 const more = $('#more');
 more.innerHTML = '<option value="">More languages…</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
 more.onchange = () => { if(more.value) chooseLang(more.value); };
+paintBig();
 const sl = store.get('lang'); if(sl&&U[sl]) setLang(sl); else setLang('hi');
 langScreen();
 fetch('/healthz').then(r=>r.ok?r.json():null).then(j=>{
