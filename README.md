@@ -1,40 +1,65 @@
-# 🌸 Sakhi Saathi (सखी साथी) – The Invisible Woman Challenge
+# Sakhi Saathi (सखी साथी)
+**Challenge: The Invisible Woman** · PromptWars × HackArena · SDG 5 (5.1, 5.b), SDG 4 (4.3, 4.4), SDG 10 (10.2)
 
-A voice-first, zero-typing AI guide that helps a first-time woman user — no English, no tech background, no one to ask — independently access **one government scheme: PM Matru Vandana Yojana (PMMVY)**, ₹5,000 for pregnant and nursing mothers, in **Hindi or Telugu**.
+> A first-time woman user with no English and no tech background can independently find and use essential government services – by **voice or one tap, in her own language**.
 
-**Live demo:** _add GitHub Pages link here_
+**Live demo (Cloud Run):** _add URL here_
 
-## Problem
-48% of rural Indian girls have never used the internet. Women are locked out of digital systems by design, not capability (SDG 5.1, 5.b · SDG 4.3, 4.4 · SDG 10.2).
+## The problem
+48% of rural girls in India have never used the internet, and most who have were guided by a male family member. Women are locked out of digital systems by design, not capability.
 
-## Services covered (8) – in Hindi, Tamil, Telugu and English
-| | Service |
-|---|---|
-| 🔥 | **Book an LPG cylinder** (IVRS call steps, safety, leak number 1906) |
-| 🎁 | PM Ujjwala – free gas connection |
-| 💵 | **Kalaignar Magalir Urimai Thogai** – ₹1,000/month (Tamil Nadu) |
-| 🤰 | PM Matru Vandana Yojana – ₹5,000 |
-| 👧 | Sukanya Samriddhi – savings for daughters |
-| 🏦 | PM Jan Dhan – free bank account |
-| 🏥 | Ayushman Bharat – ₹5 lakh free treatment |
-| 🧵 | Skill India / PMKVY – free skill training |
+## What it does
+- **Four hand-written languages** – Hindi, Tamil, Telugu, English – plus **seven more** (Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi, Odia) translated on demand by **Gemini** and cached on the device.
+- **Basic services, no login or profile:** book an LPG cylinder, check a bank balance by missed call, open a Jan Dhan account.
+- **Schemes:** Matru Vandana, Ujjwala, Sukanya Samriddhi, Ayushman Bharat, Skill India, widow pension, girls' scholarships, women's savings groups (Lakhpati Didi), Tamil Nadu Magalir Urimai Thogai and monthly-cash schemes for Maharashtra, Karnataka, West Bengal, Madhya Pradesh and Odisha.
+- **Optional profile** (state, district, age, category …) that filters "Schemes for you". It lives **only in the phone's localStorage**, is never sent anywhere (not even to Gemini) and can be deleted in one tap.
+- **Voice in:** Web Speech API with live transcript and specific, translated error messages. **Voice out:** off by default; uses a device voice when one exists for the language, otherwise **Gemini text-to-speech** from the server (this is what makes Tamil/Telugu work on PCs that have no such voice).
+- Every screen: one task, big buttons (≥56 px), illustrated flat icons (no emoji), documents-to-carry list, step-by-step instructions, one-tap call buttons, and no dead ends.
 
-## How it works (zero digital knowledge needed)
-1. Pick a language with one big button (🗣️ हिन्दी / தமிழ் / తెలుగు / English). From then on everything is **spoken aloud** – she never has to read.
-2. Tap a picture, **or just say what she needs** ("gas", "bank", "இலவச சிகிச்சை") – the voice router picks the service (Gemini helps when a key is set).
-3. Big ✅/❌ eligibility questions (tap or say yes/no in her language).
-4. Spoken + visual result: **documents to carry** (icons), **where to go / what to do**, **what she gets**, and one-tap **call buttons**.
-5. **Ask anything by voice** about the service – answered by **Google Gemini** (`gemini-2.5-flash`) in her language, with an offline answer fallback.
-
-## Tech
-- Single static `index.html`, no build step, works on any phone browser (Chrome recommended for voice).
-- Web Speech API for speech-to-text and text-to-speech (`hi-IN`, `ta-IN`, `te-IN`, `en-IN`).
-- Gemini API for free-form Q&A and intent routing. The API key is **never committed**: tap the logo 5× to paste a key (stored only in that browser's localStorage). The app is fully usable without it.
-- Built with AI-assisted vibe coding.
-- Adding a scheme = one object in the `S` array; adding a language = one block in `U` plus a field per scheme.
-
-## Scale path
-Same engine → add scheme JSON + language block → full AI navigator for all government schemes for women (Ujjwala, Sukanya Samriddhi, Ladli Behna, PMKVY skilling).
+## Architecture
+```
+Browser (public/)  ──►  Node server (server.js, zero dependencies)  ──►  Gemini API
+ index.html · app.js · style.css          │  /api/ask  /api/route  /api/translate  /api/tts  /healthz
+ localStorage: profile, language,         │  GEMINI_API_KEY only on the server · rate limiting · input validation
+ cached translations                      └─ strict CSP & security headers · gzip · deployed on Google Cloud Run
+```
+- **Google services:** Gemini API (answers, intent routing, translation, text-to-speech) and Google Cloud Run.
+- **Security:** key never reaches the browser; CSP forbids inline scripts (`script-src 'self'`); all user text is escaped; request size/length validation; per-IP rate limits; no tracking, no accounts, no personal data stored server-side; non-root container.
+- **Efficiency:** no framework, no external fonts or images (inline SVG), small gzip transfer, stateless server.
+- **Accessibility:** semantic buttons, `lang` switching, `aria-live` status regions, decorative icons hidden from screen readers, high contrast, large touch targets, reduced-motion support.
 
 ## Run locally
-Open `index.html` in Chrome, or `python -m http.server`.
+```bash
+npm install          # only needed for tests (jsdom)
+GEMINI_API_KEY=your_key node server.js     # http://localhost:8080
+npm test             # 22 tests: server, security, content completeness, eligibility rules, a11y
+```
+Without a key everything still works in the four core languages (scripted answers, browser voices); AI answers, extra languages and server voice need `GEMINI_API_KEY`.
+To try the AI paths without a key: `node tools/mock-gemini.js` and `GEMINI_BASE=http://localhost:9090 GEMINI_API_KEY=test node server.js`.
+
+## Deploy to Google Cloud Run
+```bash
+gcloud auth login && gcloud config set project YOUR_PROJECT
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com secretmanager.googleapis.com
+printf "YOUR_GEMINI_KEY" | gcloud secrets create gemini-api-key --data-file=-
+gcloud run deploy sakhi-saathi --source . --region asia-south1 --allow-unauthenticated \
+  --set-secrets GEMINI_API_KEY=gemini-api-key:latest
+```
+(Grant the Cloud Run service account the *Secret Manager Secret Accessor* role if prompted.) Open the printed URL in Chrome or Edge; the microphone needs HTTPS, which Cloud Run provides.
+
+## Project layout
+| Path | Purpose |
+|---|---|
+| `public/` | the app: `index.html`, `app.js` (data, voice, UI), `style.css` |
+| `server.js` | static hosting + Gemini proxy, validation, rate limiting, security headers |
+| `test/` | `server.test.js`, `app.test.js` (`npm test`) |
+| `tools/` | `mictest.html` (microphone diagnostics), `mock-gemini.js` |
+| `Dockerfile` | Cloud Run image |
+| `VIBE_PROMPT.md` | the prompt used to vibe-code the app |
+
+## Adding a service or language
+- **Service:** add one object to `S` in `public/app.js` (name, description, questions, documents, where, info, helplines, facts) and, if needed, an eligibility rule in `FIT`. Tests fail if any core language is missing.
+- **Language:** hand-write a block in `U`/`PU` and a column per text, or add it to `EXTRA` to have Gemini translate it.
+
+## Honest limits
+Scheme amounts, helpline numbers and eligibility rules were compiled from public guidelines and **must be confirmed locally** (the app says so). District is stored for display only; district-level offices are not bundled. Extra-language translations are machine-generated and should be reviewed by a native speaker before wide use.
