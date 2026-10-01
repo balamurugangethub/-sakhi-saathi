@@ -63,3 +63,8 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - When ON, each screen is read aloud automatically; the 🔊 "Listen again" button on every screen always works manually, even when the toggle is off.
 - The spoken language MUST match the selected language (`hi-IN`, `ta-IN`, `te-IN`, `en-IN`): pick a matching `SpeechSynthesisVoice`, and never read Hindi/Tamil/Telugu text with an English voice. If no matching voice exists on the device, show a short message in that language explaining how to install one, instead of speaking in the wrong language.
 - Changing language or leaving a screen cancels any speech in progress.
+
+## Icons and imagery
+- **No emoji anywhere in the UI.** Use a consistent set of simple, flat, friendly illustrated **inline SVG icons** (one per service: gas cylinder, gift box, rupee note, mother-and-baby heart, girl, bank building, hospital cross, sewing spool; plus document icons: ID card, passbook, phone, camera, certificate; and UI glyphs: mic, speaker, phone, home, back, check, cross). Same palette (pink, amber, blue, green, dark plum), same stroke weight.
+- Icons are decorative (`aria-hidden="true"`) and always paired with a text label; inline SVG only (no external image files or icon fonts) so pages stay tiny and crisp on every screen.
+- No decorative animations, GIFs or stock photos.
