@@ -68,3 +68,9 @@ Not-eligible screen: kind message, link back home, helpline numbers. Never dead-
 - **No emoji anywhere in the UI.** Use a consistent set of simple, flat, friendly illustrated **inline SVG icons** (one per service: gas cylinder, gift box, rupee note, mother-and-baby heart, girl, bank building, hospital cross, sewing spool; plus document icons: ID card, passbook, phone, camera, certificate; and UI glyphs: mic, speaker, phone, home, back, check, cross). Same palette (pink, amber, blue, green, dark plum), same stroke weight.
 - Icons are decorative (`aria-hidden="true"`) and always paired with a text label; inline SVG only (no external image files or icon fonts) so pages stay tiny and crisp on every screen.
 - No decorative animations, GIFs or stock photos.
+
+## Speech recognition must be robust (a common failure)
+- Use the Web Speech API (`SpeechRecognition` / `webkitSpeechRecognition`) with `interimResults: true` and show the live words on screen so she can see she is being heard; use the final result, and fall back to the last interim text if the engine ends without a final one.
+- Map errors to specific, friendly messages in her language: `not-allowed` (allow the microphone), `network` (needs internet), `audio-capture` (no microphone), `no-speech` (speak again). If `language-not-supported`, retry once with `en-IN`. Call the failure handler exactly once.
+- Keyword routing must also match Roman-script and mixed spellings (e.g. "gais", "khata", "ilaj", "silai") and all four languages' words, and accept the top 3 recognition alternatives.
+- Everything must remain usable by tapping if speech is unavailable. Test in Chrome/Edge over HTTPS (Cloud Run URL), not inside an embedded preview frame, which blocks the microphone.
