@@ -47,7 +47,10 @@ test('there are 36 states/UTs, 12+ services, and phone numbers look valid', () =
 test('keyword routing sends spoken requests to the right service', async () => {
   ev(`setLang('en'); home();`);
   const cases = { 'book gas': 'lpg', 'bank balance': 'balance', 'open bank account': 'jandhan', 'widow pension': 'widow',
-    'scholarship for my daughter': 'scholarship', 'ladki bahin': 'cash_MH', 'free treatment': 'ayushman', 'गैस सिलेंडर': 'lpg', 'इलाज': 'ayushman', 'கேஸ் சிலிண்டர்': 'lpg', 'బ్యాంకు ఖాతా': 'jandhan' };
+    'scholarship for my daughter': 'scholarship', 'ladki bahin': 'cash_MH', 'free treatment': 'ayushman', 'गैस सिलेंडर': 'lpg', 'इलाज': 'ayushman', 'கேஸ் சிலிண்டர்': 'lpg', 'బ్యాంకు ఖాతా': 'jandhan',
+    // Roman-script spellings that a speech engine or a typist may produce
+    'mere ko gharbhavati ke liye paisa chahiye': 'pmmvy', 'garbhwati mahila yojana': 'pmmvy', 'pregnancy ku panam': 'pmmvy',
+    'annapurna bhandar': 'cash_WB', 'lakshmir bhandar': 'cash_WB' };
   for (const [q, id] of Object.entries(cases)) {
     ev(`home()`); await ev(`route(${JSON.stringify(q)})`);
     assert.equal(ev('cur && cur.id'), id, q);

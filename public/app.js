@@ -172,7 +172,7 @@ const S = [
    calls:[[M('तमिलनाडु हेल्पलाइन','తమిళనాడు హెల్ప్‌లైన్','தமிழ்நாடு உதவி எண்'),'1100']],
    f:'Kalaignar Magalir Urimai Thogai (Tamil Nadu): Rs 1,000 per month directly to bank account of woman head of family (as per ration card), age 21+, annual family income below Rs 2.5 lakh, no govt employee/income-tax payer in family, limits on land and electricity use. Apply at special camps (ask ration shop / VAO) or e-Sevai centre with ration card, Aadhaar, bank passbook, Aadhaar-linked mobile. Free. TN helpline 1100. Rules may change – confirm at camp.' },
 
- { id:'pmmvy', e:'🤰', kw:/गर्भ|गर्भवती|प्रेग|pregnan|matru|मातृ|మాతృ|గర్భ|கர்ப்ப|தாய்|garbh|pregnant|baby|बच्चा|bachcha|మాతృ|பிரசவ/i,
+ { id:'pmmvy', e:'🤰', kw:/गर्भ|गर्भवती|प्रेग|pregnan|matru|मातृ|మాతృ|గర్భ|கர்ப்ப|தாய்|garbh|gharbh|garbhw|garbhv|garbham|garbhini|pregnant|pregnency|maternity|karppam|karpam|garbam|pirasavam|prasav|baby|बच्चा|bachcha|bachha|మాతృ|பிரசவ/i,
    name:M('गर्भवती माँ को ₹5,000 (मातृ वंदना)','గర్భిణీలకు ₹5,000 (మాతృ వందన)','கர்ப்பிணிக்கு ₹5,000 (மாத்ரு வந்தனா)'),
    d:M('पहले बच्चे पर तीन किस्तों में ₹5,000 सीधे बैंक खाते में।','మొదటి బిడ్డకు మూడు విడతల్లో ₹5,000 నేరుగా బ్యాంకు ఖాతాలో.','முதல் குழந்தைக்கு மூன்று தவணைகளில் ₹5,000 நேரடியாக வங்கிக் கணக்கில்.'),
    qs:[M('क्या आप गर्भवती हैं, या आपका बच्चा 6 महीने से छोटा है?','మీరు గర్భవతా, లేదా మీ బిడ్డ 6 నెలల లోపు వయసా?','நீங்கள் கர்ப்பமாக இருக்கிறீர்களா, அல்லது உங்கள் குழந்தை 6 மாதத்துக்குள் உள்ளதா?'),
