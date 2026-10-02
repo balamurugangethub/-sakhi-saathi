@@ -1,0 +1,26 @@
+{
+  "_comment": "Human-curated provenance for every scheme in the app. last_verified is set ONLY when a person (or Claude with a cited source) actually re-checked the facts; null means never verified and shows up as a warning in `npm run data:check`. review_every_days is how long a verification stays fresh.",
+  "schemes": [
+    { "scheme_id": "lpg",         "official_source_url": "https://cx.indianoil.in",                      "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "balance",     "official_source_url": "https://www.npci.org.in",                      "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "ujjwala",     "official_source_url": "https://www.pmuy.gov.in",                      "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "urimai",      "official_source_url": "https://kmut.tn.gov.in",                       "last_verified": null, "evidence_url": null, "review_every_days": 60,
+      "pending_change": "Rs 2,500 per month announced by the Tamil Nadu government in 2026 (news reports July-Sept 2026); September 2026 reports still show Rs 1,000 being paid. Waiting for the official order and new rules." },
+    { "scheme_id": "pmmvy",       "official_source_url": "https://pmmvy.wcd.gov.in",                     "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "sukanya",     "official_source_url": "https://www.indiapost.gov.in",                 "last_verified": null, "evidence_url": null, "review_every_days": 90,  "pending_change": null },
+    { "scheme_id": "jandhan",     "official_source_url": "https://pmjdy.gov.in",                         "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "ayushman",    "official_source_url": "https://pmjay.gov.in",                         "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "skill",       "official_source_url": "https://www.skillindiadigital.gov.in",         "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "widow",       "official_source_url": "https://nsap.nic.in",                          "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "scholarship", "official_source_url": "https://scholarships.gov.in",                  "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "shg",         "official_source_url": "https://aajeevika.gov.in",                     "last_verified": null, "evidence_url": null, "review_every_days": 180, "pending_change": null },
+    { "scheme_id": "cash_MH",     "official_source_url": "https://ladakibahin.maharashtra.gov.in",       "last_verified": null, "evidence_url": null, "review_every_days": 60,  "pending_change": null },
+    { "scheme_id": "cash_KA",     "official_source_url": "https://sevasindhugs.karnataka.gov.in",        "last_verified": null, "evidence_url": null, "review_every_days": 60,  "pending_change": null },
+    { "scheme_id": "cash_WB",     "official_source_url": "https://socialsecurity.wb.gov.in",             "last_verified": "2026-10-02",
+      "evidence_url": "https://www.businesstoday.in/amp/personal-finance/news/story/west-bengals-annapurna-yojana-goes-live-june-1-rs3000-monthly-aid-key-changes-from-trinamools-lakshmir-bhandar-534088-2026-06-01",
+      "review_every_days": 60, "pending_change": null },
+    { "scheme_id": "cash_MP",     "official_source_url": "https://cmladlibahna.mp.gov.in",               "last_verified": null, "evidence_url": null, "review_every_days": 60,
+      "pending_change": "Reports (Tribune, 2026) say the monthly amount will rise from Rs 1,250 to Rs 1,500 after Diwali; the app shows Rs 1,250+." },
+    { "scheme_id": "cash_OD",     "official_source_url": "https://subhadra.odisha.gov.in",               "last_verified": null, "evidence_url": null, "review_every_days": 60,  "pending_change": null }
+  ]
+}

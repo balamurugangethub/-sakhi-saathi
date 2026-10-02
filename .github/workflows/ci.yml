@@ -15,3 +15,5 @@ jobs:
       - run: npm ci
       - run: npm run check
       - run: npm test
+      - name: Data quality (errors fail the build; unverified/stale are reported)
+        run: npm run data:check
