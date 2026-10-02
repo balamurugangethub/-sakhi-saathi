@@ -400,7 +400,7 @@ const stName=(c,l)=>{ const r=STATES.find(x=>x[0]===c); return r? r[SIDX[l]] : '
 const CASH={
  MH:{n:'Mukhyamantri Majhi Ladki Bahin Yojana',a:'₹1,500',per:'m',lo:21,hi:65,k:'inc',kw:/ladki bahin|लाड़की बहन|लाडकी बहीण|लाडकी बहिण|माझी लाडकी/i},
  KA:{n:'Gruha Lakshmi',a:'₹2,000',per:'m',lo:18,hi:100,k:'head',kw:/gruha lakshmi|गृह लक्ष्मी|గృహలక్ష్మి|கிருஹ லட்சுமி|gruhalakshmi/i},
- WB:{n:'Lakshmir Bhandar',a:'₹1,000 (₹1,200 SC/ST)',per:'m',lo:25,hi:60,k:'none',kw:/lakshmir|लक्ष्मीर|lokkhir|laxmir/i},
+ WB:{n:'Annapurna Bhandar (earlier Lakshmir Bhandar)',a:'₹3,000',per:'m',lo:25,hi:60,k:'none',kw:/annapurna|अन्नपूर्णा|অন্নপূর্ণা|lakshmir|लक्ष्मीर|lokkhir|laxmir/i},
  MP:{n:'Ladli Behna Yojana',a:'₹1,250+',per:'m',lo:21,hi:60,k:'inc',kw:/ladli behna|लाडली बहना|लाड़ली बहना|ladli behena/i},
  OD:{n:'Subhadra Yojana',a:'₹10,000',per:'y',lo:21,hi:60,k:'none',kw:/subhadra|सुभद्रा|సుభద్ర|சுபத்ரா/i}
 };
