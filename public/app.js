@@ -73,6 +73,7 @@ const U = {
     docsT:'📄 साथ ले जाएँ',docsL:'आपको ये चीज़ें ले जानी हैं',whereT:'📍 कहाँ जाएँ / क्या करें',infoT:'ℹ️ ज़रूरी बात',
     ask:'❓ कुछ पूछना है?',askV:'आप जो पूछना चाहती हैं, बोलिए।',askT:'अपना सवाल बोलिए',
     home:'🏠 दूसरी सेवा देखें',back:'⬅️ वापस',again:'🔁 फिर से',
+    hOn:'🎤 बोलकर चलाएँ: चालू',hOff:'🎤 बोलकर चलाएँ: बंद',hQ:'क्या आप बिना दबाए, बोलकर जवाब देना चाहती हैं?',hSub:'मेरे बोलने के बाद मैं सुनूँगी। बस अपना जवाब बोलिए, जैसे "हाँ" या "नहीं"। फ़ोन माइक के लिए पूछे तो Allow दबाइए। यह ऐप आपकी आवाज़ नहीं रखता।',hYes:'हाँ, बोलूँगी',hNo:'नहीं, दबाऊँगी',hHelp:'ठीक है, अब आप बोलकर जवाब दे सकती हैं। आप "आगे", "वापस", "फिर से" या "होम" भी बोल सकती हैं।',notU:'मैं समझ नहीं पाई। फिर से बोलिए।',resH:'एक-एक करके सुनना हो तो "एक एक करके" बोलिए। कुछ पूछना हो तो "सवाल" बोलिए।',micT:'बोलना हो तो माइक वाला बटन दबाइए।',
     listening:'सुन रही हूँ…',noheard:'सुनाई नहीं दिया। फिर से बोलिए।',thinking:'सोच रही हूँ…',nomic:'इस फ़ोन में बोलने की सुविधा नहीं है। कृपया तस्वीर दबाइए।',
     notfound:'समझ नहीं आया। कृपया नीचे की तस्वीर दबाइए।',
     fb:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या नीचे के नंबर पर फ़ोन कीजिए।',
@@ -88,6 +89,7 @@ const U = {
     docsT:'📄 கூட எடுத்துச் செல்லுங்கள்',docsL:'நீங்கள் இவற்றை எடுத்துச் செல்ல வேண்டும்',whereT:'📍 எங்கே போவது / என்ன செய்வது',infoT:'ℹ️ முக்கியமான தகவல்',
     ask:'❓ ஏதாவது கேட்க வேண்டுமா?',askV:'நீங்கள் கேட்க விரும்புவதைச் சொல்லுங்கள்.',askT:'உங்கள் கேள்வியைச் சொல்லுங்கள்',
     home:'🏠 வேறு சேவையைப் பாருங்கள்',back:'⬅️ பின்னால்',again:'🔁 மீண்டும்',
+    hOn:'🎤 பேசி இயக்கு: ஆன்',hOff:'🎤 பேசி இயக்கு: ஆஃப்',hQ:'அழுத்தாமல், பேசியே பதில் சொல்ல விரும்புகிறீர்களா?',hSub:'நான் பேசி முடித்ததும் கேட்பேன். உங்கள் பதிலைச் சொல்லுங்கள், "ஆம்" அல்லது "இல்லை" என்பது போல. போன் மைக் அனுமதி கேட்டால் Allow அழுத்துங்கள். இந்த ஆப் உங்கள் குரலைச் சேமிப்பதில்லை.',hYes:'ஆம், பேசுவேன்',hNo:'இல்லை, அழுத்துவேன்',hHelp:'சரி, இனி நீங்கள் பேசியே பதில் சொல்லலாம். "அடுத்து", "பின்னால்", "மீண்டும்" அல்லது "முகப்பு" என்றும் சொல்லலாம்.',notU:'எனக்குப் புரியவில்லை. மீண்டும் சொல்லுங்கள்.',resH:'ஒவ்வொன்றாகக் கேட்க "ஒவ்வொன்றாக" என்று சொல்லுங்கள். ஏதாவது கேட்க "கேள்வி" என்று சொல்லுங்கள்.',micT:'பேச வேண்டுமானால் மைக் பொத்தானை அழுத்துங்கள்.',
     listening:'கேட்கிறேன்…',noheard:'கேட்கவில்லை. மீண்டும் சொல்லுங்கள்.',thinking:'யோசிக்கிறேன்…',nomic:'இந்த போனில் பேசும் வசதி இல்லை. படத்தை அழுத்துங்கள்.',
     notfound:'புரியவில்லை. கீழே உள்ள படத்தை அழுத்துங்கள்.',
     fb:'இதைப் பற்றி அங்கன்வாடி பணியாளரிடம் கேளுங்கள், அல்லது கீழே உள்ள எண்ணை அழையுங்கள்.',
@@ -103,6 +105,7 @@ const U = {
     docsT:'📄 వెంట తీసుకెళ్ళండి',docsL:'మీరు ఇవి తీసుకెళ్ళాలి',whereT:'📍 ఎక్కడికి వెళ్ళాలి / ఏం చేయాలి',infoT:'ℹ️ ముఖ్యమైన విషయం',
     ask:'❓ ఏదైనా అడగాలా?',askV:'మీరు అడగాలనుకున్నది చెప్పండి.',askT:'మీ ప్రశ్న చెప్పండి',
     home:'🏠 ఇతర సేవలు చూడండి',back:'⬅️ వెనక్కి',again:'🔁 మళ్ళీ',
+    hOn:'🎤 మాట్లాడి నడపండి: ఆన్',hOff:'🎤 మాట్లాడి నడపండి: ఆఫ్',hQ:'నొక్కకుండా, మాట్లాడి జవాబు చెప్పాలనుకుంటున్నారా?',hSub:'నేను మాట్లాడిన తర్వాత వింటాను. మీ జవాబు చెప్పండి, "అవును" లేదా "కాదు" లాగా. ఫోన్ మైక్ అనుమతి అడిగితే Allow నొక్కండి. ఈ యాప్ మీ గొంతును దాచదు.',hYes:'అవును, మాట్లాడతాను',hNo:'కాదు, నొక్కుతాను',hHelp:'సరే, ఇక మీరు మాట్లాడి జవాబు చెప్పవచ్చు. "తరువాత", "వెనక్కి", "మళ్ళీ" లేదా "హోమ్" అని కూడా చెప్పవచ్చు.',notU:'నాకు అర్థం కాలేదు. మళ్ళీ చెప్పండి.',resH:'ఒక్కొక్కటిగా వినాలంటే "ఒక్కొక్కటిగా" అని చెప్పండి. ఏదైనా అడగాలంటే "ప్రశ్న" అని చెప్పండి.',micT:'మాట్లాడాలంటే మైక్ బటన్ నొక్కండి.',
     listening:'వింటున్నాను…',noheard:'వినిపించలేదు. మళ్ళీ చెప్పండి.',thinking:'ఆలోచిస్తున్నాను…',nomic:'ఈ ఫోన్‌లో మాట్లాడే సౌకర్యం లేదు. బొమ్మ నొక్కండి.',
     notfound:'అర్థం కాలేదు. దయచేసి కింద బొమ్మ నొక్కండి.',
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
@@ -118,6 +121,7 @@ const U = {
     docsT:'📄 Carry with you',docsL:'You need to carry these things',whereT:'📍 Where to go / what to do',infoT:'ℹ️ Important',
     ask:'❓ Want to ask something?',askV:'Please say what you want to ask.',askT:'Say your question',
     home:'🏠 See other services',back:'⬅️ Back',again:'🔁 Again',
+    hOn:'🎤 Talk mode on',hOff:'🎤 Talk mode off',hQ:'Do you want to answer by speaking, without tapping?',hSub:'After I speak, I will listen. Just say your answer, like "yes" or "no". If the phone asks to use the microphone, tap Allow. This app does not keep your voice.',hYes:'Yes, I will speak',hNo:'No, I will tap',hHelp:'Okay, now you can answer by speaking. You can also say "next", "back", "repeat" or "home".',notU:'I did not understand. Please say it again.',resH:'To hear it step by step, say "steps". To ask something, say "question".',micT:'Tap the microphone button when you want to speak.',
     listening:'Listening…',noheard:'I could not hear. Please speak again.',thinking:'Thinking…',nomic:'Speaking is not available on this phone. Please tap a picture.',
     notfound:'I did not understand. Please tap a picture below.',
     fb:'Please ask your Anganwadi worker about this, or call the number below.',
@@ -553,54 +557,146 @@ const T = () => U[lang];
 const store = { get:k=>{try{return localStorage.getItem(k)}catch(e){return null}}, set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}} };
 
 // ============ Voice out ============
-let API = { ai:false }, speechToken = 0, audioEl = null;
-const ttsUrls = new Map();
+let API = { ai:false }, speechToken = 0, audioEl = null, endSpeech = null, voicesWaited = false;
+const ttsUrls = new Map(), keepU = [];
 const note = m => { const n=$('#vnote'); if(n) n.textContent = m || ''; };
+const codeOf = l => (U[l] && U[l].code) || ((EXTRA.find(e=>e[0]===l)||[])[2]) || 'en-IN';
 function stopSpeech(){
   speechToken++;
   try{ speechSynthesis.cancel(); }catch(e){}
   if(audioEl){ try{ audioEl.pause(); }catch(e){} audioEl = null; }
+  if(endSpeech){ const f = endSpeech; endSpeech = null; f('stopped'); }
 }
-function speakLocal(text, v){
-  try{ const u = new SpeechSynthesisUtterance(text); u.lang = T().code; u.rate = 0.9; if(v) u.voice = v; speechSynthesis.speak(u); }catch(e){}
+/**
+ * Split text at sentence ends. The first part is short so speech starts quickly (the server voice is made one part
+ * at a time), and no part is long enough to hit Chrome's habit of going silent in the middle of long sentences.
+ */
+function chunks(text, first=120, max=280){
+  const out = []; let c = '';
+  String(text).split(/(?<=[.।!?:])\s+/).filter(Boolean).forEach(s=>{
+    if(c && (c+' '+s).length > (out.length ? max : first)){ out.push(c); c = s; } else c = c ? c+' '+s : s;
+  });
+  if(c) out.push(c);
+  return out;
 }
-/** Speak with a device voice for this language when one exists; otherwise ask the server for Gemini text-to-speech. */
-async function say(text){
-  stopSpeech(); const my = speechToken;
-  let vs = [], v = null;
-  try{
-    vs = speechSynthesis.getVoices(); const code = T().code.toLowerCase();
-    v = vs.find(x=>x.lang.replace('_','-').toLowerCase()===code) || vs.find(x=>x.lang.toLowerCase().startsWith(lang));
-  }catch(e){}
-  if(v){ note(''); speakLocal(text, v); return; }
-  if(API.ai){
+const deviceVoices = () => { try{ return speechSynthesis.getVoices() || []; }catch(e){ return []; } };
+/** On laptops Chrome lists its voices a moment after the page opens: wait for them once (not on every sentence). */
+function waitVoices(){
+  voicesWaited = true;
+  if(typeof speechSynthesis==='undefined') return Promise.resolve();
+  return new Promise(res=>{ try{ speechSynthesis.addEventListener('voiceschanged', res, {once:true}); }catch(e){} setTimeout(res, 1500); });
+}
+/** A device voice for the language, preferring one that runs on the device: online voices start later. */
+function voiceFor(l, vs){
+  const code = codeOf(l).toLowerCase();
+  let pool = vs.filter(x=>String(x.lang).replace('_','-').toLowerCase()===code);
+  if(!pool.length) pool = vs.filter(x=>String(x.lang).toLowerCase().startsWith(l));
+  return pool.find(x=>x.localService) || pool[0] || null;
+}
+/** Resolves 'done', 'stopped' (something newer took over), 'blocked' (the browser wants a tap first) or 'fail'. */
+function speakLocal(parts, v, code){
+  return new Promise(res=>{
+    let left = parts.length, started = false, over = false;
+    const fin = r => { if(over) return; over = true; clearInterval(dog); if(endSpeech===fin) endSpeech = null; res(r); };
+    endSpeech = fin;
+    const t0 = Date.now();
+    // some browsers drop the "end" event, and Safari ignores speech before a tap without any event: watch instead
+    const dog = setInterval(()=>{
+      let busy = false; try{ busy = speechSynthesis.speaking || speechSynthesis.pending; }catch(e){}
+      if(started && !busy) fin('done'); else if(!started && !busy && Date.now()-t0 > 3000) fin('blocked');
+    }, 400);
     try{
-      note(T().thinking);
-      const k = lang+'|'+text; let url = ttsUrls.get(k);
-      if(!url){
-        const r = await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text.slice(0,1500),lang})});
-        if(!r.ok) throw new Error('tts');
-        url = URL.createObjectURL(await r.blob()); ttsUrls.set(k,url);
-        if(ttsUrls.size>30){ const old = ttsUrls.keys().next().value; URL.revokeObjectURL(ttsUrls.get(old)); ttsUrls.delete(old); }
-      }
-      if(my!==speechToken) return;
-      audioEl = new Audio(url); await audioEl.play(); note('');
-      return;
-    }catch(e){ note(''); }
-  }
-  if(my!==speechToken) return;
-  if(vs.length && lang!=='en') note(T().vNone); else speakLocal(text, null);
+      parts.forEach(p=>{
+        const u = new SpeechSynthesisUtterance(p); u.lang = code; u.rate = 0.9; if(v) u.voice = v;
+        u.onstart = () => { started = true; };
+        u.onend = () => { if(--left===0) fin('done'); };
+        u.onerror = e => fin(e && e.error==='not-allowed' ? 'blocked' : (e && /interrupted|canceled/.test(e.error) ? 'stopped' : 'fail'));
+        keepU.push(u);   // Chrome forgets utterances nobody holds on to, and then never says they ended
+        speechSynthesis.speak(u);
+      });
+    }catch(e){ fin('fail'); }
+  });
 }
+/** Server (Gemini) voice for one part; the promise is shared, so a part fetched early is not fetched twice. */
+function ttsUrl(text, l){
+  const k = l+'|'+text; let p = ttsUrls.get(k);
+  if(!p){
+    p = fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text.slice(0,1500),lang:l})})
+      .then(r=>{ if(!r.ok) throw new Error('tts'); return r.blob(); }).then(b=>URL.createObjectURL(b));
+    p.catch(()=>ttsUrls.delete(k));
+    ttsUrls.set(k, p);
+    if(ttsUrls.size>40){ const [ok, op] = ttsUrls.entries().next().value; ttsUrls.delete(ok); op.then(u=>URL.revokeObjectURL(u), ()=>{}); }
+  }
+  return p;
+}
+function playUrl(url){
+  return new Promise(res=>{
+    let over = false;
+    const fin = r => { if(over) return; over = true; if(endSpeech===fin) endSpeech = null; res(r); };
+    endSpeech = fin;
+    const a = audioEl = new Audio(url);
+    a.onended = () => fin('done'); a.onerror = () => fin('fail');
+    try{ Promise.resolve(a.play()).then(null, e => fin(e && e.name==='NotAllowedError' ? 'blocked' : 'fail')); }catch(e){ fin('fail'); }
+  });
+}
+/** No device voice for the language: fetch the start of the next thing she will hear while she is still listening. */
+function warm(text){
+  if(!API.ai || !text || voiceFor(lang, deviceVoices())) return;
+  ttsUrl(chunks(text)[0], lang).catch(()=>{});
+}
+async function speakOne(text, l, vs, my, quiet){
+  const parts = chunks(text), v = voiceFor(l, vs);
+  if(my!==speechToken) return 'stopped';   // something newer is speaking
+  if(!parts.length) return 'done';
+  if(v){ note(''); return speakLocal(parts, v, codeOf(l)); }
+  if(API.ai){
+    note(T().thinking);
+    for(let i=0; i<parts.length; i++){
+      const now = ttsUrl(parts[i], l);
+      if(i+1<parts.length) ttsUrl(parts[i+1], l).catch(()=>{});   // the next part is made while this one plays
+      let url; try{ url = await now; }catch(e){ url = null; }
+      if(my!==speechToken) return 'stopped';
+      note('');
+      if(!url){ if(i) return 'done'; break; }
+      const r = await playUrl(url);
+      if(r!=='done'){ if(r==='fail' && !i) break; return r; }
+      if(i===parts.length-1) return 'done';
+    }
+  }
+  if(my!==speechToken) return 'stopped';
+  if(vs.length && l!=='en'){ if(!quiet) note((U[l]||T()).vNone); return 'fail'; }
+  return speakLocal(parts, null, codeOf(l));
+}
+/**
+ * Speak text (or a list of [language, text] pairs, each in its own voice) with a device voice when one exists,
+ * otherwise with Gemini text-to-speech from the server. Resolves when she has heard it, with the result of speakLocal.
+ */
+async function say(text, l=lang){
+  stopSpeech(); const my = speechToken; keepU.length = 0;
+  const segs = Array.isArray(text) ? text : [[l, text]];
+  let vs = deviceVoices();
+  if(!vs.length && !voicesWaited){ await waitVoices(); if(my!==speechToken) return 'stopped'; vs = deviceVoices(); }
+  let r = 'done';
+  for(const [sl, st] of segs){
+    r = await speakOne(st, sl, vs, my, segs.length>1);
+    if(r==='stopped' || r==='blocked') return r;
+  }
+  return r;
+}
+if(typeof speechSynthesis!=='undefined') deviceVoices();   // ask early, so laptop voices are ready by the first tap
 
-// Many users cannot read, so voice is ON unless she (or a helper) turned it off. Nothing speaks before her
-// first tap (choosing a language), which browsers also require before speech; the 🔊 Listen buttons always work.
-let voiceOn = store.get('voice')!=='0', tapped = false;
-['click','keydown'].forEach(t=>document.addEventListener(t, ()=>{ tapped = true; }, {capture:true}));
-const autoSay = text => { if(voiceOn && tapped) say(text); };
-function paintVoice(){
-  const b=$('#vt'), label = voiceOn ? T().vOn : T().vOff, i = label.indexOf(' ');
+// Many users cannot read, so voice is ON unless she (or a helper) turned it off. Every screen tries to speak as soon
+// as it opens; browsers allow sound only after the first tap on the page, so the first tap replays what was missed.
+let voiceOn = store.get('voice')!=='0';
+const autoSay = text => voiceOn ? say(text) : Promise.resolve('off');
+function paintToggle(b, on, label){
+  const i = label.indexOf(' ');
   b.innerHTML = i>0 ? esc(label.slice(0,i))+' <span class="vl">'+esc(label.slice(i+1))+'</span>' : esc(label);
-  b.setAttribute('aria-pressed', String(voiceOn)); b.title = i>0 ? label.slice(i+1) : label;
+  b.setAttribute('aria-pressed', String(on)); b.title = i>0 ? label.slice(i+1) : label;
+}
+function paintVoice(){
+  paintToggle($('#vt'), voiceOn, voiceOn ? T().vOn : T().vOff);
+  const h = $('#ht'); if(h){ h.hidden = !hasSR(); paintToggle(h, handsOn, handsOn ? T().hOn : T().hOff); }
 }
 function toggleVoice(){
   voiceOn = !voiceOn; store.set('voice', voiceOn?'1':'0'); paintVoice();
@@ -616,20 +712,22 @@ const VM = {
   en:{denied:'Microphone permission was blocked. Please tap "Allow" for the microphone in your browser, then press again.',net:'Speech needs internet. Please switch on internet.',nomic:'No microphone found on this phone.',busy:'The microphone is being used by another app.'}
 };
 /**
- * Listens once. onText(finalText) on success; onFail(message) exactly once on failure;
- * onInterim(text) shows live words so she can see she is being heard.
+ * Listens once. onText(finalText) on success; onFail(message, why) exactly once on failure, where why is 'silence'
+ * (nothing heard), 'denied' (no microphone permission) or 'error'; onInterim(text) shows live words so she can see
+ * she is being heard. Nothing she says is stored: the text is used for this screen and then dropped.
  */
 function listen(onText, onFail, onInterim){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR){ onFail(T().nomic); return; }
+  if(!SR){ onFail(T().nomic, 'error'); return; }
   stopSpeech();
   try{ if(recog) recog.abort(); }catch(e){}
   let done = false, retriedEn = false;
-  const finish = (fn, arg) => { if(done) return; done = true; document.querySelectorAll('.mic').forEach(b=>b.classList.remove('rec')); fn(arg); };
+  const finish = (fn, arg, why) => { if(done) return; done = true; document.querySelectorAll('.mic').forEach(b=>b.classList.remove('rec')); fn(arg, why); };
   const start = code => {
     const r = recog = new SR(); r.lang = code; r.interimResults = true; r.maxAlternatives = 3; r.continuous = false;
     let heard = '';
     r.onresult = e => {
+      if(r!==recog) return;
       let text = '', final = false;
       for(let i=e.resultIndex;i<e.results.length;i++){ text += e.results[i][0].transcript; if(e.results[i].isFinal) final = true; }
       heard = text;
@@ -637,19 +735,158 @@ function listen(onText, onFail, onInterim){
       else if(onInterim) onInterim(text);
     };
     r.onerror = e => {
+      if(r!==recog) return;
       const m = VM[lang]||VM.en;
       if(e.error==='language-not-supported' && !retriedEn){ retriedEn = true; start('en-IN'); return; }
-      if(e.error==='not-allowed' || e.error==='service-not-allowed') finish(onFail, m.denied);
-      else if(e.error==='network') finish(onFail, m.net);
-      else if(e.error==='audio-capture') finish(onFail, m.nomic);
+      if(e.error==='not-allowed' || e.error==='service-not-allowed') finish(onFail, m.denied, 'denied');
+      else if(e.error==='network') finish(onFail, m.net, 'error');
+      else if(e.error==='audio-capture') finish(onFail, m.nomic, 'error');
       else if(e.error==='aborted') { done = true; }
-      else finish(onFail, T().noheard);
+      else finish(onFail, T().noheard, 'silence');
     };
-    r.onend = () => { if(heard && !done) finish(onText, heard); else finish(onFail, T().noheard); };
-    try{ r.start(); }catch(err){ finish(onFail, (VM[lang]||VM.en).busy); }
+    r.onend = () => { if(r!==recog) return; if(heard && !done) finish(onText, heard); else finish(onFail, T().noheard, 'silence'); };
+    try{ r.start(); }catch(err){ finish(onFail, (VM[lang]||VM.en).busy, 'error'); }
   };
   start(T().code);
 }
+function stopListening(){
+  try{ if(recog){ const r = recog; recog = null; r.abort(); } }catch(e){}
+  document.querySelectorAll('.mic').forEach(b=>b.classList.remove('rec'));
+}
+
+// ============ Talk mode: after the app speaks it listens, so she can answer and move on without tapping ============
+const hasSR = () => !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+let handsOn = store.get('hands')==='1', vctx = null;
+// Words she can say on any screen (stop, repeat, home, back) or where they fit (next, skip, steps, ask, done, start,
+// location). Speech engines often write English words in the local script, so those spellings are listed too.
+const CMD = {
+  hi:{stop:/रुको|रुकिए|बंद करो|बस करो|स्टॉप|stop/i, repeat:/फिर से|दोबारा|दुबारा|फिर बोल|रिपीट|repeat|again/i, home:/होम|मुख्य|दूसरी सेवा|मेनू|home|menu/i,
+      back:/पीछे|वापस|पिछला|बैक|back/i, next:/आगे|अगला|अगली|नेक्स्ट|next/i, skip:/छोड|पता नहीं|मालूम नहीं|बताना नहीं|स्किप|skip/i,
+      steps:/एक.एक|कदम|स्टेप|step/i, ask:/सवाल|पूछ|क्वेश्चन|question|ask/i, done:/हो गया|खत्म|ख़त्म|पूरा|डन|done/i, start:/शुरू|स्टार्ट|start/i, loc:/जगह|लोकेशन|पता लगा|location/i},
+  ta:{stop:/நிறுத்து|போதும்|ஸ்டாப்|stop/i, repeat:/மீண்டும்|மறுபடி|திரும்பச் சொல்|திரும்ப சொல்|ரிப்பீட்|repeat|again/i, home:/முகப்பு|வேறு சேவை|ஹோம்|மெனு|home|menu/i,
+      back:/பின்னால்|பின்னே|முந்தைய|பேக்|back/i, next:/அடுத்து|அடுத்தது|நெக்ஸ்ட்|next/i, skip:/தவிர்|தெரியாது|சொல்ல விருப்பமில்லை|ஸ்கிப்|skip/i,
+      steps:/ஒவ்வொன்றாக|படிப்படியாக|ஸ்டெப்|step/i, ask:/கேள்வி|கேட்க|question|ask/i, done:/முடிந்தது|முடிஞ்சது|முடிச்சாச்சு|டன்|done/i, start:/தொடங்கு|ஆரம்பி|ஸ்டார்ட்|start/i, loc:/இடம்|லொகேஷன்|கண்டுபிடி|location/i},
+  te:{stop:/ఆపు|ఆపండి|చాలు|స్టాప్|stop/i, repeat:/మళ్ళీ|మళ్లీ|మరలా|రిపీట్|repeat|again/i, home:/హోమ్|హోం|మొదటి పేజీ|ఇతర సేవ|మెనూ|home|menu/i,
+      back:/వెనక్కి|వెనక్కు|వెనుకకు|బ్యాక్|back/i, next:/తరువాత|తర్వాత|ముందుకు|నెక్స్ట్|next/i, skip:/వదిలే|వదిలెయ్|తెలియదు|చెప్పను|స్కిప్|skip/i,
+      steps:/ఒక్కొక్కటి|దశ|స్టెప్|step/i, ask:/ప్రశ్న|అడగ|question|ask/i, done:/అయిపోయింది|పూర్తి|డన్|done/i, start:/మొదలు|ప్రారంభ|స్టార్ట్|start/i, loc:/ప్రదేశం|లొకేషన్|కనుక్కో|location/i},
+  en:{stop:/\bstop\b|be quiet|\bpause\b/i, repeat:/repeat|again|once more|say that/i, home:/\bhome\b|\bmenu\b|other service|main page/i,
+      back:/\bback\b|previous/i, next:/\bnext\b|continue|go on|forward/i, skip:/skip|don'?t know|do not know|not sure|don'?t want to say/i,
+      steps:/step/i, ask:/question|\bask\b/i, done:/\bdone\b|finish|complete/i, start:/start|begin/i, loc:/location|find my state|\bgps\b/i}
+};
+const said = (k, txt) => (CMD[lang]||CMD.en)[k].test(txt);
+const saidYes = txt => T().yesRe.test(txt) && !T().noRe.test(txt), saidNo = txt => T().noRe.test(txt);
+
+/**
+ * Every screen calls this once with what it says and what to do with her spoken answer: on(text) acts and returns
+ * false when it did not understand. The app speaks (if voice is on), then listens (if talk mode is on).
+ * o.free: the screen expects free words (a need, a question, a district), so commands count only as short phrases;
+ * o.force: speak even with voice off (she asked to be read to); o.nav:false: no home/back (the first screens).
+ */
+function voiceScreen(text, on, o={}){
+  stopListening();
+  const c = vctx = {text, on, free:!!o.free, force:!!o.force, nav:o.nav!==false, giveUp:o.giveUp, miss:0, quiet:0, blocked:false};
+  speakThenHear(c);
+  return c;
+}
+function speakThenHear(c, force){
+  c.blocked = false;
+  const p = c.text && (voiceOn || c.force || force) ? say(c.text) : Promise.resolve('off');
+  p.then(r => { if(c!==vctx) return; if(r==='blocked'){ c.blocked = true; return; } if(r!=='stopped') hear(c, true); });
+}
+/** Say something on the current screen, then listen again in talk mode. */
+function sayThenHear(text, force){
+  const c = vctx;
+  return (voiceOn || force ? say(text) : Promise.resolve('off')).then(r => { if(c===vctx && r!=='stopped' && r!=='blocked') hear(c, true); return r; });
+}
+// The browser kept the screen silent until her first tap: that tap replays it, unless it was on a button
+// (the button opens a screen that speaks for itself).
+['click','keydown'].forEach(t => document.addEventListener(t, e => {
+  const c = vctx; if(!c || !c.blocked) return;
+  if(e.target && e.target.closest && e.target.closest('button,a,input,select,textarea')) return;
+  speakThenHear(c);
+}));
+
+/** Listen for her answer: auto = talk mode started it (skipped when talk mode is off), otherwise she tapped the mic. */
+function hear(c, auto){
+  if(!c || c!==vctx || !c.on || (auto && (!handsOn || !hasSR()))) return;
+  const b = main.querySelector('.mic'), msg = $('#msg');
+  if(b) b.classList.add('rec'); if(msg) msg.textContent = T().listening;
+  listen(txt => { if(c!==vctx) return; c.quiet = 0; if(msg) msg.textContent = '“'+txt.split(' | ')[0]+'”'; act(c, txt); },
+    (m, why) => {
+      if(c!==vctx) return;
+      if(why==='silence' && handsOn && ++c.quiet<2) return hear(c, true);   // one more chance, quietly
+      if(why==='denied') setHands(false);
+      const out = why==='silence' && handsOn ? T().micT : m;
+      if(msg) msg.textContent = out;
+      autoSay(out);
+    },
+    w => { if(c===vctx && msg) msg.textContent = '“'+w+'”'; });
+}
+function command(c, txt){
+  if(c.free && txt.split(' | ')[0].trim().split(/\s+/).length > 3) return null;
+  if(said('stop', txt)) return () => { stopSpeech(); stopListening(); const m = $('#msg'); if(m) m.textContent = T().micT; };
+  if(said('repeat', txt)) return () => { c.miss = 0; speakThenHear(c, true); };
+  if(c.nav && said('home', txt)) return () => home();
+  if(c.nav && said('back', txt)) return () => history.back();
+  return null;
+}
+async function act(c, txt){
+  const cmd = command(c, txt);
+  if(cmd) return cmd();
+  let ok = false; try{ ok = await c.on(txt); }catch(e){ ok = false; }
+  if(ok!==false || c!==vctx) return;
+  c.miss++;
+  const again = handsOn && c.miss<3, m = again ? T().notU : (c.giveUp || T().notU);
+  const el = $('#msg'); if(el) el.textContent = m;
+  const r = await autoSay(m);
+  if(again && c===vctx && r!=='stopped' && r!=='blocked') hear(c, true);
+}
+// One delegated handler: every 🎤 button listens for the current screen.
+document.addEventListener('click', e => { if(e.target.closest && e.target.closest('#main .mic')) hear(vctx, false); });
+
+function setHands(on){ handsOn = on; store.set('hands', on?'1':'0'); paintVoice(); if(!on) stopListening(); }
+/** Ask for the microphone right after she says yes, while the reason is on screen. Nothing is recorded: it is closed at once. */
+async function micAllowed(){
+  try{ const s = await navigator.mediaDevices.getUserMedia({audio:true}); s.getTracks().forEach(x=>x.stop()); return true; }
+  catch(e){ return !(e && /NotAllowed|Security|NotFound/.test(e.name)); }
+}
+async function toggleHands(){
+  stopSpeech();
+  if(handsOn){ setHands(false); note(''); return; }
+  const ok = await micAllowed(); setHands(ok);
+  const r = await say(ok ? T().hHelp : (VM[lang]||VM.en).denied);   // she pressed it, so answer even with voice off
+  if(ok && r!=='stopped' && r!=='blocked') hear(vctx, true);
+}
+
+// ---------- understanding answers ----------
+const digits = t => String(t).replace(/[\u0966-\u096F]/g, d => d.charCodeAt(0)-0x966).replace(/[\u0BE6-\u0BEF]/g, d => d.charCodeAt(0)-0xBE6).replace(/[\u0C66-\u0C6F]/g, d => d.charCodeAt(0)-0xC66);
+const OPT_SAY = {
+  married:['शादी हो','शादीशुदा','கல்யாணம் ஆச்சு','పెళ్లి అయింది','పెళ్ళి అయింది'],
+  single:['शादी नहीं','कुंवारी','कुँवारी','single','not married','கல்யாணம் ஆகல','கல்யாணம் ஆகவில்லை','పెళ్లి కాలేదు','పెళ్ళి కాలేదు'],
+  widow:['विधवा','விதவை','widow'],
+  GEN:['general','जनरल','सामान्य','ஜெனரல்','జనరల్'],
+  OBC:['obc','ओबीसी','ओ बी सी','ஓபிசி','ஓ பி சி','ఓబీసీ','ఓబిసి','o b c'],
+  SC:['sc','एससी','एस सी','எஸ்சி','எஸ் சி','ఎస్సీ','ఎస్ సి','s c'],
+  ST:['st','एसटी','एस टी','எஸ்டி','எஸ் டி','ఎస్టీ','ఎస్ టి','s t'],
+  rural:['village','गांव','गाँव','gaon','கிராமம்','గ్రామం','పల్లె'],
+  urban:['city','town','शहर','सिटी','நகரம்','டவுன்','పట్టణం','సిటీ']
+};
+/** Which answer choice she said. Longer words are tried first, so "unmarried" is never taken for "married". */
+function pickOption(q, txt){
+  if(q.k==='age'){
+    const n = +((digits(txt).match(/\d+/)||[])[0]);
+    if(n>0 && n<120){
+      if(n<=18 && /कम|under|less|below|లోపు|తక్కువ|கீழ்|குறைவ/i.test(txt)) return 'u18';
+      return n<18 ? 'u18' : n<21 ? 'a18' : n<40 ? 'a21' : n<60 ? 'a40' : 'a60';
+    }
+  }
+  const low = txt.toLowerCase(), cands = [];
+  q.o.forEach(o => [o[1] && o[1][lang], o[1] && o[1].en, ...(OPT_SAY[o[0]]||[])].forEach(w => { if(w) cands.push([o[0], w.toLowerCase()]); }));
+  cands.sort((a,b) => b[1].length - a[1].length);
+  const hit = cands.find(([, w]) => /^[a-z ]{1,3}$/.test(w) ? new RegExp('\\b'+w+'\\b').test(low) : low.includes(w));
+  return hit ? hit[0] : null;
+}
+const matchState = txt => { const low = txt.toLowerCase(); const r = STATES.find(r => r.slice(1).some(n => n && low.includes(String(n).toLowerCase())) || low.includes(r[0].toLowerCase()+' ')); return r ? r[0] : null; };
 
 // ============ Server API (Gemini key lives on the server, never in the browser) ============
 async function api(path, body){
@@ -713,7 +950,10 @@ async function chooseLang(l){
 // ============ Render ============
 const sayTexts = [];
 const listenBtn = text => `<button class="btn listen" data-say="${sayTexts.push(text)-1}">${T().listen}</button>`;
-document.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if(b) say(sayTexts[+b.dataset.say]); });
+document.addEventListener('click', e => { const b = e.target.closest('[data-say]'); if(b) sayThenHear(sayTexts[+b.dataset.say], true); });
+// a place for "Listening…" and what she said; a 🎤 button too in talk mode, for when the app stopped listening
+const msgHtml = () => '<div id="msg" class="sub" role="status" aria-live="polite"></div>';
+const talkHtml = () => (handsOn ? `<button class="btn ghost mic" id="mic">${T().speak}</button>` : '') + msgHtml();
 function dots(){
   const el = $('#dots');
   if(!cur){ el.innerHTML=''; return; }
@@ -740,11 +980,12 @@ function screen(st){
 }
 addEventListener('popstate', e => {
   const st = e.state; if(!st) return;
-  stopSpeech(); try{ if(recog) recog.abort(); }catch(err){}
+  stopSpeech(); stopListening();
   const s = st.id && S.find(x=>x.id===st.id);
   restoring = true;
   try{
     if(st.v==='lang') langScreen();
+    else if(st.v==='hands') handsOffer();
     else if(st.v==='prof'){ pstep = st.p; inProfile = true; cur = null; profScreen(); }
     else if(s && st.v==='q'){ cur = s; step = st.step; eligible = true; flow(); }
     else if(s && st.v==='res'){ cur = s; eligible = st.ok; result(); }
@@ -799,14 +1040,35 @@ const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" 
   <path d="M248 126q10 10 0 22M256 118q16 18 0 38" stroke="#c2185b" stroke-width="4" fill="none" stroke-linecap="round"/>
 </svg>`;
 
+// The first screen speaks each language in its own voice, so she can pick hers without reading.
+const LANG_INTRO = [['hi','हिन्दी के लिए गुलाबी बटन दबाइए।'],['ta','தமிழுக்கு நீல பட்டனை அழுத்துங்கள்.'],['te','తెలుగు కోసం ఆకుపచ్చ బటన్ నొక్కండి.'],['en','For English, press the orange button.']];
+const LANG_SAY = {hi:/हिन्दी|हिंदी|hindi|ஹிந்தி|இந்தி|హిందీ/i, ta:/तमिल|tamil|தமிழ்|டமில்|తమిళ/i, te:/तेलुगु|तेलगु|telugu|தெலுங்கு|తెలుగు/i, en:/english|इंग्लिश|अंग्रेज|ஆங்கிலம்|இங்கிலீஷ்|ఇంగ్లీష్|ఆంగ్ల/i};
 function langScreen(){
   cur = null; inProfile = false; dots(); screen({v:'lang'});
   const LG=[['hi','हि','हिन्दी',['#c2185b','#f48fb1']],['ta','த','தமிழ்',['#1a56c7','#5b9bff']],['te','తె','తెలుగు',['#2e7d32','#86d08a']],['en','Aa','English',['#e8590c','#ffa94d']]];
-  main.innerHTML = `<section class="langhead"><div>🗣️</div><h1>भाषा चुनिए · மொழி<br>భాష · Language</h1></section>
+  main.innerHTML = `<section class="langhead"><div>🗣️</div><h1>भाषा चुनिए · மொழி<br>భాష · Language</h1>
+    <button class="btn listen lsay" data-say="${sayTexts.push(LANG_INTRO)-1}">🔊 सुनिए · கேளுங்கள் · వినండి · Listen</button>${msgHtml()}</section>
     <div class="grid" style="max-width:620px;margin:12px auto 0;width:100%">${LG.map(l=>`<button class="tile lt" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="color:${l[3][0]}">${l[1]}</span><span class="t">${l[2]}</span></button>`).join('')}</div>`;
-  if(API.ai) main.insertAdjacentHTML('beforeend', `<div class="xlangs">${EXTRA.map(e=>`<button class="chip" data-x="${e[0]}">${e[1]}</button>`).join('')}</div>`);
-  main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
+  addXlangs();
+  main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); afterLang(); });
+  voiceScreen(LANG_INTRO, txt=>{ const l = Object.keys(LANG_SAY).find(k=>LANG_SAY[k].test(txt)); if(!l) return false; setLang(l); afterLang(); }, {nav:false});
+}
+function addXlangs(){
+  if(!API.ai || main.querySelector('.xlangs')) return;
+  main.insertAdjacentHTML('beforeend', `<div class="xlangs">${EXTRA.map(e=>`<button class="chip" data-x="${e[0]}">${e[1]}</button>`).join('')}</div>`);
   main.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.x));
+}
+/** After the first language choice, offer talk mode once (only where the browser can listen). */
+function afterLang(){ if(hasSR() && store.get('hands')===null) handsOffer(); else home(); }
+let introNext = '';
+function handsOffer(){
+  cur = null; inProfile = false; dots(); screen({v:'hands'});
+  const t = T();
+  main.innerHTML = `<div class="card"><div class="emoji">🎤</div><div class="big">${t.hQ}</div><div class="sub">${t.hSub}</div>
+    <div class="row"><button class="btn yes yn" id="y">✅ ${t.hYes}</button><button class="btn no yn" id="n">❌ ${t.hNo}</button></div></div>`;
+  $('#y').onclick = async () => { stopSpeech(); const ok = await micAllowed(); setHands(ok); introNext = ok ? t.hHelp : (VM[lang]||VM.en).denied; home(); };
+  $('#n').onclick = () => { setHands(false); home(); };
+  voiceScreen(t.hQ+' '+t.hSub, null, {nav:false});
 }
 
 function profLine(){ return esc(stName(profile.state,lang)) + (profile.district? ', '+esc(profile.district) : ''); }
@@ -827,13 +1089,12 @@ function home(){
     <h2 class="sec">${profile ? p.forYou : p.popularT}</h2>
     ${list.length ? `<div class="grid">${list.map(tileHtml).join('')}</div>` : `<div class="sub">${p.none}</div>`}`;
   main.querySelectorAll('.tile').forEach(b=>b.onclick=()=>open(b.dataset.id));
-  $('#hl').onclick = ()=>say(t.homeV);
+  $('#hl').onclick = ()=>sayThenHear(t.homeV, true);
   if($('#pmk')) $('#pmk').onclick = ()=>profFlow(false);
   if($('#pedit')) $('#pedit').onclick = ()=>profFlow(true);
   if($('#pdel')) $('#pdel').onclick = ()=>{ profile = null; saveProfile(); home(); };
-  $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
-    listen(async txt=>{ $('#msg').textContent='“'+txt.split(' | ')[0]+'”'; await route(txt); }, m=>{ $('#msg').textContent=m; }, w=>{ $('#msg').textContent='“'+w+'”'; }); };
-  autoSay(t.homeV);
+  voiceScreen((introNext ? introNext+' ' : '') + t.homeV, txt=>route(txt), {free:true, nav:false, giveUp:t.notfound});
+  introNext = '';
 }
 
 // ---------- Profile wizard: intro → state → district → one question at a time ----------
@@ -858,8 +1119,10 @@ function profScreen(){
   const prog = pstep>0 ? `<div class="bar" role="progressbar" aria-valuemin="1" aria-valuemax="${total}" aria-valuenow="${pstep}"><i style="width:${Math.round(pstep/total*100)}%"></i></div><div class="note" style="margin-top:0">${pstep} / ${total}</div>` : '';
   if(pstep===0){
     main.innerHTML = `<div class="card"><div class="emoji">👤</div><div class="big">${p.title}</div><div class="sub">${p.priv}</div>${listenBtn(p.priv)}
-      <button class="btn yes" id="go">${p.start}</button><button class="btn ghost" id="home">${t.home}</button></div>`;
-    $('#go').onclick=()=>{pstep=1;profScreen();}; $('#home').onclick=home; autoSay(p.priv); return;
+      <button class="btn yes" id="go">${p.start}</button>${talkHtml()}<button class="btn ghost" id="home">${t.home}</button></div>`;
+    const go = () => { pstep=1; profScreen(); };
+    $('#go').onclick=go; $('#home').onclick=home;
+    voiceScreen(p.priv, txt=>{ if(saidYes(txt) || said('start',txt) || said('next',txt)) return go(); if(saidNo(txt)) return home(); return false; }); return;
   }
   if(pstep===1){
     main.innerHTML = `<div class="card">${prog}<div class="big">${p.stateQ}</div>
@@ -869,14 +1132,11 @@ function profScreen(){
       <button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
     const pick=c=>{ if(c) draft.state=c; else delete draft.state; pstep=2; profScreen(); };
     main.querySelectorAll('.st').forEach(b=>b.onclick=()=>pick(b.dataset.c)); $('#sk').onclick=()=>pick(null);
-    $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
-      listen(txt=>{ const low=txt.toLowerCase(); const r=STATES.find(r=>r.slice(1).some(n=>low.includes(n.toLowerCase())) || low.includes(r[0].toLowerCase()+' ') );
-        if(r) pick(r[0]); else $('#msg').textContent=t.noheard; }, m=>{ $('#msg').textContent=m; }, w=>{ $('#msg').textContent='“'+w+'”'; }); };
     // location is asked for only after she taps the pin button, then she confirms the state with a big Yes / No
-    $('#loc').onclick = () => { const b=$('#loc'); b.disabled=true; $('#msg').textContent=p.locWait; autoSay(p.locWait);
+    $('#loc').onclick = () => { const b=$('#loc'); b.disabled=true; stopListening(); $('#msg').textContent=p.locWait; autoSay(p.locWait);
       locateState().then(code => { if(pstep===1 && main.contains(b)) locConfirm(code, pick); },
-        why => { if(pstep!==1 || !main.contains(b)) return; b.disabled=false; const m = why==='denied'? p.locNo : p.locFail; $('#msg').textContent=m; autoSay(m); }); };
-    autoSay(p.stateQ+' '+p.locV); return;
+        why => { if(pstep!==1 || !main.contains(b)) return; b.disabled=false; const m = why==='denied'? p.locNo : p.locFail; $('#msg').textContent=m; sayThenHear(m); }); };
+    voiceScreen(p.stateQ+' '+p.locV, txt=>{ if(said('loc',txt)) return $('#loc').click(); if(said('skip',txt)) return pick(null); const c = matchState(txt); if(c) return pick(c); return false; }); return;
   }
   if(pstep===2){
     main.innerHTML = `<div class="card">${prog}<div class="big">${p.distQ}</div>
@@ -885,34 +1145,40 @@ function profScreen(){
       <button class="btn yes" id="nx">${p.next}</button><button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
     const go=v=>{ v=(v||'').trim().slice(0,40); if(v) draft.district=v; else delete draft.district; pstep=3; profScreen(); };
     $('#nx').onclick=()=>go($('#dist').value); $('#sk').onclick=()=>go('');
-    $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
-      listen(txt=>{ $('#dist').value=txt.split(' | ')[0]; $('#msg').textContent=''; }, m=>{ $('#msg').textContent=m; }, w=>{ $('#dist').value=w; }); };
-    autoSay(p.distQ); return;
+    // a spoken district name fills the box and moves on; she can still edit it later from her profile
+    voiceScreen(p.distQ, txt=>{ if(said('skip',txt)) return go(''); if(said('next',txt)) return go($('#dist').value); const v = txt.split(' | ')[0]; $('#dist').value = v; go(v); }, {free:true}); return;
   }
   const i = pstep-3;
   if(i >= PQ.length){ return profSave(); }
   const q = PQ[i], qt = q.q[lang];
   const opts = q.o.map(o=>`<button class="btn opt" data-v="${o[0]}">${o[1]? o[1][lang] : (o[0]==='yes'? t.yes : t.no)}</button>`).join('');
-  main.innerHTML = `<div class="card">${prog}<div class="big">${qt}</div>${listenBtn(qt)}${opts}<button class="btn ghost" id="sk">${p.skip}</button></div>`;
+  const yn = !q.o[0][1], spoken = yn ? qt : qt+' '+q.o.map(o=>o[1][lang]).join(', ')+'.';   // read the choices out too
+  main.innerHTML = `<div class="card">${prog}<div class="big">${qt}</div>${listenBtn(spoken)}${opts}${talkHtml()}<button class="btn ghost" id="sk">${p.skip}</button></div>`;
   const next=v=>{ if(v) draft[q.k]=v; else delete draft[q.k]; pstep++; profScreen(); };
   main.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>next(b.dataset.v)); $('#sk').onclick=()=>next(null);
-  autoSay(qt);
+  voiceScreen(spoken, txt=>{
+    if(said('skip',txt)) return next(null);
+    if(yn){ if(saidYes(txt)) return next('yes'); if(saidNo(txt)) return next('no'); return false; }
+    const v = pickOption(q, txt); if(v) return next(v); return false;
+  });
 }
 /** "Is this your state?" with the state's name big and a big Yes / No; No goes back to the list. */
 function locConfirm(code, pick){
   const p = PU[lang], t = T(), name = stName(code, lang);
   screen({v:'prof',p:1,loc:code});
   main.innerHTML = `<div class="card"><div class="emoji">📍</div><div class="big">${esc(name)}</div><div class="sub">${p.locAsk}</div>
-    <div class="row"><button class="btn yes yn" id="y">✅ ${t.yes}</button><button class="btn no yn" id="n">❌ ${t.no}</button></div></div>`;
-  $('#y').onclick = () => pick(code); $('#n').onclick = () => { if(history.state && history.state.loc) history.back(); else profScreen(); };
-  autoSay(name+'. '+p.locAsk);
+    <div class="row"><button class="btn yes yn" id="y">✅ ${t.yes}</button><button class="btn no yn" id="n">❌ ${t.no}</button></div>${talkHtml()}</div>`;
+  const no = () => { if(history.state && history.state.loc) history.back(); else profScreen(); };
+  $('#y').onclick = () => pick(code); $('#n').onclick = no;
+  voiceScreen(name+'. '+p.locAsk, txt=>{ if(saidYes(txt)) return pick(code); if(saidNo(txt)) return no(); return false; });
 }
 function profSave(){
   profile = {...draft}; saveProfile(); dots(); screen({v:'saved'});
   const p = PU[lang];
   main.innerHTML = `<div class="card"><div class="emoji">✅</div><div class="big">${p.saved}</div><div class="ans" style="text-align:center">${profile.state? profLine() : '—'}</div>
-    <button class="btn yes" id="ok">${p.forYou}</button></div>`;
-  $('#ok').onclick = home; autoSay(p.saved);
+    <button class="btn yes" id="ok">${p.forYou}</button>${talkHtml()}</div>`;
+  $('#ok').onclick = home;
+  voiceScreen(p.saved, txt=>{ if(saidYes(txt) || said('next',txt) || said('done',txt)) return home(); return false; });
 }
 
 const FUZZ_SKIP=new Set(['free','your','every','month','book','learn','join','with','from','that','this','money','help','need']);
@@ -932,7 +1198,8 @@ async function route(txt){
   if(!s && API.ai){
     try{ const r = await api('/api/route',{q:txt.split(' | ')[0].slice(0,300), services:S.map(x=>({id:x.id,hint:x.name.en.slice(0,120)}))}); s = S.find(x=>x.id===r.id); }catch(e){}
   }
-  if(s) open(s.id); else { $('#msg').textContent = T().notfound; autoSay(T().notfound); }
+  if(!s) return false;   // the caller says she was not understood
+  open(s.id); return true;
 }
 
 function open(id){ cur = S.find(s=>s.id===id); step = 0; eligible = true; flow(); }
@@ -953,10 +1220,8 @@ function flow(){
   const want = !(s.qNo||[]).includes(step);   // the answer that keeps her eligible
   const answer = said => { if(said!==want){ eligible=false; return result(); } step++; flow(); };
   $('#y').onclick=()=>answer(true); $('#n').onclick=()=>answer(false); $('#home').onclick=home;
-  $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
-    listen(txt=>{ if(t.yesRe.test(txt)&&!t.noRe.test(txt)) answer(true); else if(t.noRe.test(txt)) answer(false); else $('#msg').textContent=t.noheard; },
-           m=>{ $('#msg').textContent=m; }); };
-  autoSay((step===0 ? s.name[lang]+'. '+s.d[lang]+' ' : '') + q);
+  voiceScreen((step===0 ? s.name[lang]+'. '+s.d[lang]+' ' : '') + q, txt=>{ if(saidYes(txt)) return answer(true); if(saidNo(txt)) return answer(false); return false; });
+  if(step+1<n) warm(s.qs[step+1][lang]);
 }
 
 function callsHtml(s){
@@ -980,12 +1245,14 @@ function stepScreen(i){
   screen({v:'steps',id:cur.id,i});
   main.innerHTML = `<div class="card"><div class="bar"><i style="width:${Math.round((i+1)/list.length*100)}%"></i></div><div class="over">${t.stepOf} ${i+1} / ${list.length}</div><div class="stepn">${i+1}</div><div class="big">${esc(txt)}</div>${listenBtn(txt)}
     <div class="row">${i>0 ? `<button class="btn ghost" id="sp">${t.back}</button>` : '<span></span>'}${i<list.length-1 ? `<button class="btn pink" id="sn">${t.nextS}</button>` : `<button class="btn yes" id="sd">${PU[lang].done}</button>`}</div>
-    <button class="btn ghost" id="sb">${t.home}</button></div>`;
+    ${talkHtml()}<button class="btn ghost" id="sb">${t.home}</button></div>`;
   if($('#sp')) $('#sp').onclick = ()=>stepScreen(i-1);
   if($('#sn')) $('#sn').onclick = ()=>stepScreen(i+1);
   if($('#sd')) $('#sd').onclick = result;
   $('#sb').onclick = home;
-  say(txt);   // she asked to be read to, so speak even if the voice toggle is off
+  // she asked to be read to, so speak even if the voice toggle is off; "back" is the phone's Back, one step back
+  voiceScreen(txt, x=>{ if(said('done',x)) return result(); if(said('next',x)) return i<list.length-1 ? stepScreen(i+1) : result(); return false; }, {force:true});
+  if(i+1<list.length) warm(list[i+1]);
 }
 
 function linksHtml(s){
@@ -1000,8 +1267,9 @@ function result(){
   screen({v:'res',id:s.id,ok:eligible});
   if(!eligible){
     main.innerHTML = `<div class="card"><div class="emoji">🙏</div><div class="big">${t.noT}</div>${listenBtn(t.noV)}
-      <button class="btn pink" id="home">${t.home}</button><div class="res">${callsHtml(s)}</div></div>`;
-    $('#home').onclick = home; autoSay(t.noV); return;
+      <button class="btn pink" id="home">${t.home}</button>${talkHtml()}<div class="res">${callsHtml(s)}</div></div>`;
+    $('#home').onclick = home;
+    voiceScreen(t.noV, x=>{ if(saidYes(x) || said('next',x)) return home(); return false; }); return;
   }
   const docsTxt = s.docs.map(d=>d[1][lang]).join(', ');
   const full = (s.qs.length? t.okV+' ':'') + s.name[lang]+'. '+t.docsL+': '+docsTxt+'. '+s.where[lang]+' '+s.info[lang];
@@ -1016,9 +1284,9 @@ function result(){
     ${linksHtml(s)}
     <a class="btn act wa" id="wa" href="${waUrl(s)}" target="_blank" rel="noopener noreferrer"><span class="ai">📤</span><span class="at"><b>${t.share}</b></span></a>
     <button class="btn pink" id="ask">${t.ask}</button>
-    <button class="btn ghost" id="home">${t.home}</button></div>`;
+    ${talkHtml()}<button class="btn ghost" id="home">${t.home}</button></div>`;
   $('#ask').onclick = askScreen; $('#home').onclick = home; $('#steps').onclick = ()=>stepScreen(0);
-  autoSay(full);
+  voiceScreen(full + (handsOn ? ' '+t.resH : ''), x=>{ if(said('steps',x) || said('next',x)) return stepScreen(0); if(said('ask',x)) return askScreen(); return false; });
 }
 
 // ============ Ask a question about the current scheme ============
@@ -1028,9 +1296,7 @@ function askScreen(){
     <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div><div id="out" aria-live="polite"></div>
     <button class="btn ghost" id="back">${t.back}</button></div>`;
   $('#back').onclick = result;
-  $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
-    listen(async q=>{ $('#msg').textContent='“'+q.split(' | ')[0]+'”'; await respond(q.split(' | ')[0]); }, m=>{ $('#msg').textContent=m; autoSay(m); }, w=>{ $('#msg').textContent='“'+w+'”'; }); };
-  autoSay(t.askV);
+  voiceScreen(t.askV, q=>respond(q.split(' | ')[0]), {free:true});
 }
 async function respond(q){
   const t = T(), s = cur; $('#out').innerHTML = `<div class="ans">${t.thinking}</div>`;
@@ -1042,7 +1308,7 @@ async function respond(q){
     else if(t.moneyRe.test(q)) a = s.info[lang];
     else a = t.fb + ' ' + s.calls[0][1];
   }
-  $('#out').innerHTML = `<div class="ans">${a.replace(/</g,'&lt;')}</div>`; say(a);
+  $('#out').innerHTML = `<div class="ans">${a.replace(/</g,'&lt;')}</div>`; sayThenHear(a, true);   // then she can ask again
 }
 
 // ============ Large text (for a helper or weak eyesight) ============
@@ -1061,6 +1327,7 @@ if('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator
 
 // ============ Wiring ============
 $('#vt').onclick = toggleVoice;
+if($('#ht')) $('#ht').onclick = toggleHands;
 $('#lgb').onclick = () => { stopSpeech(); langScreen(); };
 document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.l));
 const more = $('#more');
@@ -1072,7 +1339,7 @@ const sl = store.get('lang'); if(sl&&U[sl]){ setLang(sl); home(); } else { setLa
 fetch('/api/health').then(r=>r.ok?r.json():null).then(j=>{
   API.ai = !!(j && j.ai); more.hidden = !API.ai;
   if(!API.ai) return;
-  if(main.querySelector('.tile[data-l]')) langScreen();
+  if(main.querySelector('.tile[data-l]')) addXlangs();
   if(sl && EXTRA.some(e=>e[0]===sl) && main.querySelector('.tile[data-l]')) chooseLang(sl);
 }).catch(()=>{ more.hidden = true; });
 iconify(document.getElementById('app'));
