@@ -789,9 +789,20 @@ function voiceScreen(text, on, o={}){
   return c;
 }
 function speakThenHear(c, force){
-  c.blocked = false;
+  c.blocked = false; tapHint(false);
   const p = c.text && (voiceOn || c.force || force) ? say(c.text) : Promise.resolve('off');
-  p.then(r => { if(c!==vctx) return; if(r==='blocked'){ c.blocked = true; return; } if(r!=='stopped') hear(c, true); });
+  p.then(r => { if(c!==vctx) return; if(r==='blocked'){ c.blocked = true; tapHint(true); return; } if(r!=='stopped') hear(c, true); });
+}
+/** The browser held the voice back until her first tap: show a big glowing speaker, so she knows where to touch. */
+function tapHint(show){
+  let b = $('#tth');
+  if(!show){ if(b) b.hidden = true; return; }
+  if(!b){
+    b = document.createElement('button'); b.id = 'tth'; b.className = 'tth'; b.textContent = '🔊';
+    b.onclick = () => { tapHint(false); if(vctx) speakThenHear(vctx); };
+    $('#app').appendChild(b);
+  }
+  b.setAttribute('aria-label', T().listen.replace(/^\S+\s/, '')); b.hidden = false;
 }
 /** Say something on the current screen, then listen again in talk mode. */
 function sayThenHear(text, force){
@@ -1334,8 +1345,9 @@ const more = $('#more');
 more.innerHTML = '<option value="">'+esc(T().moreL)+'</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
 more.onchange = () => { if(more.value) chooseLang(more.value); };
 paintBig();
-// A returning user goes straight to the home screen in her language; the header still lets her change it.
-const sl = store.get('lang'); if(sl&&U[sl]){ setLang(sl); home(); } else { setLang('hi'); langScreen(); }
+// A returning user goes straight to the home screen in her language (after the one-time talk-mode question, which
+// she may not have seen yet); the header still lets her change the language.
+const sl = store.get('lang'); if(sl&&U[sl]){ setLang(sl); afterLang(); } else { setLang('hi'); langScreen(); }
 fetch('/api/health').then(r=>r.ok?r.json():null).then(j=>{
   API.ai = !!(j && j.ai); more.hidden = !API.ai;
   if(!API.ai) return;

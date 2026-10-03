@@ -197,11 +197,13 @@ test('voice is ON by default; every screen tries to speak, and if the browser bl
   ev(`setLang('en'); home();`); await settle();
   assert.equal(ev('__said.length'), 1);                       // tried at once, without waiting for a tap
   assert.equal(ev('vctx.blocked'), true);
+  assert.equal(d.querySelector('#tth').hidden, false);           // a big glowing speaker shows where to touch
   d.querySelector('#bt').click(); d.querySelector('#bt').click(); await settle();
   assert.equal(ev('__said.length'), 1);                       // a tap on a button does not replay
   d.querySelector('h1').click(); await settle();
   assert.equal(ev('__said.length'), 2);                       // a tap anywhere else does
   assert.equal(ev('__said[1]'), ev('U.en.homeV'));
+  assert.equal(d.querySelector('#tth').hidden, true);
   ev(`voiceOn=false; home();`); await settle();
   assert.equal(ev('__said.length'), 2);                       // turned off: silent
   ev(`voiceOn=true; say = __realSay;`);
@@ -455,6 +457,22 @@ test('call buttons are single links (no button inside a link) and the footer and
   assert.equal(d.querySelector('a.skip').textContent, ev('U.ta.skip'));
   assert.equal(d.querySelector('.lang[data-l="ta"]').getAttribute('aria-pressed'), 'true');
   assert.equal(d.querySelector('.lang[data-l="hi"]').getAttribute('aria-pressed'), 'false');
+});
+
+test('a returning user who never answered the talk-mode question is asked it once, where the browser can listen', () => {
+  const root = path.join(__dirname, '..', 'public');
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/<script[^>]*src="app.js"[^>]*><\/script>/, '');
+  const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only', pretendToBeVisual: true });
+  dom.window.fetch = () => Promise.reject(new Error('offline'));
+  dom.window.SpeechRecognition = class { start() {} abort() {} };
+  dom.window.localStorage.setItem('lang', 'ta');
+  new vm.Script(fs.readFileSync(path.join(root, 'app.js'), 'utf8')).runInContext(dom.getInternalVMContext());
+  const d = dom.window.document;
+  assert.equal(d.querySelector('.big').textContent, new vm.Script('U.ta.hQ').runInContext(dom.getInternalVMContext()));
+  d.querySelector('#n').click();
+  assert.ok(d.querySelector('#mic.search'));
+  assert.equal(dom.window.localStorage.getItem('hands'), '0');
+  dom.window.close();
 });
 
 test('a returning user skips the language screen and lands on home in her language', () => {

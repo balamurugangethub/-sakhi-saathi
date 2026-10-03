@@ -96,7 +96,10 @@ header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-
 .lsay{max-width:520px;margin:14px auto 0;animation:glow 1.8s ease-in-out infinite}
 @keyframes glow{50%{box-shadow:0 0 0 10px rgba(194,24,91,.16)}}
 #ht[hidden]{display:none}
-@media(prefers-reduced-motion:reduce){.tile,.search,.btn{transition:none}.tile:hover{transform:none}.mic.rec,.search.rec .mb,.lsay{animation:none}}
+/* shown only while the browser keeps the voice back until her first tap */
+.tth{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:10;width:96px;height:96px;border-radius:50%;border:0;background:var(--accent);color:#fff;font-size:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);animation:glow 1.8s ease-in-out infinite}
+.tth[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.tile,.search,.btn{transition:none}.tile:hover{transform:none}.mic.rec,.search.rec .mb,.lsay,.tth{animation:none}}
 
 /* profile promo / summary */
 .pcta{display:flex;align-items:center;gap:14px;width:100%;max-width:760px;margin:20px 0 0;padding:16px 18px;border:1.5px solid #f2c4d6;border-radius:var(--r);background:var(--accent-w);color:var(--ink);font-family:inherit;text-align:left;cursor:pointer}
