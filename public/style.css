@@ -126,6 +126,10 @@ main{display:block}
 /* answer choices (profile questions): calm, clearly tappable, the same size */
 .opt{background:#fff;color:var(--ink);border:2px solid #ecc3d3;box-shadow:0 3px 0 #f3d7e2}
 .opt:active{transform:translateY(2px);box-shadow:none}
+/* "find my state" pin button: the first, biggest choice on the state screen */
+.loc{background:var(--blue);min-height:84px;font-size:23px}
+.loc .ic{font-size:34px}
+.loc:disabled{opacity:.6}
 .mic.rec{background:var(--red);animation:pulse 1.1s infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 12px rgba(208,47,37,.18)}}
 .ans{background:var(--surface);border-radius:18px;padding:16px 18px;font-size:19px;text-align:left;margin-top:8px;white-space:pre-wrap;line-height:1.55}

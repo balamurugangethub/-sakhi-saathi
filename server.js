@@ -33,7 +33,7 @@ const SECURITY_HEADERS = {
   'Content-Security-Policy': "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'no-referrer',
-  'Permissions-Policy': 'microphone=(self), camera=(), geolocation=(), payment=()',
+  'Permissions-Policy': 'microphone=(self), camera=(), geolocation=(self), payment=()',
   'Cross-Origin-Opener-Policy': 'same-origin',
   'X-Frame-Options': 'DENY',
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',

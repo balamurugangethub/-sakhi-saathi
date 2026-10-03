@@ -405,6 +405,32 @@ const STATES=[
 const SIDX={en:1,hi:2,ta:3,te:4};
 const stName=(c,l)=>{ const r=STATES.find(x=>x[0]===c); return r? r[SIDX[l]] : ''; };
 
+/**
+ * Which state is this point in? Uses public/states.geo.json (built by data/geo.js) and runs only on the phone:
+ * the location is never sent to the server or anyone else, and never saved. Even-odd point-in-polygon over each
+ * state's rings; a point just off the simplified coast or a small island goes to the nearest state within ~30 km.
+ */
+function stateAt(lat, lon, geo){
+  if(!geo || !geo.states || !isFinite(lat) || !isFinite(lon)) return null;
+  const k = geo.scale, x = lon*k, y = lat*k, cx = Math.cos(lat*Math.PI/180);
+  let near = null, nearD = 0.3*k;   // 0.3 degree is about 30 km
+  for(const code of Object.keys(geo.states)){
+    let inside = false;
+    for(const r of geo.states[code]){
+      for(let i=0, j=r.length-2; i<r.length; j=i, i+=2){
+        const xi=r[i], yi=r[i+1], xj=r[j], yj=r[j+1];
+        if((yi>y)!==(yj>y) && x < (xj-xi)*(y-yi)/(yj-yi)+xi) inside = !inside;
+        const dx=(xj-xi)*cx, dy=yj-yi, len=dx*dx+dy*dy;
+        const t = len? Math.max(0, Math.min(1, ((x-xi)*cx*dx + (y-yi)*dy)/len)) : 0;
+        const d = Math.hypot((xi-x)*cx + t*dx, yi-y + t*dy);
+        if(d < nearD){ nearD = d; near = code; }
+      }
+    }
+    if(inside) return code;
+  }
+  return near;
+}
+
 const CASH={
  MH:{n:'Mukhyamantri Majhi Ladki Bahin Yojana',a:'₹1,500',per:'m',lo:21,hi:65,k:'inc',kw:/ladki bahin|लाड़की बहन|लाडकी बहीण|लाडकी बहिण|माझी लाडकी/i},
  KA:{n:'Gruha Lakshmi',a:'₹2,000',per:'m',lo:18,hi:100,k:'head',kw:/gruha lakshmi|गृह लक्ष्मी|గృహలక్ష్మి|கிருஹ லட்சுமி|gruhalakshmi/i},
@@ -483,16 +509,20 @@ const fit=(s,p)=>{ const f=FIT[s.id]; try{ return f? f(p) : true; }catch(e){ ret
 const PU={
  en:{title:'My profile',priv:'Your answers stay only on this phone. They are never sent or saved anywhere else. You can skip any question and delete everything any time.',start:'Start',skip:"Don't want to say",skipQ:'Skip',next:'Next',done:'Done',
    basicT:'Basic services – no profile needed',forYou:'Schemes for you',popularT:'Popular schemes',mk:'Make my profile',mkSub:'Answer a few questions to see schemes made for you (optional)',edit:'Edit profile',del:'Delete my data',
-   stateQ:'Which state do you live in?',distQ:'Which district? (optional)',distPh:'District name',saved:'Profile saved. See the schemes made for you.',mine:'My profile',none:'No scheme matches yet. Ask at your Panchayat or Anganwadi.',sayState:'🎤 Say your state'},
+   stateQ:'Which state do you live in?',distQ:'Which district? (optional)',distPh:'District name',saved:'Profile saved. See the schemes made for you.',mine:'My profile',none:'No scheme matches yet. Ask at your Panchayat or Anganwadi.',sayState:'🎤 Say your state',
+   locBtn:'Find my state',locV:'Tap the blue pin button and the phone will find your state. If the phone asks, tap Allow. Your place stays on this phone.',locWait:'Finding your place…',locAsk:'Is this your state?',locNo:'Location is off. Choose your state from the list below, or say it.',locFail:'Could not find your place. Choose your state from the list below, or say it.'},
  hi:{title:'मेरी प्रोफ़ाइल',priv:'आपके जवाब सिर्फ़ इसी फ़ोन में रहेंगे। इन्हें कहीं भेजा या रखा नहीं जाता। आप किसी भी सवाल को छोड़ सकती हैं और कभी भी सब मिटा सकती हैं।',start:'शुरू करें',skip:'बताना नहीं चाहती',skipQ:'छोड़ें',next:'आगे',done:'पूरा हुआ',
    basicT:'आम सेवाएँ – प्रोफ़ाइल की ज़रूरत नहीं',forYou:'आपके लिए योजनाएँ',popularT:'लोकप्रिय योजनाएँ',mk:'अपनी प्रोफ़ाइल बनाएँ',mkSub:'कुछ सवालों के जवाब दीजिए और अपने लिए योजनाएँ देखिए (ज़रूरी नहीं)',edit:'प्रोफ़ाइल बदलें',del:'मेरी जानकारी मिटाएँ',
-   stateQ:'आप किस राज्य में रहती हैं?',distQ:'कौन सा ज़िला? (ज़रूरी नहीं)',distPh:'ज़िले का नाम',saved:'प्रोफ़ाइल सेव हो गई। अपने लिए योजनाएँ देखिए।',mine:'मेरी प्रोफ़ाइल',none:'अभी कोई योजना नहीं मिली। पंचायत या आंगनवाड़ी में पूछिए।',sayState:'🎤 राज्य का नाम बोलिए'},
+   stateQ:'आप किस राज्य में रहती हैं?',distQ:'कौन सा ज़िला? (ज़रूरी नहीं)',distPh:'ज़िले का नाम',saved:'प्रोफ़ाइल सेव हो गई। अपने लिए योजनाएँ देखिए।',mine:'मेरी प्रोफ़ाइल',none:'अभी कोई योजना नहीं मिली। पंचायत या आंगनवाड़ी में पूछिए।',sayState:'🎤 राज्य का नाम बोलिए',
+   locBtn:'मेरा राज्य ढूँढिए',locV:'नीले पिन वाले बटन को दबाइए, फ़ोन आपका राज्य ढूँढ लेगा। फ़ोन पूछे तो Allow (अनुमति दें) दबाइए। आपकी जगह की जानकारी इसी फ़ोन में रहती है।',locWait:'आपकी जगह ढूँढ रहे हैं…',locAsk:'क्या यह आपका राज्य है?',locNo:'जगह की अनुमति नहीं मिली। नीचे दी गई सूची से अपना राज्य चुनिए या बोलिए।',locFail:'आपकी जगह नहीं मिली। नीचे दी गई सूची से अपना राज्य चुनिए या बोलिए।'},
  ta:{title:'என் சுயவிவரம்',priv:'உங்கள் பதில்கள் இந்த போனிலேயே இருக்கும். வேறு எங்கும் அனுப்பப்படாது, சேமிக்கப்படாது. எந்தக் கேள்வியையும் தவிர்க்கலாம், எப்போது வேண்டுமானாலும் அழிக்கலாம்.',start:'தொடங்குங்கள்',skip:'சொல்ல விரும்பவில்லை',skipQ:'தவிர்',next:'அடுத்து',done:'முடிந்தது',
    basicT:'அடிப்படைச் சேவைகள் – சுயவிவரம் தேவையில்லை',forYou:'உங்களுக்கான திட்டங்கள்',popularT:'பிரபலமான திட்டங்கள்',mk:'என் சுயவிவரத்தை உருவாக்கு',mkSub:'சில கேள்விகளுக்குப் பதில் சொல்லி உங்களுக்கான திட்டங்களைப் பாருங்கள் (விருப்பம்)',edit:'சுயவிவரத்தை மாற்று',del:'என் தகவலை அழி',
-   stateQ:'நீங்கள் எந்த மாநிலத்தில் வசிக்கிறீர்கள்?',distQ:'எந்த மாவட்டம்? (விருப்பம்)',distPh:'மாவட்டப் பெயர்',saved:'சுயவிவரம் சேமிக்கப்பட்டது. உங்களுக்கான திட்டங்களைப் பாருங்கள்.',mine:'என் சுயவிவரம்',none:'இன்னும் பொருந்தும் திட்டம் இல்லை. பஞ்சாயத்து அல்லது அங்கன்வாடியில் கேளுங்கள்.',sayState:'🎤 மாநிலத்தின் பெயரைச் சொல்லுங்கள்'},
+   stateQ:'நீங்கள் எந்த மாநிலத்தில் வசிக்கிறீர்கள்?',distQ:'எந்த மாவட்டம்? (விருப்பம்)',distPh:'மாவட்டப் பெயர்',saved:'சுயவிவரம் சேமிக்கப்பட்டது. உங்களுக்கான திட்டங்களைப் பாருங்கள்.',mine:'என் சுயவிவரம்',none:'இன்னும் பொருந்தும் திட்டம் இல்லை. பஞ்சாயத்து அல்லது அங்கன்வாடியில் கேளுங்கள்.',sayState:'🎤 மாநிலத்தின் பெயரைச் சொல்லுங்கள்',
+   locBtn:'என் மாநிலத்தைக் கண்டுபிடி',locV:'நீல நிற பின் பொத்தானைத் தொடுங்கள், போன் உங்கள் மாநிலத்தைக் கண்டுபிடிக்கும். போன் கேட்டால் Allow (அனுமதி) தொடுங்கள். உங்கள் இருப்பிடம் இந்த போனிலேயே இருக்கும்.',locWait:'உங்கள் இடத்தைத் தேடுகிறோம்…',locAsk:'இது உங்கள் மாநிலமா?',locNo:'இருப்பிட அனுமதி கிடைக்கவில்லை. கீழே உள்ள பட்டியலில் உங்கள் மாநிலத்தைத் தேர்ந்தெடுங்கள் அல்லது சொல்லுங்கள்.',locFail:'உங்கள் இடத்தைக் கண்டுபிடிக்க முடியவில்லை. கீழே உள்ள பட்டியலில் உங்கள் மாநிலத்தைத் தேர்ந்தெடுங்கள் அல்லது சொல்லுங்கள்.'},
  te:{title:'నా ప్రొఫైల్',priv:'మీ సమాధానాలు ఈ ఫోన్‌లోనే ఉంటాయి. వేరే ఎక్కడికీ పంపబడవు, నిల్వ చేయబడవు. ఏ ప్రశ్ననైనా వదిలేయవచ్చు, ఎప్పుడైనా తొలగించవచ్చు.',start:'మొదలుపెట్టండి',skip:'చెప్పదలచుకోలేదు',skipQ:'వదిలేయి',next:'తరువాత',done:'పూర్తయింది',
    basicT:'ప్రాథమిక సేవలు – ప్రొఫైల్ అవసరం లేదు',forYou:'మీ కోసం పథకాలు',popularT:'ప్రసిద్ధ పథకాలు',mk:'నా ప్రొఫైల్ చేయండి',mkSub:'కొన్ని ప్రశ్నలకు సమాధానం ఇచ్చి మీ కోసం పథకాలు చూడండి (ఐచ్ఛికం)',edit:'ప్రొఫైల్ మార్చండి',del:'నా సమాచారం తొలగించు',
-   stateQ:'మీరు ఏ రాష్ట్రంలో ఉంటారు?',distQ:'ఏ జిల్లా? (ఐచ్ఛికం)',distPh:'జిల్లా పేరు',saved:'ప్రొఫైల్ సేవ్ అయింది. మీ కోసం పథకాలు చూడండి.',mine:'నా ప్రొఫైల్',none:'ఇంకా సరిపోయే పథకం లేదు. పంచాయతీ లేదా అంగన్‌వాడీలో అడగండి.',sayState:'🎤 రాష్ట్రం పేరు చెప్పండి'}
+   stateQ:'మీరు ఏ రాష్ట్రంలో ఉంటారు?',distQ:'ఏ జిల్లా? (ఐచ్ఛికం)',distPh:'జిల్లా పేరు',saved:'ప్రొఫైల్ సేవ్ అయింది. మీ కోసం పథకాలు చూడండి.',mine:'నా ప్రొఫైల్',none:'ఇంకా సరిపోయే పథకం లేదు. పంచాయతీ లేదా అంగన్‌వాడీలో అడగండి.',sayState:'🎤 రాష్ట్రం పేరు చెప్పండి',
+   locBtn:'నా రాష్ట్రం కనుగొనండి',locV:'నీలం పిన్ బటన్ నొక్కండి, ఫోన్ మీ రాష్ట్రాన్ని కనుగొంటుంది. ఫోన్ అడిగితే Allow (అనుమతించు) నొక్కండి. మీ స్థానం ఈ ఫోన్‌లోనే ఉంటుంది.',locWait:'మీ స్థలం వెతుకుతున్నాం…',locAsk:'ఇది మీ రాష్ట్రమా?',locNo:'స్థానం అనుమతి రాలేదు. కింద ఉన్న జాబితాలో మీ రాష్ట్రాన్ని ఎంచుకోండి లేదా చెప్పండి.',locFail:'మీ స్థలం కనుగొనలేకపోయాం. కింద ఉన్న జాబితాలో మీ రాష్ట్రాన్ని ఎంచుకోండి లేదా చెప్పండి.'}
 };
 const YN=(k,en,hi,te,ta)=>({k,q:M4(en,hi,te,ta),o:[['yes',null],['no',null]]});
 const PQ=[
@@ -807,6 +837,19 @@ function home(){
 }
 
 // ---------- Profile wizard: intro → state → district → one question at a time ----------
+/**
+ * Ask the phone where she is and turn it into a state code, all on the phone. Coarse accuracy is enough for a
+ * state and works indoors from mobile towers. The coordinates live only inside this function: they are not sent,
+ * not stored and not shown. Rejects with 'denied' (she said no) or 'fail' (no signal, no match, not in India).
+ */
+function locateState(){
+  if(!navigator.geolocation) return Promise.reject('fail');
+  const pos = new Promise((ok, no) => navigator.geolocation.getCurrentPosition(ok, e => no(e && e.code===1 ? 'denied' : 'fail'),
+    { enableHighAccuracy:false, timeout:20000, maximumAge:600000 }));
+  const geo = fetch('states.geo.json').then(r => r.ok ? r.json() : Promise.reject('fail'));
+  geo.catch(()=>{});   // a failed download is reported once, after the position
+  return pos.then(p => geo.then(g => stateAt(p.coords.latitude, p.coords.longitude, g) || Promise.reject('fail'), () => Promise.reject('fail')));
+}
 function profFlow(edit){ draft = edit && profile ? {...profile} : {}; pstep = 0; inProfile = true; cur = null; profScreen(); }
 function profScreen(){
   if(pstep >= 3+PQ.length) return profSave();
@@ -820,6 +863,7 @@ function profScreen(){
   }
   if(pstep===1){
     main.innerHTML = `<div class="card">${prog}<div class="big">${p.stateQ}</div>
+      <button class="btn loc" id="loc"><span class="ic" aria-hidden="true">📍</span>${p.locBtn}</button>
       <button class="btn pink mic" id="mic">${p.sayState}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
       <div class="grid1">${STATES.map(r=>`<button class="btn ghost st" data-c="${r[0]}">${r[SIDX[lang]]}</button>`).join('')}</div>
       <button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
@@ -828,7 +872,11 @@ function profScreen(){
     $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
       listen(txt=>{ const low=txt.toLowerCase(); const r=STATES.find(r=>r.slice(1).some(n=>low.includes(n.toLowerCase())) || low.includes(r[0].toLowerCase()+' ') );
         if(r) pick(r[0]); else $('#msg').textContent=t.noheard; }, m=>{ $('#msg').textContent=m; }, w=>{ $('#msg').textContent='“'+w+'”'; }); };
-    autoSay(p.stateQ); return;
+    // location is asked for only after she taps the pin button, then she confirms the state with a big Yes / No
+    $('#loc').onclick = () => { const b=$('#loc'); b.disabled=true; $('#msg').textContent=p.locWait; autoSay(p.locWait);
+      locateState().then(code => { if(pstep===1 && main.contains(b)) locConfirm(code, pick); },
+        why => { if(pstep!==1 || !main.contains(b)) return; b.disabled=false; const m = why==='denied'? p.locNo : p.locFail; $('#msg').textContent=m; autoSay(m); }); };
+    autoSay(p.stateQ+' '+p.locV); return;
   }
   if(pstep===2){
     main.innerHTML = `<div class="card">${prog}<div class="big">${p.distQ}</div>
@@ -849,6 +897,15 @@ function profScreen(){
   const next=v=>{ if(v) draft[q.k]=v; else delete draft[q.k]; pstep++; profScreen(); };
   main.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>next(b.dataset.v)); $('#sk').onclick=()=>next(null);
   autoSay(qt);
+}
+/** "Is this your state?" with the state's name big and a big Yes / No; No goes back to the list. */
+function locConfirm(code, pick){
+  const p = PU[lang], t = T(), name = stName(code, lang);
+  screen({v:'prof',p:1,loc:code});
+  main.innerHTML = `<div class="card"><div class="emoji">📍</div><div class="big">${esc(name)}</div><div class="sub">${p.locAsk}</div>
+    <div class="row"><button class="btn yes yn" id="y">✅ ${t.yes}</button><button class="btn no yn" id="n">❌ ${t.no}</button></div></div>`;
+  $('#y').onclick = () => pick(code); $('#n').onclick = () => { if(history.state && history.state.loc) history.back(); else profScreen(); };
+  autoSay(name+'. '+p.locAsk);
 }
 function profSave(){
   profile = {...draft}; saveProfile(); dots(); screen({v:'saved'});

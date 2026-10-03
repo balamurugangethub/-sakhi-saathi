@@ -12,6 +12,7 @@ A voice-first guide that helps first-time women users in India find government s
 | `npm test` | all tests (server, app, data layer) – must pass before every push |
 | `npm run check` | syntax check of server, app and data scripts |
 | `npm run data:build` / `data:check` / `data:check:strict` | extract, validate and freshness-check the scheme data |
+| `npm run data:geo` | rebuild `public/states.geo.json` (state map for "Find my state", lookup runs on the phone) |
 | `GEMINI_API_KEY=... node server.js` | run locally on :8080 (without a key the app works in the 4 core languages) |
 | `node tools/mock-gemini.js` + `GEMINI_BASE=http://localhost:9090 GEMINI_API_KEY=test node server.js` | exercise AI paths without a real key |
 
@@ -19,7 +20,7 @@ A voice-first guide that helps first-time women users in India find government s
 `public/` the app (`app.js` holds all scheme content and UI, no framework, no inline scripts) · `server.js` zero-dependency Node server + Gemini proxy · `data/` extraction, validation, provenance (`sources.json`) · `test/` · `tools/` · `docs/` · `Dockerfile` (Cloud Run).
 
 ## Rules that must not be broken
-- **No personal data.** No accounts, no tracking of individuals. The optional user profile lives only in the browser's localStorage and is never sent anywhere. Any analytics must be aggregate and anonymous (see roadmap phase 2); no IP, no persistent ids, no free text.
+- **No personal data.** No accounts, no tracking of individuals. The optional user profile lives only in the browser's localStorage and is never sent anywhere. GPS ("Find my state") is turned into a state on the phone; coordinates are never sent or stored. Any analytics must be aggregate and anonymous (see roadmap phase 2); no IP, no persistent ids, no free text.
 - **The Gemini key exists only on the server** (`GEMINI_API_KEY`). Never in client code, the repo, chat, or logs. Never ask the owner to paste it.
 - **Never set `last_verified` in `data/sources.json` for facts that were not actually re-checked**, and always record the `evidence_url`.
 - Scheme facts change often (state governments rename and re-price schemes). Verify against an official or reputable source before editing amounts.
