@@ -64,7 +64,7 @@ const lbl = x => typeof x==='string' ? x : x[lang];
 // ============ UI strings per language ============
 const U = {
   hi:{site:'सरकारी वेबसाइट',siteBtn:'वेबसाइट खोलें',siteNote:'यह सरकारी वेबसाइट है। वापस आने के लिए फ़ोन का बैक बटन दबाइए। अपना OTP या पिन किसी को न बताइए।',share:'WhatsApp पर भेजें',stepBtn:'एक-एक करके सुनें',stepOf:'कदम',nextS:'आगे',bigOn:'बड़े अक्षर',install:'ऐप इंस्टॉल करें',shareHead:'सखी साथी से जानकारी',vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
-    pick:'अपनी भाषा चुनिए',
+    pick:'अपनी भाषा चुनिए',skip:'मुख्य भाग पर जाएँ',moreL:'और भाषाएँ…',foot:'सखी साथी · जानकारी सरकारी योजना के नियमों से ली गई है। पक्की जानकारी अपनी आंगनवाड़ी, बैंक या जन सेवा केंद्र पर पूछ लीजिए।',
     homeT:'आपको किस काम में मदद चाहिए?',homeSub:'तस्वीर दबाइए, या बोलकर बताइए',
     homeV:'नमस्ते बहन! मैं सखी साथी हूँ। नीचे तस्वीर दबाइए, या माइक दबाकर बोलिए कि आपको क्या चाहिए। जैसे: गैस सिलेंडर, बैंक खाता, या इलाज।',
     need:'🎤 बोलकर बताइए आपको क्या चाहिए',startBtn:'शुरू करें',
@@ -79,7 +79,7 @@ const U = {
     docRe:/कागज|दस्तावेज|डॉक्यूमेंट|क्या ले|क्या-क्या/,whereRe:/कहाँ|कहां|कैसे|फ़ॉर्म|फॉर्म|आवेदन|क्या करना/,moneyRe:/पैसे|रुपये|रुपए|कितना|किस्त|फायदा|लाभ|मिलेगा/,
     yesRe:/हाँ|हां|हा\b|जी|ठीक|सही|yes|yeah/i,noRe:/नहीं|नही|ना\b|no\b/i},
   ta:{site:'அரசு இணையதளம்',siteBtn:'இணையதளத்தைத் திற',siteNote:'இது அரசு இணையதளம். திரும்பி வர போனின் பேக் பொத்தானை அழுத்துங்கள். உங்கள் OTP அல்லது பின்னை யாருக்கும் சொல்லாதீர்கள்.',share:'WhatsApp இல் பகிருங்கள்',stepBtn:'ஒவ்வொன்றாகக் கேளுங்கள்',stepOf:'படி',nextS:'அடுத்து',bigOn:'பெரிய எழுத்து',install:'ஆப்பை நிறுவுங்கள்',shareHead:'சகி சாத்தி தகவல்',vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
-    pick:'உங்கள் மொழியைத் தேர்ந்தெடுங்கள்',
+    pick:'உங்கள் மொழியைத் தேர்ந்தெடுங்கள்',skip:'முக்கிய பகுதிக்குச் செல்லுங்கள்',moreL:'மேலும் மொழிகள்…',foot:'சகி சாத்தி · தகவல் அரசுத் திட்ட வழிகாட்டுதல்களில் இருந்து எடுக்கப்பட்டது. விவரங்களை உங்கள் அங்கன்வாடி, வங்கி அல்லது இ-சேவை மையத்தில் உறுதி செய்யுங்கள்.',
     homeT:'உங்களுக்கு என்ன உதவி வேண்டும்?',homeSub:'படத்தை அழுத்துங்கள், அல்லது பேசிச் சொல்லுங்கள்',
     homeV:'வணக்கம் அக்கா! நான் சகி சாத்தி. கீழே உள்ள படத்தை அழுத்துங்கள், அல்லது மைக்கை அழுத்தி உங்களுக்கு என்ன வேண்டும் என்று சொல்லுங்கள். உதாரணம்: கேஸ் சிலிண்டர், வங்கிக் கணக்கு, மகளிர் உரிமைத் தொகை.',
     need:'🎤 உங்களுக்கு என்ன வேண்டும் என்று சொல்லுங்கள்',startBtn:'தொடங்குங்கள்',
@@ -94,7 +94,7 @@ const U = {
     docRe:/ஆவண|காகிதம்|என்ன எடுத்து|என்ன கொண்டு/,whereRe:/எங்கே|எங்க|எப்படி|படிவம்|விண்ணப்ப|என்ன செய்ய/,moneyRe:/பணம்|ரூபாய்|எவ்வளவு|தவணை|பலன்|கிடைக்கும்/,
     yesRe:/ஆம்|ஆமா|ஆமாம்|சரி|yes/i,noRe:/இல்லை|இல்ல|வேண்டாம்|no\b/i},
   te:{site:'ప్రభుత్వ వెబ్‌సైట్',siteBtn:'వెబ్‌సైట్ తెరవండి',siteNote:'ఇది ప్రభుత్వ వెబ్‌సైట్. తిరిగి రావడానికి ఫోన్ బ్యాక్ బటన్ నొక్కండి. మీ OTP లేదా పిన్ ఎవరికీ చెప్పకండి.',share:'WhatsApp లో షేర్ చేయండి',stepBtn:'ఒక్కొక్కటిగా వినండి',stepOf:'దశ',nextS:'తరువాత',bigOn:'పెద్ద అక్షరాలు',install:'యాప్ ఇన్‌స్టాల్ చేయండి',shareHead:'సఖి సాథి సమాచారం',vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
-    pick:'మీ భాషను ఎంచుకోండి',
+    pick:'మీ భాషను ఎంచుకోండి',skip:'ప్రధాన భాగానికి వెళ్ళండి',moreL:'మరిన్ని భాషలు…',foot:'సఖి సాథి · సమాచారం ప్రభుత్వ పథకాల మార్గదర్శకాల నుండి తీసుకున్నది. వివరాలను మీ అంగన్‌వాడీ, బ్యాంకు లేదా మీసేవ కేంద్రంలో నిర్ధారించుకోండి.',
     homeT:'మీకు ఏ సహాయం కావాలి?',homeSub:'బొమ్మ నొక్కండి, లేదా మాట్లాడి చెప్పండి',
     homeV:'నమస్కారం అక్కా! నేను సఖి సాథిని. కింద బొమ్మ నొక్కండి, లేదా మైక్ నొక్కి మీకు ఏం కావాలో చెప్పండి. ఉదాహరణ: గ్యాస్ సిలిండర్, బ్యాంకు ఖాతా, వైద్యం.',
     need:'🎤 మీకు ఏం కావాలో చెప్పండి',startBtn:'మొదలుపెట్టండి',
@@ -109,7 +109,7 @@ const U = {
     docRe:/పత్రాలు|కాగితాలు|ఏమి తీసుకె|ఏం తీసుకె/,whereRe:/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు|ఏం చేయాలి/,moneyRe:/డబ్బు|రూపాయ|ఎంత|విడత|లాభం|వస్తుంది/,
     yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i},
   en:{site:'Official website',siteBtn:'Open website',siteNote:'This is the government website. Press your phone Back button to return. Never tell anyone your OTP or PIN.',share:'Share on WhatsApp',stepBtn:'Listen step by step',stepOf:'Step',nextS:'Next',bigOn:'Large text',install:'Install app',shareHead:'From Sakhi Saathi',vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
-    pick:'Choose your language',
+    pick:'Choose your language',skip:'Skip to main content',moreL:'More languages…',foot:'Sakhi Saathi · Info from official scheme guidelines. Please confirm details at your Anganwadi / bank / e-Sevai centre.',
     homeT:'What help do you need?',homeSub:'Tap a picture, or speak',
     homeV:'Hello sister! I am Sakhi Saathi. Tap a picture below, or press the mic and tell me what you need. For example: gas cylinder, bank account, or treatment.',
     need:'🎤 Say what you need',startBtn:'Start',
@@ -146,7 +146,8 @@ const S = [
  { id:'ujjwala', e:'🎁', kw:/उज्ज्वला|उज्जवला|ujjwala|नया कनेक्शन|मुफ़्त गैस|मुफ्त गैस|కనెక్షన్|ఉజ్వల|இணைப்பு|உஜ்வலா|ujwala|connection|कनेक्सन|कनेक्शन/i,
    name:M('मुफ़्त गैस कनेक्शन (उज्ज्वला)','ఉచిత గ్యాస్ కనెక్షన్ (ఉజ్వల)','இலவச கேஸ் இணைப்பு (உஜ்வலா)'),
    d:M('गरीब परिवार की महिला को मुफ़्त गैस कनेक्शन।','పేద కుటుంబ మహిళకు ఉచిత గ్యాస్ కనెక్షన్.','ஏழைக் குடும்பப் பெண்ணுக்கு இலவச கேஸ் இணைப்பு.'),
-   qs:[M('क्या आपके घर में अभी गैस कनेक्शन नहीं है?','మీ ఇంట్లో ఇప్పటివరకు గ్యాస్ కనెక్షన్ లేదా?','உங்கள் வீட்டில் இப்போது கேஸ் இணைப்பு இல்லையா?'),
+   qNo:[0],   // asked positively ("do you already have...?"); "no" is the answer that continues
+   qs:[M('क्या आपके घर में पहले से गैस कनेक्शन है?','మీ ఇంట్లో ఇప్పటికే గ్యాస్ కనెక్షన్ ఉందా?','உங்கள் வீட்டில் ஏற்கனவே கேஸ் இணைப்பு உள்ளதா?'),
        M('क्या आपकी उम्र 18 साल से ज़्यादा है और आपके पास राशन कार्ड है (गरीब परिवार)?','మీ వయసు 18 కంటే ఎక్కువా, మీ దగ్గర రేషన్ కార్డు ఉందా (పేద కుటుంబం)?','உங்கள் வயது 18க்கு மேலா, உங்களிடம் ரேஷன் அட்டை உள்ளதா (ஏழைக் குடும்பம்)?')],
    docs:[['🪪',M('आधार कार्ड','ఆధార్ కార్డు','ஆதார் அட்டை')],['🧾',M('राशन कार्ड / BPL कार्ड','రేషన్ కార్డు / BPL కార్డు','ரேஷன் அட்டை / BPL அட்டை')],['🏦',M('बैंक पासबुक','బ్యాంకు పాస్‌బుక్','வங்கிப் புத்தகம்')],['📷',M('एक फ़ोटो','ఒక ఫోటో','ஒரு புகைப்படம்')]],
    where:M('अपने नज़दीकी गैस एजेंसी (डिस्ट्रीब्यूटर) पर जाइए और "उज्ज्वला का फ़ॉर्म" माँगिए। फ़ॉर्म भरकर कागज़ जमा कीजिए। आंगनवाड़ी दीदी या पंचायत से भी मदद मिल सकती है।',
@@ -205,7 +206,8 @@ const S = [
  { id:'jandhan', e:'🏦', kw:/बैंक|खाता|जन धन|जनधन|bank|account|బ్యాంకు|ఖాతా|வங்கி|கணக்கு|khata|khaata|paisa|पैसा|खाता|account/i,
    name:M('मुफ़्त बैंक खाता (जन धन)','ఉచిత బ్యాంకు ఖాతా (జన్ ధన్)','இலவச வங்கிக் கணக்கு (ஜன் தன்)'),
    d:M('बिना पैसे के अपने नाम पर बैंक खाता – सरकारी पैसे सीधे आपके हाथ में।','డబ్బు లేకుండా మీ పేరున బ్యాంకు ఖాతా – ప్రభుత్వ డబ్బు నేరుగా మీకే.','பணம் இல்லாமல் உங்கள் பெயரில் வங்கிக் கணக்கு – அரசுப் பணம் நேரடியாக உங்களுக்கே.'),
-   qs:[M('क्या आपके नाम पर अभी बैंक खाता नहीं है?','మీ పేరు మీద ఇప్పటివరకు బ్యాంకు ఖాతా లేదా?','உங்கள் பெயரில் இப்போது வங்கிக் கணக்கு இல்லையா?')],
+   qNo:[0],
+   qs:[M('क्या आपके नाम पर पहले से बैंक खाता है?','మీ పేరు మీద ఇప్పటికే బ్యాంకు ఖాతా ఉందా?','உங்கள் பெயரில் ஏற்கனவே வங்கிக் கணக்கு உள்ளதா?')],
    docs:[['🪪',M('आधार कार्ड (या वोटर कार्ड)','ఆధార్ కార్డు (లేదా ఓటరు కార్డు)','ஆதார் அட்டை (அல்லது வாக்காளர் அட்டை)')],['📷',M('एक फ़ोटो','ఒక ఫోటో','ஒரு புகைப்படம்')],['📱',M('मोबाइल नंबर','మొబైల్ నంబర్','மொபைல் எண்')]],
    where:M('अपने गाँव के नज़दीकी बैंक, बैंक मित्र (CSC) या डाकघर जाइए और कहिए "मुझे जन धन खाता खुलवाना है"। फ़ॉर्म वहीं भरवा देंगे।',
            'మీ ఊరికి దగ్గరలోని బ్యాంకు, బ్యాంక్ మిత్ర (CSC) లేదా పోస్టాఫీసుకు వెళ్ళి "నాకు జన్ ధన్ ఖాతా కావాలి" అని చెప్పండి. ఫారం అక్కడే నింపిస్తారు.',
@@ -249,7 +251,7 @@ const EN = {
   info:'Do not pay more than the fixed price. If you smell gas, do not touch fire or electric switches, open doors and windows and call 1906. Check the number with your gas book or agency to be sure.',
   calls:['','','','Gas leak – emergency']},
  ujjwala:{name:'Free gas connection (Ujjwala)',d:'Free gas connection for a woman from a poor family.',
-  qs:['Does your home not have a gas connection yet?','Are you above 18 and do you have a ration card (poor family)?'],
+  qs:['Does your home already have a gas connection?','Are you above 18 and do you have a ration card (poor family)?'],
   docs:['Aadhaar card','Ration card / BPL card','Bank passbook','One photo'],
   where:'Go to the nearest gas agency (distributor) and ask for the "Ujjwala form". Fill it and submit your papers. The Anganwadi worker or panchayat can also help.',
   info:'The connection is free and a subsidy on cylinders may also be available. If any agent asks for money, do not pay.',calls:['Gas helpline']},
@@ -269,7 +271,7 @@ const EN = {
   where:'Go to your nearest post office or bank and ask for the "Sukanya Samriddhi account" form.',
   info:'You can open the account with just ₹250 and deposit up to ₹1.5 lakh a year. The government sets the interest, which is higher than normal savings. After the girl turns 18, some money can be taken out for her studies.',calls:['Post office helpline']},
  jandhan:{name:'Free bank account (Jan Dhan)',d:'A bank account in your own name with no money needed – government money comes straight to you.',
-  qs:['Do you not have a bank account in your own name yet?'],
+  qs:['Do you already have a bank account in your own name?'],
   docs:['Aadhaar card (or voter card)','One photo','Mobile number'],
   where:'Go to the nearest bank, Bank Mitra (CSC) or post office and say "I want to open a Jan Dhan account". They will fill the form there.',
   info:'Keeping ₹0 in the account is fine. You get a RuPay debit card and ₹2 lakh accident insurance. Money from all government schemes comes into this account.',calls:['Jan Dhan helpline']},
@@ -554,9 +556,11 @@ async function say(text){
   if(vs.length && lang!=='en') note(T().vNone); else speakLocal(text, null);
 }
 
-// Voice is OFF until she (or a helper) turns it on; the 🔊 Listen buttons always work.
-let voiceOn = store.get('voice')==='1';
-const autoSay = text => { if(voiceOn) say(text); };
+// Many users cannot read, so voice is ON unless she (or a helper) turned it off. Nothing speaks before her
+// first tap (choosing a language), which browsers also require before speech; the 🔊 Listen buttons always work.
+let voiceOn = store.get('voice')!=='0', tapped = false;
+['click','keydown'].forEach(t=>document.addEventListener(t, ()=>{ tapped = true; }, {capture:true}));
+const autoSay = text => { if(voiceOn && tapped) say(text); };
 function paintVoice(){
   const b=$('#vt'); b.textContent = voiceOn ? T().vOn : T().vOff; b.setAttribute('aria-pressed', String(voiceOn));
 }
@@ -678,10 +682,45 @@ function dots(){
   const n = cur.qs.length + 1;
   el.innerHTML = Array.from({length:n},(_,i)=>`<div class="dot ${i<=step?'on':''}"></div>`).join('');
 }
+// ============ Screens and the phone Back button ============
+// Every screen is a browser history entry, so the phone's Back button goes to the previous screen
+// instead of closing the app. Each new screen starts at the top, and focus moves to its heading so
+// screen readers announce it.
+let restoring = false;
+function screen(st){
+  if(!restoring){
+    const now = history.state;
+    if(!now) history.replaceState(st, '');
+    else if(JSON.stringify(now)!==JSON.stringify(st)) history.pushState(st, '');
+  }
+  queueMicrotask(()=>{
+    try{ if(window.scrollY) window.scrollTo(0,0); }catch(e){}
+    const h = main.querySelector('h1, .big') || main;
+    if(h!==main) h.setAttribute('tabindex','-1');
+    try{ h.focus({preventScroll:true}); }catch(e){}
+  });
+}
+addEventListener('popstate', e => {
+  const st = e.state; if(!st) return;
+  stopSpeech(); try{ if(recog) recog.abort(); }catch(err){}
+  const s = st.id && S.find(x=>x.id===st.id);
+  restoring = true;
+  try{
+    if(st.v==='lang') langScreen();
+    else if(st.v==='prof'){ pstep = st.p; inProfile = true; cur = null; profScreen(); }
+    else if(s && st.v==='q'){ cur = s; step = st.step; eligible = true; flow(); }
+    else if(s && st.v==='res'){ cur = s; eligible = st.ok; result(); }
+    else if(s && st.v==='steps'){ cur = s; eligible = true; stepScreen(st.i); }
+    else if(s && st.v==='ask'){ cur = s; eligible = true; askScreen(); }
+    else home();
+  } finally { restoring = false; }
+});
+
 function setLang(l){
   lang = l; store.set('lang',l); document.documentElement.lang = l;
-  document.querySelectorAll('.lang[data-l]').forEach(x=>x.classList.toggle('on',x.dataset.l===l));
-  const mo=$('#more'); if(mo) mo.value = EXTRA.some(e=>e[0]===l) ? l : '';
+  document.querySelectorAll('.lang[data-l]').forEach(x=>{ x.classList.toggle('on',x.dataset.l===l); x.setAttribute('aria-pressed', String(x.dataset.l===l)); });
+  const mo=$('#more'); if(mo){ mo.value = EXTRA.some(e=>e[0]===l) ? l : ''; if(mo.options[0]) mo.options[0].textContent = T().moreL; }
+  $('.skip').textContent = T().skip; $('#foot').textContent = T().foot;
   paintVoice(); stopSpeech(); note('');
   if(typeof paintBig==='function') paintBig();
   const ib=$('#inst'); if(ib) ib.textContent = T().install;
@@ -720,7 +759,7 @@ const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" 
 </svg>`;
 
 function langScreen(){
-  cur = null; inProfile = false; dots();
+  cur = null; inProfile = false; dots(); screen({v:'lang'});
   const LG=[['hi','हि','हिन्दी',['#c2185b','#f48fb1']],['ta','த','தமிழ்',['#1a56c7','#5b9bff']],['te','తె','తెలుగు',['#2e7d32','#86d08a']],['en','Aa','English',['#e8590c','#ffa94d']]];
   main.innerHTML = `<section class="hero" style="display:block;margin:0 auto;text-align:center"><div class="over">Sakhi Saathi · सखी साथी</div><h1>भाषा चुनिए · மொழி · భాష · Language</h1></section>
     <div class="grid" style="max-width:620px;margin:10px auto 0">${LG.map(l=>`<button class="tile" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="font-size:36px;font-weight:700;color:${l[3][0]}">${l[1]}</span><span class="t" style="font-size:22px">${l[2]}</span></button>`).join('')}</div>`;
@@ -731,7 +770,7 @@ function langScreen(){
 
 function profLine(){ return esc(stName(profile.state,lang)) + (profile.district? ', '+esc(profile.district) : ''); }
 function home(){
-  cur = null; step = 0; inProfile = false; dots();
+  cur = null; step = 0; inProfile = false; dots(); screen({v:'home'});
   const t = T(), p = PU[lang];
   const basic = S.filter(x=>x.basic);
   const list = S.filter(x=>!x.basic && (profile ? fit(x,profile) : !x.stateOnly));
@@ -759,6 +798,8 @@ function home(){
 // ---------- Profile wizard: intro → state → district → one question at a time ----------
 function profFlow(edit){ draft = edit && profile ? {...profile} : {}; pstep = 0; inProfile = true; cur = null; profScreen(); }
 function profScreen(){
+  if(pstep >= 3+PQ.length) return profSave();
+  screen({v:'prof',p:pstep});
   dots(); const p = PU[lang], t = T(), total = 2 + PQ.length;
   const prog = pstep>0 ? `<div class="note">${pstep} / ${total}</div>` : '';
   if(pstep===0){
@@ -799,7 +840,7 @@ function profScreen(){
   autoSay(qt);
 }
 function profSave(){
-  profile = {...draft}; saveProfile(); dots();
+  profile = {...draft}; saveProfile(); dots(); screen({v:'saved'});
   const p = PU[lang];
   main.innerHTML = `<div class="card"><div class="emoji">✅</div><div class="big">${p.saved}</div><div class="ans" style="text-align:center">${profile.state? profLine() : '—'}</div>
     <button class="btn yes" id="ok">${p.forYou}</button></div>`;
@@ -832,14 +873,16 @@ function flow(){
   dots();
   const t = T(), s = cur, n = s.qs.length;
   if(step >= n){ return result(); }
+  screen({v:'q',id:s.id,step});
   const q = s.qs[step][lang];
   main.innerHTML = `<div class="card"><div class="emoji">${s.e}</div>
     ${step===0?`<div class="sub"><b>${s.name[lang]}</b></div><div class="sub">${s.d[lang]}</div>`:''}
     <div class="big">${q}</div>${listenBtn(q)}
     <div class="row"><button class="btn yes" id="y">✅ ${t.yes}</button><button class="btn no" id="n">❌ ${t.no}</button></div>
-    <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub"></div>
+    <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
     <button class="btn ghost" id="home">${t.home}</button></div>`;
-  const answer = ok => { if(!ok) eligible=false; if(!ok) return result(); step++; flow(); };
+  const want = !(s.qNo||[]).includes(step);   // the answer that keeps her eligible
+  const answer = said => { if(said!==want){ eligible=false; return result(); } step++; flow(); };
   $('#y').onclick=()=>answer(true); $('#n').onclick=()=>answer(false); $('#home').onclick=home;
   $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
     listen(txt=>{ if(t.yesRe.test(txt)&&!t.noRe.test(txt)) answer(true); else if(t.noRe.test(txt)) answer(false); else $('#msg').textContent=t.noheard; },
@@ -848,7 +891,7 @@ function flow(){
 }
 
 function callsHtml(s){
-  return s.calls.map(c=>`<a class="call" href="tel:${encodeURIComponent(c[1])}"><button class="btn ghost">📞 ${lbl(c[0])}<br>${c[1]}</button></a>`).join('');
+  return s.calls.map(c=>`<a class="btn ghost call" href="tel:${encodeURIComponent(c[1])}"><span>📞 ${lbl(c[0])}</span><span>${c[1]}</span></a>`).join('');
 }
 
 function shareText(s){
@@ -865,6 +908,7 @@ function stepsOf(s){
 }
 function stepScreen(i){
   const t = T(), list = stepsOf(cur); i = Math.max(0, Math.min(i, list.length-1)); const txt = list[i];
+  screen({v:'steps',id:cur.id,i});
   main.innerHTML = `<div class="card"><div class="over">${t.stepOf} ${i+1} / ${list.length}</div><div class="big">${esc(txt)}</div>${listenBtn(txt)}
     <div class="row">${i>0 ? `<button class="btn ghost" id="sp">${t.back}</button>` : '<span></span>'}${i<list.length-1 ? `<button class="btn pink" id="sn">${t.nextS}</button>` : `<button class="btn yes" id="sd">${PU[lang].done}</button>`}</div>
     <button class="btn ghost" id="sb">${t.home}</button></div>`;
@@ -884,6 +928,7 @@ function linksHtml(s){
 function result(){
   dots();
   const t = T(), s = cur;
+  screen({v:'res',id:s.id,ok:eligible});
   if(!eligible){
     main.innerHTML = `<div class="card"><div class="emoji">🙏</div><div class="big">${t.noT}</div>${listenBtn(t.noV)}
       <button class="btn pink" id="home">${t.home}</button>${callsHtml(s)}</div>`;
@@ -909,9 +954,9 @@ function result(){
 
 // ============ Ask a question about the current scheme ============
 function askScreen(){
-  const t = T();
+  const t = T(); screen({v:'ask',id:cur.id});
   main.innerHTML = `<div class="card"><div class="emoji">🎤</div><div class="big">${t.askT}</div>
-    <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub"></div><div id="out"></div>
+    <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div><div id="out" aria-live="polite"></div>
     <button class="btn ghost" id="back">${t.back}</button></div>`;
   $('#back').onclick = result;
   $('#mic').onclick = e => { e.currentTarget.classList.add('rec'); $('#msg').textContent=t.listening;
@@ -949,11 +994,11 @@ if('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator
 $('#vt').onclick = toggleVoice;
 document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.l));
 const more = $('#more');
-more.innerHTML = '<option value="">More languages…</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
+more.innerHTML = '<option value="">'+esc(T().moreL)+'</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
 more.onchange = () => { if(more.value) chooseLang(more.value); };
 paintBig();
-const sl = store.get('lang'); if(sl&&U[sl]) setLang(sl); else setLang('hi');
-langScreen();
+// A returning user goes straight to the home screen in her language; the header still lets her change it.
+const sl = store.get('lang'); if(sl&&U[sl]){ setLang(sl); home(); } else { setLang('hi'); langScreen(); }
 fetch('/api/health').then(r=>r.ok?r.json():null).then(j=>{
   API.ai = !!(j && j.ai); more.hidden = !API.ai;
   if(!API.ai) return;

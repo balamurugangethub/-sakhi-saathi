@@ -79,7 +79,7 @@ test('every service flow reaches a result screen in every language, with no emoj
     for (let i = 0; i < n; i++) {
       ev(`open(S[${i}].id)`); await tick();
       const q = ev(`S[${i}].qs.length`);
-      for (let k = 0; k < q; k++) { win.document.querySelector('#y').click(); await tick(); }
+      for (let k = 0; k < q; k++) { win.document.querySelector(ev(`(S[${i}].qNo||[]).includes(${k})`) ? '#n' : '#y').click(); await tick(); }
       assert.ok(win.document.querySelector('#ask'), `result missing ${i} ${l}`);
       assert.ok(!EMOJI.test(win.document.getElementById('app').textContent), `emoji in result ${i} ${l}`);
     }
@@ -122,9 +122,15 @@ test('accessibility basics: lang attribute, labelled controls, live regions, hid
   d.querySelectorAll('button').forEach(b => assert.ok((b.textContent || '').trim() || b.getAttribute('aria-label'), 'unlabelled button ' + b.className));
 });
 
-test('voice is OFF by default and nothing speaks automatically', () => {
-  assert.equal(ev('voiceOn'), false);
-  assert.equal(win.document.querySelector('#vt').getAttribute('aria-pressed'), 'false');
+test('voice is ON by default (many users cannot read), but nothing speaks before her first tap or after she turns it off', () => {
+  assert.equal(ev('voiceOn'), true);
+  assert.equal(win.document.querySelector('#vt').getAttribute('aria-pressed'), 'true');
+  const spoken = ev(`(()=>{ const out=[], real=say; say = t=>out.push(t);
+    tapped=false; autoSay('a');            // page just opened: silent
+    tapped=true;  autoSay('b');            // after a tap: speaks
+    voiceOn=false; autoSay('c'); voiceOn=true;   // turned off: silent
+    say = real; return out; })()`);
+  assert.deepEqual(Array.from(spoken), ['b']);
 });
 
 test('no inline event handlers or secrets in the shipped HTML/JS', () => {
@@ -216,4 +222,57 @@ test('keyboard users get a skip link that targets a focusable main landmark', ()
   assert.ok(skip);
   assert.equal(skip.getAttribute('href'), '#main');
   assert.equal(d.querySelector('main#main').getAttribute('tabindex'), '-1');
+});
+
+test('the phone Back button goes to the previous screen instead of leaving the app', async () => {
+  const d = win.document, back = () => new Promise(r => { win.addEventListener('popstate', () => setTimeout(r, 0), { once: true }); win.history.back(); });
+  ev(`setLang('en'); home();`); await tick();
+  ev(`open('pmmvy')`); await tick();
+  d.querySelector('#y').click(); await tick();               // question 2
+  assert.equal(ev('step'), 1);
+  await back();                                             // back to question 1
+  assert.equal(ev('cur && cur.id'), 'pmmvy');
+  assert.equal(ev('step'), 0);
+  assert.ok(d.querySelector('#y'));
+  await back();                                             // back to home
+  assert.equal(ev('cur'), null);
+  assert.ok(d.querySelector('#mic.search'));
+});
+
+test('questions are asked positively; for "do you already have...?" a "no" continues', async () => {
+  const d = win.document;
+  ev(`setLang('en'); open('jandhan')`); await tick();
+  assert.doesNotMatch(d.querySelector('.big').textContent, /\bnot\b/);
+  d.querySelector('#y').click(); await tick();               // already has an account
+  assert.equal(ev('eligible'), false);
+  ev(`open('jandhan')`); await tick();
+  d.querySelector('#n').click(); await tick();               // no account yet
+  assert.equal(ev('eligible'), true);
+  assert.ok(d.querySelector('#ask'));
+});
+
+test('call buttons are single links (no button inside a link) and the footer and skip link follow the language', async () => {
+  const d = win.document;
+  ev(`setLang('ta'); open('lpg')`); await tick();
+  const calls = d.querySelectorAll('a.call');
+  assert.ok(calls.length >= 1);
+  calls.forEach(a => { assert.match(a.getAttribute('href'), /^tel:/); assert.equal(a.querySelector('button'), null); });
+  assert.equal(d.querySelector('#foot').textContent, ev('U.ta.foot'));
+  assert.equal(d.querySelector('a.skip').textContent, ev('U.ta.skip'));
+  assert.equal(d.querySelector('.lang[data-l="ta"]').getAttribute('aria-pressed'), 'true');
+  assert.equal(d.querySelector('.lang[data-l="hi"]').getAttribute('aria-pressed'), 'false');
+});
+
+test('a returning user skips the language screen and lands on home in her language', () => {
+  const root = path.join(__dirname, '..', 'public');
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/<script[^>]*src="app.js"[^>]*><\/script>/, '');
+  const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only', pretendToBeVisual: true });
+  dom.window.fetch = () => Promise.reject(new Error('offline'));
+  dom.window.localStorage.setItem('lang', 'te');
+  new vm.Script(fs.readFileSync(path.join(root, 'app.js'), 'utf8')).runInContext(dom.getInternalVMContext());
+  const d = dom.window.document;
+  assert.equal(d.querySelector('.tile[data-l]'), null);
+  assert.ok(d.querySelector('#mic.search'));
+  assert.equal(d.documentElement.lang, 'te');
+  dom.window.close();
 });
