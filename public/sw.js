@@ -1,7 +1,7 @@
 'use strict';
 // Offline shell: static files are served from cache instantly and refreshed in the background.
 // /api/* (including /api/health) is never cached (answers, translations and audio must always be live).
-const CACHE = 'sakhi-v2';
+const CACHE = 'sakhi-v3';
 const SHELL = ['/', '/index.html', '/app.js', '/style.css', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', e => {

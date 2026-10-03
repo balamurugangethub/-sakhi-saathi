@@ -264,7 +264,8 @@ const ROUTES = {
   '/api/ask': { validate: validateAsk, run: apiAsk, max: 20 },
   '/api/route': { validate: validateRoute, run: apiRoute, max: 20 },
   '/api/translate': { validate: validateTranslate, run: apiTranslate, max: 40 },
-  '/api/tts': { validate: validateTts, run: apiTts, max: 30, audio: true }
+  // speech is fetched one sentence group at a time (so it starts sooner), which takes a few more requests
+  '/api/tts': { validate: validateTts, run: apiTts, max: 60, audio: true }
 };
 
 async function handleApi(req, res, pathname) {
