@@ -292,3 +292,32 @@ test('Magalir Urimai: "no" to the government-job question continues, "yes" ends 
     assert.equal(ev('eligible'), ok);
   }
 });
+
+test('redesign: header language button, Yes/No right under the question, picture rows on the result', async () => {
+  const d = win.document;
+  ev(`setLang('ta'); home();`); await tick();
+  const lb = d.querySelector('#lgb');
+  assert.match(lb.textContent, /தமிழ்/);                          // shows the current language by its own name
+  assert.match(lb.getAttribute('aria-label'), /மொழி/);
+  lb.click(); await tick();
+  assert.equal(d.querySelectorAll('.tile[data-l]').length, 4);  // opens the big language tiles
+  d.querySelector('.tile[data-l="en"]').click(); await tick();
+  assert.equal(ev('lang'), 'en');
+  assert.ok(d.querySelector('#mic.search'));                     // and lands on home
+  assert.equal(d.querySelectorAll('.strip').length, 0);         // no sideways-scrolling rows
+  // the voice switch keeps its words for screen readers even when phones show only the icon
+  const vt = d.querySelector('#vt');
+  assert.match(vt.textContent, /Voice (on|off)/);
+  // question: Yes and No come before "Listen again" and the other buttons
+  ev(`open('pmmvy')`); await tick();
+  const order = Array.from(d.querySelectorAll('#main button')).map(b => b.id || b.className);
+  assert.ok(order.indexOf('y') < order.findIndex(x => /listen/.test(x)), order.join(','));
+  // result: every call button shows its number; documents are a picture list
+  ev(`eligible=true; result();`); await tick();
+  d.querySelectorAll('a.call').forEach(a => assert.match(a.textContent, /[0-9*#]{3,}/));
+  assert.ok(d.querySelectorAll('ul.docs li .i').length >= 2);
+  // profile questions show a progress bar
+  ev(`profFlow(false); pstep=3; profScreen();`); await tick();
+  assert.ok(d.querySelector('.bar[role="progressbar"] i'));
+  ev(`home()`);
+});

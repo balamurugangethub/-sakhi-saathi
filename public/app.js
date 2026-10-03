@@ -63,7 +63,7 @@ const lbl = x => typeof x==='string' ? x : x[lang];
 
 // ============ UI strings per language ============
 const U = {
-  hi:{site:'सरकारी वेबसाइट',siteBtn:'वेबसाइट खोलें',siteNote:'यह सरकारी वेबसाइट है। वापस आने के लिए फ़ोन का बैक बटन दबाइए। अपना OTP या पिन किसी को न बताइए।',share:'WhatsApp पर भेजें',stepBtn:'एक-एक करके सुनें',stepOf:'कदम',nextS:'आगे',bigOn:'बड़े अक्षर',install:'ऐप इंस्टॉल करें',shareHead:'सखी साथी से जानकारी',vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
+  hi:{langB:'भाषा बदलें',site:'सरकारी वेबसाइट',siteBtn:'वेबसाइट खोलें',siteNote:'यह सरकारी वेबसाइट है। वापस आने के लिए फ़ोन का बैक बटन दबाइए। अपना OTP या पिन किसी को न बताइए।',share:'WhatsApp पर भेजें',stepBtn:'एक-एक करके सुनें',stepOf:'कदम',nextS:'आगे',bigOn:'बड़े अक्षर',install:'ऐप इंस्टॉल करें',shareHead:'सखी साथी से जानकारी',vOn:'🔊 आवाज़ चालू',vOff:'🔇 आवाज़ बंद',vMsg:'आवाज़ चालू है। अब मैं बोलकर बताऊँगी।',vNone:'इस फ़ोन में हिन्दी आवाज़ नहीं मिली। Settings में Text-to-speech से हिन्दी आवाज़ जोड़ें।',code:'hi-IN',sys:'Hindi',yes:'हाँ',no:'नहीं',listen:'🔊 फिर से सुनें',speak:'🎤 बोलकर जवाब दें',
     pick:'अपनी भाषा चुनिए',skip:'मुख्य भाग पर जाएँ',moreL:'और भाषाएँ…',foot:'सखी साथी · जानकारी सरकारी योजना के नियमों से ली गई है। पक्की जानकारी अपनी आंगनवाड़ी, बैंक या जन सेवा केंद्र पर पूछ लीजिए।',
     homeT:'आपको किस काम में मदद चाहिए?',homeSub:'तस्वीर दबाइए, या बोलकर बताइए',
     homeV:'नमस्ते बहन! मैं सखी साथी हूँ। नीचे तस्वीर दबाइए, या माइक दबाकर बोलिए कि आपको क्या चाहिए। जैसे: गैस सिलेंडर, बैंक खाता, या इलाज।',
@@ -78,7 +78,7 @@ const U = {
     fb:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या नीचे के नंबर पर फ़ोन कीजिए।',
     docRe:/कागज|दस्तावेज|डॉक्यूमेंट|क्या ले|क्या-क्या/,whereRe:/कहाँ|कहां|कैसे|फ़ॉर्म|फॉर्म|आवेदन|क्या करना/,moneyRe:/पैसे|रुपये|रुपए|कितना|किस्त|फायदा|लाभ|मिलेगा/,
     yesRe:/हाँ|हां|हा\b|जी|ठीक|सही|yes|yeah/i,noRe:/नहीं|नही|ना\b|no\b/i},
-  ta:{site:'அரசு இணையதளம்',siteBtn:'இணையதளத்தைத் திற',siteNote:'இது அரசு இணையதளம். திரும்பி வர போனின் பேக் பொத்தானை அழுத்துங்கள். உங்கள் OTP அல்லது பின்னை யாருக்கும் சொல்லாதீர்கள்.',share:'WhatsApp இல் பகிருங்கள்',stepBtn:'ஒவ்வொன்றாகக் கேளுங்கள்',stepOf:'படி',nextS:'அடுத்து',bigOn:'பெரிய எழுத்து',install:'ஆப்பை நிறுவுங்கள்',shareHead:'சகி சாத்தி தகவல்',vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
+  ta:{langB:'மொழியை மாற்று',site:'அரசு இணையதளம்',siteBtn:'இணையதளத்தைத் திற',siteNote:'இது அரசு இணையதளம். திரும்பி வர போனின் பேக் பொத்தானை அழுத்துங்கள். உங்கள் OTP அல்லது பின்னை யாருக்கும் சொல்லாதீர்கள்.',share:'WhatsApp இல் பகிருங்கள்',stepBtn:'ஒவ்வொன்றாகக் கேளுங்கள்',stepOf:'படி',nextS:'அடுத்து',bigOn:'பெரிய எழுத்து',install:'ஆப்பை நிறுவுங்கள்',shareHead:'சகி சாத்தி தகவல்',vOn:'🔊 குரல் இயக்கம்',vOff:'🔇 குரல் நிறுத்தம்',vMsg:'குரல் இயக்கத்தில் உள்ளது. இனி நான் பேசிச் சொல்வேன்.',vNone:'இந்த போனில் தமிழ் குரல் இல்லை. Settings இல் Text-to-speech மூலம் தமிழ் குரலைச் சேர்க்கவும்.',code:'ta-IN',sys:'Tamil',yes:'ஆம்',no:'இல்லை',listen:'🔊 மீண்டும் கேளுங்கள்',speak:'🎤 பேசி சொல்லுங்கள்',
     pick:'உங்கள் மொழியைத் தேர்ந்தெடுங்கள்',skip:'முக்கிய பகுதிக்குச் செல்லுங்கள்',moreL:'மேலும் மொழிகள்…',foot:'சகி சாத்தி · தகவல் அரசுத் திட்ட வழிகாட்டுதல்களில் இருந்து எடுக்கப்பட்டது. விவரங்களை உங்கள் அங்கன்வாடி, வங்கி அல்லது இ-சேவை மையத்தில் உறுதி செய்யுங்கள்.',
     homeT:'உங்களுக்கு என்ன உதவி வேண்டும்?',homeSub:'படத்தை அழுத்துங்கள், அல்லது பேசிச் சொல்லுங்கள்',
     homeV:'வணக்கம் அக்கா! நான் சகி சாத்தி. கீழே உள்ள படத்தை அழுத்துங்கள், அல்லது மைக்கை அழுத்தி உங்களுக்கு என்ன வேண்டும் என்று சொல்லுங்கள். உதாரணம்: கேஸ் சிலிண்டர், வங்கிக் கணக்கு, மகளிர் உரிமைத் தொகை.',
@@ -93,7 +93,7 @@ const U = {
     fb:'இதைப் பற்றி அங்கன்வாடி பணியாளரிடம் கேளுங்கள், அல்லது கீழே உள்ள எண்ணை அழையுங்கள்.',
     docRe:/ஆவண|காகிதம்|என்ன எடுத்து|என்ன கொண்டு/,whereRe:/எங்கே|எங்க|எப்படி|படிவம்|விண்ணப்ப|என்ன செய்ய/,moneyRe:/பணம்|ரூபாய்|எவ்வளவு|தவணை|பலன்|கிடைக்கும்/,
     yesRe:/ஆம்|ஆமா|ஆமாம்|சரி|yes/i,noRe:/இல்லை|இல்ல|வேண்டாம்|no\b/i},
-  te:{site:'ప్రభుత్వ వెబ్‌సైట్',siteBtn:'వెబ్‌సైట్ తెరవండి',siteNote:'ఇది ప్రభుత్వ వెబ్‌సైట్. తిరిగి రావడానికి ఫోన్ బ్యాక్ బటన్ నొక్కండి. మీ OTP లేదా పిన్ ఎవరికీ చెప్పకండి.',share:'WhatsApp లో షేర్ చేయండి',stepBtn:'ఒక్కొక్కటిగా వినండి',stepOf:'దశ',nextS:'తరువాత',bigOn:'పెద్ద అక్షరాలు',install:'యాప్ ఇన్‌స్టాల్ చేయండి',shareHead:'సఖి సాథి సమాచారం',vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
+  te:{langB:'భాష మార్చండి',site:'ప్రభుత్వ వెబ్‌సైట్',siteBtn:'వెబ్‌సైట్ తెరవండి',siteNote:'ఇది ప్రభుత్వ వెబ్‌సైట్. తిరిగి రావడానికి ఫోన్ బ్యాక్ బటన్ నొక్కండి. మీ OTP లేదా పిన్ ఎవరికీ చెప్పకండి.',share:'WhatsApp లో షేర్ చేయండి',stepBtn:'ఒక్కొక్కటిగా వినండి',stepOf:'దశ',nextS:'తరువాత',bigOn:'పెద్ద అక్షరాలు',install:'యాప్ ఇన్‌స్టాల్ చేయండి',shareHead:'సఖి సాథి సమాచారం',vOn:'🔊 వాయిస్ ఆన్',vOff:'🔇 వాయిస్ ఆఫ్',vMsg:'వాయిస్ ఆన్‌లో ఉంది. ఇక నేను మాట్లాడి చెబుతాను.',vNone:'ఈ ఫోన్‌లో తెలుగు వాయిస్ లేదు. Settings లో Text-to-speech ద్వారా తెలుగు వాయిస్ జోడించండి.',code:'te-IN',sys:'Telugu',yes:'అవును',no:'కాదు',listen:'🔊 మళ్ళీ వినండి',speak:'🎤 మాట్లాడి చెప్పండి',
     pick:'మీ భాషను ఎంచుకోండి',skip:'ప్రధాన భాగానికి వెళ్ళండి',moreL:'మరిన్ని భాషలు…',foot:'సఖి సాథి · సమాచారం ప్రభుత్వ పథకాల మార్గదర్శకాల నుండి తీసుకున్నది. వివరాలను మీ అంగన్‌వాడీ, బ్యాంకు లేదా మీసేవ కేంద్రంలో నిర్ధారించుకోండి.',
     homeT:'మీకు ఏ సహాయం కావాలి?',homeSub:'బొమ్మ నొక్కండి, లేదా మాట్లాడి చెప్పండి',
     homeV:'నమస్కారం అక్కా! నేను సఖి సాథిని. కింద బొమ్మ నొక్కండి, లేదా మైక్ నొక్కి మీకు ఏం కావాలో చెప్పండి. ఉదాహరణ: గ్యాస్ సిలిండర్, బ్యాంకు ఖాతా, వైద్యం.',
@@ -108,7 +108,7 @@ const U = {
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
     docRe:/పత్రాలు|కాగితాలు|ఏమి తీసుకె|ఏం తీసుకె/,whereRe:/ఎక్కడ|ఎలా|ఫారం|దరఖాస్తు|ఏం చేయాలి/,moneyRe:/డబ్బు|రూపాయ|ఎంత|విడత|లాభం|వస్తుంది/,
     yesRe:/అవును|ఔను|అవునండి|yes/i,noRe:/కాదు|లేదు|కాదండి|no\b/i},
-  en:{site:'Official website',siteBtn:'Open website',siteNote:'This is the government website. Press your phone Back button to return. Never tell anyone your OTP or PIN.',share:'Share on WhatsApp',stepBtn:'Listen step by step',stepOf:'Step',nextS:'Next',bigOn:'Large text',install:'Install app',shareHead:'From Sakhi Saathi',vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
+  en:{langB:'Change language',site:'Official website',siteBtn:'Open website',siteNote:'This is the government website. Press your phone Back button to return. Never tell anyone your OTP or PIN.',share:'Share on WhatsApp',stepBtn:'Listen step by step',stepOf:'Step',nextS:'Next',bigOn:'Large text',install:'Install app',shareHead:'From Sakhi Saathi',vOn:'🔊 Voice on',vOff:'🔇 Voice off',vMsg:'Voice is on. I will now speak to you.',vNone:'No voice for this language was found on this phone. Please add it in Settings under Text-to-speech.',code:'en-IN',sys:'English',yes:'Yes',no:'No',listen:'🔊 Listen again',speak:'🎤 Answer by speaking',
     pick:'Choose your language',skip:'Skip to main content',moreL:'More languages…',foot:'Sakhi Saathi · Info from official scheme guidelines. Please confirm details at your Anganwadi / bank / e-Sevai centre.',
     homeT:'What help do you need?',homeSub:'Tap a picture, or speak',
     homeV:'Hello sister! I am Sakhi Saathi. Tap a picture below, or press the mic and tell me what you need. For example: gas cylinder, bank account, or treatment.',
@@ -568,7 +568,9 @@ let voiceOn = store.get('voice')!=='0', tapped = false;
 ['click','keydown'].forEach(t=>document.addEventListener(t, ()=>{ tapped = true; }, {capture:true}));
 const autoSay = text => { if(voiceOn && tapped) say(text); };
 function paintVoice(){
-  const b=$('#vt'); b.textContent = voiceOn ? T().vOn : T().vOff; b.setAttribute('aria-pressed', String(voiceOn));
+  const b=$('#vt'), label = voiceOn ? T().vOn : T().vOff, i = label.indexOf(' ');
+  b.innerHTML = i>0 ? esc(label.slice(0,i))+' <span class="vl">'+esc(label.slice(i+1))+'</span>' : esc(label);
+  b.setAttribute('aria-pressed', String(voiceOn)); b.title = i>0 ? label.slice(i+1) : label;
 }
 function toggleVoice(){
   voiceOn = !voiceOn; store.set('voice', voiceOn?'1':'0'); paintVoice();
@@ -730,7 +732,10 @@ function setLang(l){
   paintVoice(); stopSpeech(); note('');
   if(typeof paintBig==='function') paintBig();
   const ib=$('#inst'); if(ib) ib.textContent = T().install;
+  const lb=$('#lgb'); if(lb){ lb.querySelector('span:not(.ic)').textContent = langName(l); lb.setAttribute('aria-label', T().langB+' – '+langName(l)); lb.title = T().langB; }
 }
+const CORE_NAMES = {hi:'हिन्दी',ta:'தமிழ்',te:'తెలుగు',en:'English'};
+function langName(l){ const x = EXTRA.find(e=>e[0]===l); return CORE_NAMES[l] || (x? x[1] : l); }
 
 const ART={lpg:['#1a56c7','#5b9bff'],balance:['#0b8a78','#4cc9b0'],jandhan:['#3949ab','#8c9eff'],ayushman:['#c62828','#ff8a80'],ujjwala:['#e8590c','#ffa94d'],pmmvy:['#c2185b','#f48fb1'],sukanya:['#8e24aa','#d29be0'],urimai:['#2e7d32','#86d08a'],skill:['#00838f','#4dd0e1'],widow:['#546e7a','#9db4c0'],scholarship:['#5e35b1','#a48ae0'],shg:['#00796b','#5fc7b9']};
 const artOf=id=>ART[id]||ART.urimai;
@@ -746,7 +751,7 @@ function sceneSvg(s){
     <circle cx="28" cy="42" r="5" fill="#fff" opacity=".45"/><circle cx="50" cy="22" r="3" fill="#fff" opacity=".4"/><circle cx="178" cy="112" r="4" fill="#fff" opacity=".35"/><circle cx="22" cy="118" r="3" fill="#fff" opacity=".3"/>
   </svg>`;
 }
-const tileHtml = s => { const g=artOf(s.id); return `<button class="tile" data-id="${s.id}" style="--g1:${g[0]};--g2:${g[1]}">${sceneSvg(s)}<span class="t">${s.name[lang]}</span></button>`; };
+const tileHtml = s => { const g=artOf(s.id); return `<button class="tile" data-id="${s.id}" style="--g1:${g[0]};--g2:${g[1]}"><span class="art">${sceneSvg(s)}</span><span class="t">${s.name[lang]}</span></button>`; };
 const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" focusable="false">
   <circle cx="150" cy="150" r="136" fill="#fde7f0"/><circle cx="236" cy="70" r="22" fill="#f5a524"/>
   <circle cx="58" cy="98" r="9" fill="#f48fb1"/><circle cx="84" cy="52" r="5" fill="#c2185b" opacity=".5"/><circle cx="262" cy="188" r="6" fill="#c2185b" opacity=".4"/>
@@ -767,8 +772,8 @@ const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" 
 function langScreen(){
   cur = null; inProfile = false; dots(); screen({v:'lang'});
   const LG=[['hi','हि','हिन्दी',['#c2185b','#f48fb1']],['ta','த','தமிழ்',['#1a56c7','#5b9bff']],['te','తె','తెలుగు',['#2e7d32','#86d08a']],['en','Aa','English',['#e8590c','#ffa94d']]];
-  main.innerHTML = `<section class="hero" style="display:block;margin:0 auto;text-align:center"><div class="over">Sakhi Saathi · सखी साथी</div><h1>भाषा चुनिए · மொழி · భాష · Language</h1></section>
-    <div class="grid" style="max-width:620px;margin:10px auto 0">${LG.map(l=>`<button class="tile" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="font-size:36px;font-weight:700;color:${l[3][0]}">${l[1]}</span><span class="t" style="font-size:22px">${l[2]}</span></button>`).join('')}</div>`;
+  main.innerHTML = `<section class="langhead"><div>🗣️</div><h1>भाषा चुनिए · மொழி<br>భాష · Language</h1></section>
+    <div class="grid" style="max-width:620px;margin:12px auto 0;width:100%">${LG.map(l=>`<button class="tile lt" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="color:${l[3][0]}">${l[1]}</span><span class="t">${l[2]}</span></button>`).join('')}</div>`;
   if(API.ai) main.insertAdjacentHTML('beforeend', `<div class="xlangs">${EXTRA.map(e=>`<button class="chip" data-x="${e[0]}">${e[1]}</button>`).join('')}</div>`);
   main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
   main.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.x));
@@ -784,11 +789,11 @@ function home(){
     ? `<div class="pcard"><div><div class="over">${p.mine}</div><div class="pl">${profLine()}</div></div><div class="pbtns"><button class="chip" id="pedit">✏️ ${p.edit}</button><button class="chip" id="pdel">🗑️ ${p.del}</button></div></div>`
     : `<button class="pcta" id="pmk"><span class="pi">👤</span><span class="pt"><b>${p.mk}</b><small>${p.mkSub}</small></span></button>`;
   main.innerHTML = `<section class="hero"><div class="hero-t"><div class="over">सखी साथी · Sakhi Saathi</div><h1>${t.homeT}</h1><p>${t.homeSub}</p>
-      <button class="search mic" id="mic" aria-label="${t.need}"><span>${t.need}</span><span class="mb">🎤</span></button>
+      <button class="search mic" id="mic" aria-label="${t.need}"><span class="mb">🎤</span><span>${t.need}</span></button>
       <div id="msg" class="sub" role="status" aria-live="polite"></div>
       <button class="chip" id="hl">${t.listen}</button></div>${HERO_ART}</section>
     ${prof}
-    <h2 class="sec">${p.basicT}</h2><div class="strip">${basic.map(tileHtml).join('')}</div>
+    <h2 class="sec">${p.basicT}</h2><div class="grid">${basic.map(tileHtml).join('')}</div>
     <h2 class="sec">${profile ? p.forYou : p.popularT}</h2>
     ${list.length ? `<div class="grid">${list.map(tileHtml).join('')}</div>` : `<div class="sub">${p.none}</div>`}`;
   main.querySelectorAll('.tile').forEach(b=>b.onclick=()=>open(b.dataset.id));
@@ -807,7 +812,7 @@ function profScreen(){
   if(pstep >= 3+PQ.length) return profSave();
   screen({v:'prof',p:pstep});
   dots(); const p = PU[lang], t = T(), total = 2 + PQ.length;
-  const prog = pstep>0 ? `<div class="note">${pstep} / ${total}</div>` : '';
+  const prog = pstep>0 ? `<div class="bar" role="progressbar" aria-valuemin="1" aria-valuemax="${total}" aria-valuenow="${pstep}"><i style="width:${Math.round(pstep/total*100)}%"></i></div><div class="note" style="margin-top:0">${pstep} / ${total}</div>` : '';
   if(pstep===0){
     main.innerHTML = `<div class="card"><div class="emoji">👤</div><div class="big">${p.title}</div><div class="sub">${p.priv}</div>${listenBtn(p.priv)}
       <button class="btn yes" id="go">${p.start}</button><button class="btn ghost" id="home">${t.home}</button></div>`;
@@ -839,7 +844,7 @@ function profScreen(){
   const i = pstep-3;
   if(i >= PQ.length){ return profSave(); }
   const q = PQ[i], qt = q.q[lang];
-  const opts = q.o.map(o=>`<button class="btn pink" data-v="${o[0]}">${o[1]? o[1][lang] : (o[0]==='yes'? t.yes : t.no)}</button>`).join('');
+  const opts = q.o.map(o=>`<button class="btn opt" data-v="${o[0]}">${o[1]? o[1][lang] : (o[0]==='yes'? t.yes : t.no)}</button>`).join('');
   main.innerHTML = `<div class="card">${prog}<div class="big">${qt}</div>${listenBtn(qt)}${opts}<button class="btn ghost" id="sk">${p.skip}</button></div>`;
   const next=v=>{ if(v) draft[q.k]=v; else delete draft[q.k]; pstep++; profScreen(); };
   main.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>next(b.dataset.v)); $('#sk').onclick=()=>next(null);
@@ -882,10 +887,11 @@ function flow(){
   screen({v:'q',id:s.id,step});
   const q = s.qs[step][lang];
   main.innerHTML = `<div class="card"><div class="emoji">${s.e}</div>
-    ${step===0?`<div class="sub"><b>${s.name[lang]}</b></div><div class="sub">${s.d[lang]}</div>`:''}
-    <div class="big">${q}</div>${listenBtn(q)}
-    <div class="row"><button class="btn yes" id="y">✅ ${t.yes}</button><button class="btn no" id="n">❌ ${t.no}</button></div>
-    <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
+    ${step===0?`<div class="badge">${s.name[lang]}</div><div class="sub">${s.d[lang]}</div>`:''}
+    <div class="big">${q}</div>
+    <div class="row"><button class="btn yes yn" id="y">✅ ${t.yes}</button><button class="btn no yn" id="n">❌ ${t.no}</button></div>
+    ${listenBtn(q)}
+    <button class="btn ghost mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
     <button class="btn ghost" id="home">${t.home}</button></div>`;
   const want = !(s.qNo||[]).includes(step);   // the answer that keeps her eligible
   const answer = said => { if(said!==want){ eligible=false; return result(); } step++; flow(); };
@@ -897,7 +903,7 @@ function flow(){
 }
 
 function callsHtml(s){
-  return s.calls.map(c=>`<a class="btn ghost call" href="tel:${encodeURIComponent(c[1])}"><span>📞 ${lbl(c[0])}</span><span>${c[1]}</span></a>`).join('');
+  return s.calls.map(c=>`<a class="btn act call" href="tel:${encodeURIComponent(c[1])}"><span class="ai">📞</span><span class="at"><small>${lbl(c[0])}</small><b class="num">${c[1]}</b></span></a>`).join('');
 }
 
 function shareText(s){
@@ -915,7 +921,7 @@ function stepsOf(s){
 function stepScreen(i){
   const t = T(), list = stepsOf(cur); i = Math.max(0, Math.min(i, list.length-1)); const txt = list[i];
   screen({v:'steps',id:cur.id,i});
-  main.innerHTML = `<div class="card"><div class="over">${t.stepOf} ${i+1} / ${list.length}</div><div class="big">${esc(txt)}</div>${listenBtn(txt)}
+  main.innerHTML = `<div class="card"><div class="bar"><i style="width:${Math.round((i+1)/list.length*100)}%"></i></div><div class="over">${t.stepOf} ${i+1} / ${list.length}</div><div class="stepn">${i+1}</div><div class="big">${esc(txt)}</div>${listenBtn(txt)}
     <div class="row">${i>0 ? `<button class="btn ghost" id="sp">${t.back}</button>` : '<span></span>'}${i<list.length-1 ? `<button class="btn pink" id="sn">${t.nextS}</button>` : `<button class="btn yes" id="sd">${PU[lang].done}</button>`}</div>
     <button class="btn ghost" id="sb">${t.home}</button></div>`;
   if($('#sp')) $('#sp').onclick = ()=>stepScreen(i-1);
@@ -927,8 +933,8 @@ function stepScreen(i){
 
 function linksHtml(s){
   const L = s.links || []; if(!L.length) return '';
-  return `<div class="sub" style="margin-top:14px"><b>🌐 ${T().site}</b></div><div class="ans" style="margin-top:6px">${T().siteNote}</div>`
-    + L.map(l=>`<a class="btn site" href="${l[1]}" target="_blank" rel="noopener noreferrer">🌐 ${T().siteBtn}<small>${esc(l[0])}</small></a>`).join('');
+  return `<h2 class="sh">🌐 ${T().site}</h2><div class="ans">${T().siteNote}</div>`
+    + L.map(l=>`<a class="btn act site" href="${l[1]}" target="_blank" rel="noopener noreferrer"><span class="ai">🌐</span><span class="at"><b>${T().siteBtn}</b><small>${esc(l[0])}</small></span></a>`).join('');
 }
 
 function result(){
@@ -937,21 +943,21 @@ function result(){
   screen({v:'res',id:s.id,ok:eligible});
   if(!eligible){
     main.innerHTML = `<div class="card"><div class="emoji">🙏</div><div class="big">${t.noT}</div>${listenBtn(t.noV)}
-      <button class="btn pink" id="home">${t.home}</button>${callsHtml(s)}</div>`;
+      <button class="btn pink" id="home">${t.home}</button><div class="res">${callsHtml(s)}</div></div>`;
     $('#home').onclick = home; autoSay(t.noV); return;
   }
   const docsTxt = s.docs.map(d=>d[1][lang]).join(', ');
   const full = (s.qs.length? t.okV+' ':'') + s.name[lang]+'. '+t.docsL+': '+docsTxt+'. '+s.where[lang]+' '+s.info[lang];
-  main.innerHTML = `<div class="card"><div class="emoji">${s.e}</div><div class="big">${s.qs.length? t.okT : t.stepsT}</div><div class="sub"><b>${s.name[lang]}</b></div>
+  main.innerHTML = `<div class="card res"><div class="emoji">${s.e}</div><div class="big">${s.qs.length? t.okT : t.stepsT}</div><div class="badge-w"><span class="badge">${s.name[lang]}</span></div>
     ${listenBtn(full)}
-    <div class="sub"><b>${t.docsT}</b></div>
-    <ul class="list">${s.docs.map(d=>`<li><span class="i">${d[0]}</span>${d[1][lang]}</li>`).join('')}</ul>
-    <div class="sub"><b>${t.whereT}</b></div><div class="ans">${s.where[lang]}</div>
-    <div class="sub" style="margin-top:14px"><b>${t.infoT}</b></div><div class="ans">${s.info[lang]}</div>
+    <button class="btn act lsn" id="steps"><span class="ai">🔊</span><span class="at"><b>${t.stepBtn}</b></span></button>
+    <h2 class="sh">${t.docsT}</h2>
+    <ul class="docs">${s.docs.map(d=>`<li><span class="i">${d[0]}</span>${d[1][lang]}</li>`).join('')}</ul>
+    <h2 class="sh">${t.whereT}</h2><div class="ans">${s.where[lang]}</div>
+    <h2 class="sh">${t.infoT}</h2><div class="ans">${s.info[lang]}</div>
     ${callsHtml(s)}
     ${linksHtml(s)}
-    <a class="btn yes" id="wa" href="${waUrl(s)}" target="_blank" rel="noopener noreferrer">📤 ${t.share}</a>
-    <button class="btn ghost" id="steps">🔊 ${t.stepBtn}</button>
+    <a class="btn act wa" id="wa" href="${waUrl(s)}" target="_blank" rel="noopener noreferrer"><span class="ai">📤</span><span class="at"><b>${t.share}</b></span></a>
     <button class="btn pink" id="ask">${t.ask}</button>
     <button class="btn ghost" id="home">${t.home}</button></div>`;
   $('#ask').onclick = askScreen; $('#home').onclick = home; $('#steps').onclick = ()=>stepScreen(0);
@@ -998,6 +1004,7 @@ if('serviceWorker' in navigator && /^https?:/.test(location.protocol)) navigator
 
 // ============ Wiring ============
 $('#vt').onclick = toggleVoice;
+$('#lgb').onclick = () => { stopSpeech(); langScreen(); };
 document.querySelectorAll('.lang[data-l]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.l));
 const more = $('#more');
 more.innerHTML = '<option value="">'+esc(T().moreL)+'</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
