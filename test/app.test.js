@@ -276,3 +276,19 @@ test('a returning user skips the language screen and lands on home in her langua
   assert.equal(d.documentElement.lang, 'te');
   dom.window.close();
 });
+
+test('each eligibility question asks one thing, so a single yes or no is clear', () => {
+  // "A, or B?" is fine (yes to either is the same answer); "A and B?" is not (yes to one, no to the other has no button)
+  const two = Array.from(ev(`S.flatMap(s=>s.qs.map(q=>s.id+': '+q.en))`)).filter(q => /\band (are|do|is|you|your)\b|, (and|with)\b/i.test(q));
+  assert.deepEqual(two, []);
+});
+
+test('Magalir Urimai: "no" to the government-job question continues, "yes" ends kindly', async () => {
+  const d = win.document;
+  for (const [last, ok] of [['#n', true], ['#y', false]]) {
+    ev(`setLang('en'); open('urimai')`); await tick();
+    for (let k = 0; k < 4; k++) { d.querySelector('#y').click(); await tick(); }
+    d.querySelector(last).click(); await tick();
+    assert.equal(ev('eligible'), ok);
+  }
+});
