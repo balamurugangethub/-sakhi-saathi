@@ -11,11 +11,12 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test \"test/*.test.js\"",
-    "check": "node --check server.js && node --check public/app.js && node --check public/sw.js && node --check data/extract.js && node --check data/validate.js",
+    "check": "node --check server.js && node --check public/app.js && node --check public/sw.js && node --check data/extract.js && node --check data/validate.js && node --check data/geo.js",
     "coverage": "node --test --experimental-test-coverage \"test/*.test.js\"",
     "data:build": "node data/extract.js",
     "data:check": "node data/validate.js",
-    "data:check:strict": "node data/validate.js --strict --check-links"
+    "data:check:strict": "node data/validate.js --strict --check-links",
+    "data:geo": "node data/geo.js"
   },
   "devDependencies": {
     "jsdom": "^25.0.1"

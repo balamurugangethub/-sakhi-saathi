@@ -108,6 +108,58 @@ test('profile wizard saves only on the device and can be deleted', async () => {
   assert.equal(win.localStorage.getItem('profile'), '');
 });
 
+test('find my state: location is asked only after a tap, stays on the phone, and she confirms with Yes / No', async () => {
+  const d = win.document, geoJson = fs.readFileSync(path.join(__dirname, '..', 'public', 'states.geo.json'), 'utf8');
+  const asked = [], fetched = [], realFetch = win.fetch;
+  let answer = ok => ok({ coords: { latitude: 13.08, longitude: 80.27, accuracy: 1500 } });   // Chennai
+  Object.defineProperty(win.navigator, 'geolocation', { configurable: true,
+    value: { getCurrentPosition: (ok, no, opt) => { asked.push(opt); answer(ok, no); } } });
+  win.fetch = (u, o) => { fetched.push([String(u), o && o.body]); return /states\.geo\.json$/.test(String(u))
+    ? Promise.resolve({ ok: true, json: () => Promise.resolve(JSON.parse(geoJson)) }) : Promise.reject(new Error('offline')); };
+  const settle = async () => { for (let i = 0; i < 5; i++) await tick(); };
+  try {
+    ev(`localStorage.clear(); profile=null; setLang('ta'); profFlow(false); pstep=1; profScreen();`); await tick();
+    assert.equal(asked.length, 0, 'location must not be asked before she taps');
+    const order = Array.from(d.querySelectorAll('#main button')).map(b => b.id || b.className);
+    assert.equal(order[0], 'loc');                                   // the pin button comes first
+    assert.match(d.querySelector('#loc').textContent, /மாநிலத்தை/);   // in her language
+    d.querySelector('#loc').click(); await settle();
+    assert.equal(asked.length, 1);
+    assert.equal(asked[0].enableHighAccuracy, false);                 // coarse is enough for a state
+    assert.match(d.querySelector('#main .big').textContent, /தமிழ்நாடு/);
+    assert.ok(d.querySelector('#y.yn') && d.querySelector('#n.yn'));
+    d.querySelector('#y').click(); await tick();
+    assert.equal(ev('draft.state'), 'TN');
+    assert.ok(d.querySelector('#dist'));                              // on to the district step
+    // nothing about where she is went anywhere: only the boundary file was downloaded, and nothing is stored
+    assert.deepEqual(fetched.map(f => f[0]), ['states.geo.json']);
+    assert.ok(fetched.every(f => !f[1]));
+    const stored = Object.keys(win.localStorage).map(k => win.localStorage.getItem(k)).join(' ');
+    assert.doesNotMatch(stored, /13\.08|80\.27|latitude|longitude/);
+    assert.doesNotMatch(JSON.stringify(ev('draft')), /13\.08|80\.27|lat|lon/);
+
+    // "No" goes back to the list
+    ev(`pstep=1; profScreen();`); await tick();
+    d.querySelector('#loc').click(); await settle();
+    d.querySelector('#n').click(); await settle();
+    assert.ok(d.querySelector('.st[data-c="TN"]'));
+
+    // she says no to the permission: a spoken message, and the list is still there
+    answer = (ok, no) => no({ code: 1 });
+    ev(`setLang('en'); pstep=1; profScreen();`); await tick();
+    d.querySelector('#loc').click(); await settle();
+    assert.equal(d.querySelector('#msg').textContent, ev('PU.en.locNo'));
+    assert.ok(d.querySelector('.st[data-c="TN"]') && !d.querySelector('#loc').disabled);
+
+    // outside India (Kathmandu): no state, so she picks from the list
+    answer = ok => ok({ coords: { latitude: 27.72, longitude: 85.32 } });
+    d.querySelector('#loc').click(); await settle();
+    assert.equal(d.querySelector('#msg').textContent, ev('PU.en.locFail'));
+  } finally {
+    win.fetch = realFetch; delete win.navigator.geolocation; ev(`localStorage.clear(); profile=null; home();`);
+  }
+});
+
 test('accessibility basics: lang attribute, labelled controls, live regions, hidden decorative icons', async () => {
   ev(`setLang('ta'); home();`); await tick();
   const d = win.document;

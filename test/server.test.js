@@ -30,6 +30,16 @@ test('every response carries the security headers', async () => {
   for (const h of Object.keys(srv.SECURITY_HEADERS)) assert.ok(r.headers.get(h), h + ' missing');
   assert.match(r.headers.get('content-security-policy'), /script-src 'self'/);
   assert.doesNotMatch(r.headers.get('content-security-policy'), /script-src[^;]*unsafe-inline/);
+  // location is allowed for this page only ("find my state"), and the camera stays off
+  assert.match(r.headers.get('permissions-policy'), /geolocation=\(self\)/);
+  assert.match(r.headers.get('permissions-policy'), /camera=\(\)/);
+});
+
+test('the state boundary file is served as gzipped JSON for the on-phone lookup', async () => {
+  const r = await fetch(base + '/states.geo.json', { headers: { 'accept-encoding': 'gzip' } });
+  assert.equal(r.status, 200);
+  assert.match(r.headers.get('content-type'), /application\/json/);
+  assert.equal(Object.keys((await r.json()).states).length, 36);
 });
 
 test('static files are served with the right type; traversal and unknown paths are refused', async () => {
