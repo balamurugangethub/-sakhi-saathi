@@ -1,0 +1,29 @@
+name: Data freshness
+# Weekly check that the scheme facts shown to users have been re-verified recently.
+# Fails (and so notifies the repo owner) when a verification is older than its review window,
+# or when any validation rule is broken. Also requests every official URL from GitHub's network.
+on:
+  schedule:
+    - cron: '30 3 * * 1'   # Mondays 09:00 IST
+  workflow_dispatch:
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build warehouse-ready tables
+        run: npm run data:build
+      - name: Freshness and link report
+        run: npm run data:check:strict | tee data-report.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: data-report
+          path: |
+            data-report.txt
+            data/build/*.ndjson
