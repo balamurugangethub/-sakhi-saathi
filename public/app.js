@@ -73,7 +73,7 @@ const U = {
     docsT:'📄 साथ ले जाएँ',docsL:'आपको ये चीज़ें ले जानी हैं',whereT:'📍 कहाँ जाएँ / क्या करें',infoT:'ℹ️ ज़रूरी बात',
     ask:'❓ कुछ पूछना है?',askV:'आप जो पूछना चाहती हैं, बोलिए।',askT:'अपना सवाल बोलिए',
     home:'🏠 दूसरी सेवा देखें',back:'⬅️ वापस',again:'🔁 फिर से',
-    hOn:'🎤 बोलकर चलाएँ: चालू',hOff:'🎤 बोलकर चलाएँ: बंद',hQ:'क्या आप बिना दबाए, बोलकर जवाब देना चाहती हैं?',hSub:'मेरे बोलने के बाद मैं सुनूँगी। बस अपना जवाब बोलिए, जैसे "हाँ" या "नहीं"। फ़ोन माइक के लिए पूछे तो Allow दबाइए। यह ऐप आपकी आवाज़ नहीं रखता।',hYes:'हाँ, बोलूँगी',hNo:'नहीं, दबाऊँगी',hHelp:'ठीक है, अब आप बोलकर जवाब दे सकती हैं। आप "आगे", "वापस", "फिर से" या "होम" भी बोल सकती हैं।',notU:'मैं समझ नहीं पाई। फिर से बोलिए।',resH:'एक-एक करके सुनना हो तो "एक एक करके" बोलिए। कुछ पूछना हो तो "सवाल" बोलिए।',micT:'बोलना हो तो माइक वाला बटन दबाइए।',
+    hOn:'🎤 बोलकर चलाएँ: चालू',hOff:'🎤 बोलकर चलाएँ: बंद',micAsk:'अब आप बोलकर जवाब दे सकती हैं, बटन दबाना ज़रूरी नहीं। फ़ोन माइक के लिए पूछे तो Allow दबाइए। आपकी आवाज़ कहीं रखी नहीं जाती।',hHelp:'ठीक है, अब आप बोलकर जवाब दे सकती हैं। आप "आगे", "वापस", "फिर से" या "होम" भी बोल सकती हैं।',notU:'मैं समझ नहीं पाई। फिर से बोलिए।',resH:'एक-एक करके सुनना हो तो "एक एक करके" बोलिए। कुछ पूछना हो तो "सवाल" बोलिए।',micT:'बोलना हो तो माइक वाला बटन दबाइए।',
     listening:'सुन रही हूँ…',noheard:'सुनाई नहीं दिया। फिर से बोलिए।',thinking:'सोच रही हूँ…',nomic:'इस फ़ोन में बोलने की सुविधा नहीं है। कृपया तस्वीर दबाइए।',
     notfound:'समझ नहीं आया। कृपया नीचे की तस्वीर दबाइए।',
     fb:'इस बारे में अपनी आंगनवाड़ी दीदी से पूछिए, या नीचे के नंबर पर फ़ोन कीजिए।',
@@ -89,7 +89,7 @@ const U = {
     docsT:'📄 கூட எடுத்துச் செல்லுங்கள்',docsL:'நீங்கள் இவற்றை எடுத்துச் செல்ல வேண்டும்',whereT:'📍 எங்கே போவது / என்ன செய்வது',infoT:'ℹ️ முக்கியமான தகவல்',
     ask:'❓ ஏதாவது கேட்க வேண்டுமா?',askV:'நீங்கள் கேட்க விரும்புவதைச் சொல்லுங்கள்.',askT:'உங்கள் கேள்வியைச் சொல்லுங்கள்',
     home:'🏠 வேறு சேவையைப் பாருங்கள்',back:'⬅️ பின்னால்',again:'🔁 மீண்டும்',
-    hOn:'🎤 பேசி இயக்கு: ஆன்',hOff:'🎤 பேசி இயக்கு: ஆஃப்',hQ:'அழுத்தாமல், பேசியே பதில் சொல்ல விரும்புகிறீர்களா?',hSub:'நான் பேசி முடித்ததும் கேட்பேன். உங்கள் பதிலைச் சொல்லுங்கள், "ஆம்" அல்லது "இல்லை" என்பது போல. போன் மைக் அனுமதி கேட்டால் Allow அழுத்துங்கள். இந்த ஆப் உங்கள் குரலைச் சேமிப்பதில்லை.',hYes:'ஆம், பேசுவேன்',hNo:'இல்லை, அழுத்துவேன்',hHelp:'சரி, இனி நீங்கள் பேசியே பதில் சொல்லலாம். "அடுத்து", "பின்னால்", "மீண்டும்" அல்லது "முகப்பு" என்றும் சொல்லலாம்.',notU:'எனக்குப் புரியவில்லை. மீண்டும் சொல்லுங்கள்.',resH:'ஒவ்வொன்றாகக் கேட்க "ஒவ்வொன்றாக" என்று சொல்லுங்கள். ஏதாவது கேட்க "கேள்வி" என்று சொல்லுங்கள்.',micT:'பேச வேண்டுமானால் மைக் பொத்தானை அழுத்துங்கள்.',
+    hOn:'🎤 பேசி இயக்கு: ஆன்',hOff:'🎤 பேசி இயக்கு: ஆஃப்',micAsk:'இனி நீங்கள் பேசியே பதில் சொல்லலாம், பொத்தானை அழுத்த வேண்டியதில்லை. போன் மைக் அனுமதி கேட்டால் Allow அழுத்துங்கள். உங்கள் குரல் எங்கும் சேமிக்கப்படுவதில்லை.',hHelp:'சரி, இனி நீங்கள் பேசியே பதில் சொல்லலாம். "அடுத்து", "பின்னால்", "மீண்டும்" அல்லது "முகப்பு" என்றும் சொல்லலாம்.',notU:'எனக்குப் புரியவில்லை. மீண்டும் சொல்லுங்கள்.',resH:'ஒவ்வொன்றாகக் கேட்க "ஒவ்வொன்றாக" என்று சொல்லுங்கள். ஏதாவது கேட்க "கேள்வி" என்று சொல்லுங்கள்.',micT:'பேச வேண்டுமானால் மைக் பொத்தானை அழுத்துங்கள்.',
     listening:'கேட்கிறேன்…',noheard:'கேட்கவில்லை. மீண்டும் சொல்லுங்கள்.',thinking:'யோசிக்கிறேன்…',nomic:'இந்த போனில் பேசும் வசதி இல்லை. படத்தை அழுத்துங்கள்.',
     notfound:'புரியவில்லை. கீழே உள்ள படத்தை அழுத்துங்கள்.',
     fb:'இதைப் பற்றி அங்கன்வாடி பணியாளரிடம் கேளுங்கள், அல்லது கீழே உள்ள எண்ணை அழையுங்கள்.',
@@ -105,7 +105,7 @@ const U = {
     docsT:'📄 వెంట తీసుకెళ్ళండి',docsL:'మీరు ఇవి తీసుకెళ్ళాలి',whereT:'📍 ఎక్కడికి వెళ్ళాలి / ఏం చేయాలి',infoT:'ℹ️ ముఖ్యమైన విషయం',
     ask:'❓ ఏదైనా అడగాలా?',askV:'మీరు అడగాలనుకున్నది చెప్పండి.',askT:'మీ ప్రశ్న చెప్పండి',
     home:'🏠 ఇతర సేవలు చూడండి',back:'⬅️ వెనక్కి',again:'🔁 మళ్ళీ',
-    hOn:'🎤 మాట్లాడి నడపండి: ఆన్',hOff:'🎤 మాట్లాడి నడపండి: ఆఫ్',hQ:'నొక్కకుండా, మాట్లాడి జవాబు చెప్పాలనుకుంటున్నారా?',hSub:'నేను మాట్లాడిన తర్వాత వింటాను. మీ జవాబు చెప్పండి, "అవును" లేదా "కాదు" లాగా. ఫోన్ మైక్ అనుమతి అడిగితే Allow నొక్కండి. ఈ యాప్ మీ గొంతును దాచదు.',hYes:'అవును, మాట్లాడతాను',hNo:'కాదు, నొక్కుతాను',hHelp:'సరే, ఇక మీరు మాట్లాడి జవాబు చెప్పవచ్చు. "తరువాత", "వెనక్కి", "మళ్ళీ" లేదా "హోమ్" అని కూడా చెప్పవచ్చు.',notU:'నాకు అర్థం కాలేదు. మళ్ళీ చెప్పండి.',resH:'ఒక్కొక్కటిగా వినాలంటే "ఒక్కొక్కటిగా" అని చెప్పండి. ఏదైనా అడగాలంటే "ప్రశ్న" అని చెప్పండి.',micT:'మాట్లాడాలంటే మైక్ బటన్ నొక్కండి.',
+    hOn:'🎤 మాట్లాడి నడపండి: ఆన్',hOff:'🎤 మాట్లాడి నడపండి: ఆఫ్',micAsk:'ఇక మీరు మాట్లాడి జవాబు చెప్పవచ్చు, బటన్ నొక్కనక్కర్లేదు. ఫోన్ మైక్ అనుమతి అడిగితే Allow నొక్కండి. మీ గొంతు ఎక్కడా దాచబడదు.',hHelp:'సరే, ఇక మీరు మాట్లాడి జవాబు చెప్పవచ్చు. "తరువాత", "వెనక్కి", "మళ్ళీ" లేదా "హోమ్" అని కూడా చెప్పవచ్చు.',notU:'నాకు అర్థం కాలేదు. మళ్ళీ చెప్పండి.',resH:'ఒక్కొక్కటిగా వినాలంటే "ఒక్కొక్కటిగా" అని చెప్పండి. ఏదైనా అడగాలంటే "ప్రశ్న" అని చెప్పండి.',micT:'మాట్లాడాలంటే మైక్ బటన్ నొక్కండి.',
     listening:'వింటున్నాను…',noheard:'వినిపించలేదు. మళ్ళీ చెప్పండి.',thinking:'ఆలోచిస్తున్నాను…',nomic:'ఈ ఫోన్‌లో మాట్లాడే సౌకర్యం లేదు. బొమ్మ నొక్కండి.',
     notfound:'అర్థం కాలేదు. దయచేసి కింద బొమ్మ నొక్కండి.',
     fb:'దీని గురించి అంగన్‌వాడీ టీచర్‌ను అడగండి, లేదా కింది నంబర్‌కు ఫోన్ చేయండి.',
@@ -121,7 +121,7 @@ const U = {
     docsT:'📄 Carry with you',docsL:'You need to carry these things',whereT:'📍 Where to go / what to do',infoT:'ℹ️ Important',
     ask:'❓ Want to ask something?',askV:'Please say what you want to ask.',askT:'Say your question',
     home:'🏠 See other services',back:'⬅️ Back',again:'🔁 Again',
-    hOn:'🎤 Talk mode on',hOff:'🎤 Talk mode off',hQ:'Do you want to answer by speaking, without tapping?',hSub:'After I speak, I will listen. Just say your answer, like "yes" or "no". If the phone asks to use the microphone, tap Allow. This app does not keep your voice.',hYes:'Yes, I will speak',hNo:'No, I will tap',hHelp:'Okay, now you can answer by speaking. You can also say "next", "back", "repeat" or "home".',notU:'I did not understand. Please say it again.',resH:'To hear it step by step, say "steps". To ask something, say "question".',micT:'Tap the microphone button when you want to speak.',
+    hOn:'🎤 Talk mode on',hOff:'🎤 Talk mode off',micAsk:'You can answer by speaking now, no need to tap. If the phone asks to use the microphone, press Allow. Your voice is not saved anywhere.',hHelp:'Okay, now you can answer by speaking. You can also say "next", "back", "repeat" or "home".',notU:'I did not understand. Please say it again.',resH:'To hear it step by step, say "steps". To ask something, say "question".',micT:'Tap the microphone button when you want to speak.',
     listening:'Listening…',noheard:'I could not hear. Please speak again.',thinking:'Thinking…',nomic:'Speaking is not available on this phone. Please tap a picture.',
     notfound:'I did not understand. Please tap a picture below.',
     fb:'Please ask your Anganwadi worker about this, or call the number below.',
@@ -726,6 +726,7 @@ function listen(onText, onFail, onInterim){
   const start = code => {
     const r = recog = new SR(); r.lang = code; r.interimResults = true; r.maxAlternatives = 3; r.continuous = false;
     let heard = '';
+    r.onstart = () => store.set('micOk','1');
     r.onresult = e => {
       if(r!==recog) return;
       let text = '', final = false;
@@ -756,20 +757,21 @@ function stopListening(){
 
 // ============ Talk mode: after the app speaks it listens, so she can answer and move on without tapping ============
 const hasSR = () => !!(window.SpeechRecognition || window.webkitSpeechRecognition);
-let handsOn = store.get('hands')==='1', vctx = null;
+// Talk mode is ON by default wherever the browser can listen; the 🎤 switch in the header turns it off.
+let handsOn = hasSR() && store.get('hands')!=='0', vctx = null, micTold = false;
 // Words she can say on any screen (stop, repeat, home, back) or where they fit (next, skip, steps, ask, done, start,
 // location). Speech engines often write English words in the local script, so those spellings are listed too.
 const CMD = {
-  hi:{stop:/रुको|रुकिए|बंद करो|बस करो|स्टॉप|stop/i, repeat:/फिर से|दोबारा|दुबारा|फिर बोल|रिपीट|repeat|again/i, home:/होम|मुख्य|दूसरी सेवा|मेनू|home|menu/i,
+  hi:{lang:/भाषा|लैंग्वेज|language/i, prof:/प्रोफ़ाइल|प्रोफाइल|मेरी जानकारी|profile/i, call:/फ़ोन|फोन|कॉल|नंबर|call/i, del:/मिटा|डिलीट|delete/i, stop:/रुको|रुकिए|बंद करो|बस करो|स्टॉप|stop/i, repeat:/फिर से|दोबारा|दुबारा|फिर बोल|रिपीट|repeat|again/i, home:/होम|मुख्य|दूसरी सेवा|मेनू|home|menu/i,
       back:/पीछे|वापस|पिछला|बैक|back/i, next:/आगे|अगला|अगली|नेक्स्ट|next/i, skip:/छोड|पता नहीं|मालूम नहीं|बताना नहीं|स्किप|skip/i,
       steps:/एक.एक|कदम|स्टेप|step/i, ask:/सवाल|पूछ|क्वेश्चन|question|ask/i, done:/हो गया|खत्म|ख़त्म|पूरा|डन|done/i, start:/शुरू|स्टार्ट|start/i, loc:/जगह|लोकेशन|पता लगा|location/i},
-  ta:{stop:/நிறுத்து|போதும்|ஸ்டாப்|stop/i, repeat:/மீண்டும்|மறுபடி|திரும்பச் சொல்|திரும்ப சொல்|ரிப்பீட்|repeat|again/i, home:/முகப்பு|வேறு சேவை|ஹோம்|மெனு|home|menu/i,
+  ta:{lang:/மொழி|லாங்குவேஜ்|language/i, prof:/சுயவிவர|ப்ரொஃபைல்|புரொபைல்|profile/i, call:/அழை|போன்|கால்|எண்|call/i, del:/அழி|நீக்கு|டிலீட்|delete/i, stop:/நிறுத்து|போதும்|ஸ்டாப்|stop/i, repeat:/மீண்டும்|மறுபடி|திரும்பச் சொல்|திரும்ப சொல்|ரிப்பீட்|repeat|again/i, home:/முகப்பு|வேறு சேவை|ஹோம்|மெனு|home|menu/i,
       back:/பின்னால்|பின்னே|முந்தைய|பேக்|back/i, next:/அடுத்து|அடுத்தது|நெக்ஸ்ட்|next/i, skip:/தவிர்|தெரியாது|சொல்ல விருப்பமில்லை|ஸ்கிப்|skip/i,
       steps:/ஒவ்வொன்றாக|படிப்படியாக|ஸ்டெப்|step/i, ask:/கேள்வி|கேட்க|question|ask/i, done:/முடிந்தது|முடிஞ்சது|முடிச்சாச்சு|டன்|done/i, start:/தொடங்கு|ஆரம்பி|ஸ்டார்ட்|start/i, loc:/இடம்|லொகேஷன்|கண்டுபிடி|location/i},
-  te:{stop:/ఆపు|ఆపండి|చాలు|స్టాప్|stop/i, repeat:/మళ్ళీ|మళ్లీ|మరలా|రిపీట్|repeat|again/i, home:/హోమ్|హోం|మొదటి పేజీ|ఇతర సేవ|మెనూ|home|menu/i,
+  te:{lang:/భాష|లాంగ్వేజ్|language/i, prof:/ప్రొఫైల్|నా వివరాలు|profile/i, call:/ఫోన్|కాల్|నంబర్|call/i, del:/తొలగించు|డిలీట్|delete/i, stop:/ఆపు|ఆపండి|చాలు|స్టాప్|stop/i, repeat:/మళ్ళీ|మళ్లీ|మరలా|రిపీట్|repeat|again/i, home:/హోమ్|హోం|మొదటి పేజీ|ఇతర సేవ|మెనూ|home|menu/i,
       back:/వెనక్కి|వెనక్కు|వెనుకకు|బ్యాక్|back/i, next:/తరువాత|తర్వాత|ముందుకు|నెక్స్ట్|next/i, skip:/వదిలే|వదిలెయ్|తెలియదు|చెప్పను|స్కిప్|skip/i,
       steps:/ఒక్కొక్కటి|దశ|స్టెప్|step/i, ask:/ప్రశ్న|అడగ|question|ask/i, done:/అయిపోయింది|పూర్తి|డన్|done/i, start:/మొదలు|ప్రారంభ|స్టార్ట్|start/i, loc:/ప్రదేశం|లొకేషన్|కనుక్కో|location/i},
-  en:{stop:/\bstop\b|be quiet|\bpause\b/i, repeat:/repeat|again|once more|say that/i, home:/\bhome\b|\bmenu\b|other service|main page/i,
+  en:{lang:/language/i, prof:/profile|my details/i, call:/\bcall\b|phone|number/i, del:/delete|erase/i, stop:/\bstop\b|be quiet|\bpause\b/i, repeat:/repeat|again|once more|say that/i, home:/\bhome\b|\bmenu\b|other service|main page/i,
       back:/\bback\b|previous/i, next:/\bnext\b|continue|go on|forward/i, skip:/skip|don'?t know|do not know|not sure|don'?t want to say/i,
       steps:/step/i, ask:/question|\bask\b/i, done:/\bdone\b|finish|complete/i, start:/start|begin/i, loc:/location|find my state|\bgps\b/i}
 };
@@ -825,7 +827,7 @@ function hear(c, auto){
   listen(txt => { if(c!==vctx) return; c.quiet = 0; if(msg) msg.textContent = '“'+txt.split(' | ')[0]+'”'; act(c, txt); },
     (m, why) => {
       if(c!==vctx) return;
-      if(why==='silence' && handsOn && ++c.quiet<2) return hear(c, true);   // one more chance, quietly
+      if(why==='silence' && handsOn && ++c.quiet<3) return hear(c, true);   // a couple more chances, quietly
       if(why==='denied') setHands(false);
       const out = why==='silence' && handsOn ? T().micT : m;
       if(msg) msg.textContent = out;
@@ -839,6 +841,7 @@ function command(c, txt){
   if(said('repeat', txt)) return () => { c.miss = 0; speakThenHear(c, true); };
   if(c.nav && said('home', txt)) return () => home();
   if(c.nav && said('back', txt)) return () => history.back();
+  if(c.nav && said('lang', txt)) return () => langScreen();
   return null;
 }
 async function act(c, txt){
@@ -996,7 +999,6 @@ addEventListener('popstate', e => {
   restoring = true;
   try{
     if(st.v==='lang') langScreen();
-    else if(st.v==='hands') handsOffer();
     else if(st.v==='prof'){ pstep = st.p; inProfile = true; cur = null; profScreen(); }
     else if(s && st.v==='q'){ cur = s; step = st.step; eligible = true; flow(); }
     else if(s && st.v==='res'){ cur = s; eligible = st.ok; result(); }
@@ -1053,35 +1055,26 @@ const HERO_ART = `<svg class="heroart" viewBox="0 0 300 300" aria-hidden="true" 
 
 // The first screen speaks each language in its own voice, so she can pick hers without reading.
 const LANG_INTRO = [['hi','हिन्दी के लिए गुलाबी बटन दबाइए।'],['ta','தமிழுக்கு நீல பட்டனை அழுத்துங்கள்.'],['te','తెలుగు కోసం ఆకుపచ్చ బటన్ నొక్కండి.'],['en','For English, press the orange button.']];
-const LANG_SAY = {hi:/हिन्दी|हिंदी|hindi|ஹிந்தி|இந்தி|హిందీ/i, ta:/तमिल|tamil|தமிழ்|டமில்|తమిళ/i, te:/तेलुगु|तेलगु|telugu|தெலுங்கு|తెలుగు/i, en:/english|इंग्लिश|अंग्रेज|ஆங்கிலம்|இங்கிலீஷ்|ఇంగ్లీష్|ఆంగ్ల/i};
+// in talk mode she can simply say her language; until the microphone has worked once, say how to allow it
+const LANG_TALK = [['hi','हिन्दी के लिए "हिन्दी" बोलिए, या गुलाबी बटन दबाइए।','फ़ोन माइक के लिए पूछे तो Allow दबाइए।'],['ta','தமிழுக்கு "தமிழ்" என்று சொல்லுங்கள், அல்லது நீல பட்டனை அழுத்துங்கள்.','போன் மைக் அனுமதி கேட்டால் Allow அழுத்துங்கள்.'],
+  ['te','తెలుగు కోసం "తెలుగు" అని చెప్పండి, లేదా ఆకుపచ్చ బటన్ నొక్కండి.','ఫోన్ మైక్ అనుమతి అడిగితే Allow నొక్కండి.'],['en','For English, say "English", or press the orange button.','If the phone asks to use the microphone, press Allow.']];
+const langIntro = () => { if(!handsOn) return LANG_INTRO; const ask = store.get('micOk')!=='1'; if(ask) micTold = true; return LANG_TALK.map(x=>[x[0], ask ? x[1]+' '+x[2] : x[1]]); };
+const LANG_SAY = {hi:/हिन्दी|हिंदी|hindi|ஹிந்தி|இந்தி|హిందీ/i, ta:/तमिल|तमिष|तमिज|tamil|thamizh|தமிழ்|டமில்|తమిళ/i, te:/तेलुगु|तेलुगू|तेलगु|telugu|தெலுங்கு|తెలుగు/i, en:/english|इंग्लिश|अंग्रेज|ஆங்கிலம்|இங்கிலீஷ்|ఇంగ్లీష్|ఆంగ్ల/i};
 function langScreen(){
   cur = null; inProfile = false; dots(); screen({v:'lang'});
   const LG=[['hi','हि','हिन्दी',['#c2185b','#f48fb1']],['ta','த','தமிழ்',['#1a56c7','#5b9bff']],['te','తె','తెలుగు',['#2e7d32','#86d08a']],['en','Aa','English',['#e8590c','#ffa94d']]];
   main.innerHTML = `<section class="langhead"><div>🗣️</div><h1>भाषा चुनिए · மொழி<br>భాష · Language</h1>
-    <button class="btn listen lsay" data-say="${sayTexts.push(LANG_INTRO)-1}">🔊 सुनिए · கேளுங்கள் · వినండి · Listen</button>${msgHtml()}</section>
+    <button class="btn listen lsay" data-say="${sayTexts.push(langIntro())-1}">🔊 सुनिए · கேளுங்கள் · వినండి · Listen</button>${msgHtml()}</section>
     <div class="grid" style="max-width:620px;margin:12px auto 0;width:100%">${LG.map(l=>`<button class="tile lt" data-l="${l[0]}" style="--g1:${l[3][0]};--g2:${l[3][1]}"><span class="e" style="color:${l[3][0]}">${l[1]}</span><span class="t">${l[2]}</span></button>`).join('')}</div>`;
   addXlangs();
-  main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); afterLang(); });
-  voiceScreen(LANG_INTRO, txt=>{ const l = Object.keys(LANG_SAY).find(k=>LANG_SAY[k].test(txt)); if(!l) return false; setLang(l); afterLang(); }, {nav:false});
+  main.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{ setLang(b.dataset.l); home(); });
+  voiceScreen(langIntro(), txt=>{ const l = Object.keys(LANG_SAY).find(k=>LANG_SAY[k].test(txt)); if(!l) return false; setLang(l); home(); }, {nav:false});
 }
 function addXlangs(){
   if(!API.ai || main.querySelector('.xlangs')) return;
   main.insertAdjacentHTML('beforeend', `<div class="xlangs">${EXTRA.map(e=>`<button class="chip" data-x="${e[0]}">${e[1]}</button>`).join('')}</div>`);
   main.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>chooseLang(b.dataset.x));
 }
-/** After the first language choice, offer talk mode once (only where the browser can listen). */
-function afterLang(){ if(hasSR() && store.get('hands')===null) handsOffer(); else home(); }
-let introNext = '';
-function handsOffer(){
-  cur = null; inProfile = false; dots(); screen({v:'hands'});
-  const t = T();
-  main.innerHTML = `<div class="card"><div class="emoji">🎤</div><div class="big">${t.hQ}</div><div class="sub">${t.hSub}</div>
-    <div class="row"><button class="btn yes yn" id="y">✅ ${t.hYes}</button><button class="btn no yn" id="n">❌ ${t.hNo}</button></div></div>`;
-  $('#y').onclick = async () => { stopSpeech(); const ok = await micAllowed(); setHands(ok); introNext = ok ? t.hHelp : (VM[lang]||VM.en).denied; home(); };
-  $('#n').onclick = () => { setHands(false); home(); };
-  voiceScreen(t.hQ+' '+t.hSub, null, {nav:false});
-}
-
 function profLine(){ return esc(stName(profile.state,lang)) + (profile.district? ', '+esc(profile.district) : ''); }
 function home(){
   cur = null; step = 0; inProfile = false; dots(); screen({v:'home'});
@@ -1104,8 +1097,12 @@ function home(){
   if($('#pmk')) $('#pmk').onclick = ()=>profFlow(false);
   if($('#pedit')) $('#pedit').onclick = ()=>profFlow(true);
   if($('#pdel')) $('#pdel').onclick = ()=>{ profile = null; saveProfile(); home(); };
-  voiceScreen((introNext ? introNext+' ' : '') + t.homeV, txt=>route(txt), {free:true, nav:false, giveUp:t.notfound});
-  introNext = '';
+  const intro = handsOn && store.get('micOk')!=='1' && !micTold ? (micTold = true, t.micAsk+' '+t.hHelp+' ') : '';
+  voiceScreen(intro + t.homeV, txt=>{
+    if(said('prof',txt)) return profFlow(!!profile);
+    if(profile && said('del',txt)){ profile = null; saveProfile(); return home(); }
+    return route(txt);
+  }, {free:true, nav:false, giveUp:t.notfound});
 }
 
 // ---------- Profile wizard: intro → state → district → one question at a time ----------
@@ -1141,7 +1138,7 @@ function profScreen(){
       <button class="btn pink mic" id="mic">${p.sayState}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
       <div class="grid1">${STATES.map(r=>`<button class="btn ghost st" data-c="${r[0]}">${r[SIDX[lang]]}</button>`).join('')}</div>
       <button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
-    const pick=c=>{ if(c) draft.state=c; else delete draft.state; pstep=2; profScreen(); };
+    const pick=c=>{ if(c) draft.state=c; else delete draft.state; pstep = hasSR() ? 2 : 3; profScreen(); };   // the district is spoken, so it needs a microphone
     main.querySelectorAll('.st').forEach(b=>b.onclick=()=>pick(b.dataset.c)); $('#sk').onclick=()=>pick(null);
     // location is asked for only after she taps the pin button, then she confirms the state with a big Yes / No
     $('#loc').onclick = () => { const b=$('#loc'); b.disabled=true; stopListening(); $('#msg').textContent=p.locWait; autoSay(p.locWait);
@@ -1150,14 +1147,13 @@ function profScreen(){
     voiceScreen(p.stateQ+' '+p.locV, txt=>{ if(said('loc',txt)) return $('#loc').click(); if(said('skip',txt)) return pick(null); const c = matchState(txt); if(c) return pick(c); return false; }); return;
   }
   if(pstep===2){
+    // no typing anywhere: she says the district (or skips it), and can change it later by editing her profile
     main.innerHTML = `<div class="card">${prog}<div class="big">${p.distQ}</div>
-      <input class="inp" id="dist" maxlength="40" autocomplete="off" lang="${lang}" aria-label="${p.distPh}" placeholder="${p.distPh}" value="${esc(draft.district||'')}">
-      <button class="btn pink mic" id="mic">${t.speak}</button><div id="msg" class="sub" role="status" aria-live="polite"></div>
-      <button class="btn yes" id="nx">${p.next}</button><button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
+      <button class="btn pink mic" id="mic">${t.speak}</button>${msgHtml()}
+      <button class="btn ghost" id="sk">${p.skipQ}</button></div>`;
     const go=v=>{ v=(v||'').trim().slice(0,40); if(v) draft.district=v; else delete draft.district; pstep=3; profScreen(); };
-    $('#nx').onclick=()=>go($('#dist').value); $('#sk').onclick=()=>go('');
-    // a spoken district name fills the box and moves on; she can still edit it later from her profile
-    voiceScreen(p.distQ, txt=>{ if(said('skip',txt)) return go(''); if(said('next',txt)) return go($('#dist').value); const v = txt.split(' | ')[0]; $('#dist').value = v; go(v); }, {free:true}); return;
+    $('#sk').onclick=()=>go('');
+    voiceScreen(p.distQ, txt=>{ if(said('skip',txt) || said('next',txt)) return go(''); go(txt.split(' | ')[0]); }, {free:true}); return;
   }
   const i = pstep-3;
   if(i >= PQ.length){ return profSave(); }
@@ -1235,6 +1231,8 @@ function flow(){
   if(step+1<n) warm(s.qs[step+1][lang]);
 }
 
+/** "Call": browsers will not dial without a tap, so read the helpline numbers out slowly, digit by digit. */
+function sayCalls(s){ sayThenHear(s.calls.map(c=>lbl(c[0])+': '+c[1].split('').join(' ')).join('. ')+'.', true); }
 function callsHtml(s){
   return s.calls.map(c=>`<a class="btn act call" href="tel:${encodeURIComponent(c[1])}"><span class="ai">📞</span><span class="at"><small>${lbl(c[0])}</small><b class="num">${c[1]}</b></span></a>`).join('');
 }
@@ -1280,7 +1278,7 @@ function result(){
     main.innerHTML = `<div class="card"><div class="emoji">🙏</div><div class="big">${t.noT}</div>${listenBtn(t.noV)}
       <button class="btn pink" id="home">${t.home}</button>${talkHtml()}<div class="res">${callsHtml(s)}</div></div>`;
     $('#home').onclick = home;
-    voiceScreen(t.noV, x=>{ if(saidYes(x) || said('next',x)) return home(); return false; }); return;
+    voiceScreen(t.noV, x=>{ if(said('call',x)) return sayCalls(s); if(saidYes(x) || said('next',x)) return home(); return false; }); return;
   }
   const docsTxt = s.docs.map(d=>d[1][lang]).join(', ');
   const full = (s.qs.length? t.okV+' ':'') + s.name[lang]+'. '+t.docsL+': '+docsTxt+'. '+s.where[lang]+' '+s.info[lang];
@@ -1297,7 +1295,7 @@ function result(){
     <button class="btn pink" id="ask">${t.ask}</button>
     ${talkHtml()}<button class="btn ghost" id="home">${t.home}</button></div>`;
   $('#ask').onclick = askScreen; $('#home').onclick = home; $('#steps').onclick = ()=>stepScreen(0);
-  voiceScreen(full + (handsOn ? ' '+t.resH : ''), x=>{ if(said('steps',x) || said('next',x)) return stepScreen(0); if(said('ask',x)) return askScreen(); return false; });
+  voiceScreen(full + (handsOn ? ' '+t.resH : ''), x=>{ if(said('steps',x) || said('next',x)) return stepScreen(0); if(said('ask',x)) return askScreen(); if(said('call',x)) return sayCalls(s); return false; });
 }
 
 // ============ Ask a question about the current scheme ============
@@ -1345,9 +1343,8 @@ const more = $('#more');
 more.innerHTML = '<option value="">'+esc(T().moreL)+'</option>' + EXTRA.map(e=>`<option value="${e[0]}">${e[1]}</option>`).join('');
 more.onchange = () => { if(more.value) chooseLang(more.value); };
 paintBig();
-// A returning user goes straight to the home screen in her language (after the one-time talk-mode question, which
-// she may not have seen yet); the header still lets her change the language.
-const sl = store.get('lang'); if(sl&&U[sl]){ setLang(sl); afterLang(); } else { setLang('hi'); langScreen(); }
+// A returning user goes straight to the home screen in her language; the header still lets her change it.
+const sl = store.get('lang'); if(sl&&U[sl]){ setLang(sl); home(); } else { setLang('hi'); langScreen(); }
 fetch('/api/health').then(r=>r.ok?r.json():null).then(j=>{
   API.ai = !!(j && j.ai); more.hidden = !API.ai;
   if(!API.ai) return;

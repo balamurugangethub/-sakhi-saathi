@@ -111,8 +111,7 @@ test('profile wizard saves only on the device and can be deleted', async () => {
   ev(`localStorage.clear(); profile=null; setLang('en'); home();`); await tick();
   win.document.querySelector('#pmk').click(); await tick();
   win.document.querySelector('#go').click(); await tick();
-  win.document.querySelector('.st[data-c="MH"]').click(); await tick();
-  win.document.querySelector('#nx').click(); await tick();
+  win.document.querySelector('.st[data-c="MH"]').click(); await tick();   // no microphone here, so no district step
   for (const v of ['a21', 'married', 'OBC', 'no', 'yes', 'rural', 'no', 'no', 'yes']) { win.document.querySelector(`[data-v="${v}"]`).click(); await tick(); }
   const saved = JSON.parse(win.localStorage.getItem('profile'));
   assert.equal(saved.state, 'MH');
@@ -144,7 +143,7 @@ test('find my state: location is asked only after a tap, stays on the phone, and
     assert.ok(d.querySelector('#y.yn') && d.querySelector('#n.yn'));
     d.querySelector('#y').click(); await tick();
     assert.equal(ev('draft.state'), 'TN');
-    assert.ok(d.querySelector('#dist'));                              // on to the district step
+    assert.ok(d.querySelector('[data-v]'));                           // on to the questions (the district is spoken; no mic here)
     // nothing about where she is went anywhere: only the boundary file was downloaded, and nothing is stored
     assert.deepEqual(fetched.map(f => f[0]), ['states.geo.json']);
     assert.ok(fetched.every(f => !f[1]));
@@ -220,18 +219,14 @@ test('first screen: a glowing Listen button names each language in its own voice
   const intro = JSON.parse(ev('JSON.stringify(__said[__said.length-1])'));
   assert.deepEqual(intro.map(x => x[0]), ['hi', 'ta', 'te', 'en']);
   assert.match(intro[1][1], /தமிழ/);
-  sr.say('தமிழ்'); await settle();                            // talk mode was on: she said her language
+  assert.match(intro[1][1], /Allow/);                         // talk mode: say your language, and how to allow the mic
+  sr.say('தமிழ்'); await settle();                            // she said her language
   assert.equal(ev('lang'), 'ta');
-  // first time only: offer talk mode, explained and spoken, before the home screen
-  assert.equal(d.querySelector('.big').textContent, ev('U.ta.hQ'));
-  assert.equal(ev('__said[__said.length-1]'), ev(`U.ta.hQ+' '+U.ta.hSub`));
-  d.querySelector('#y').click(); await settle();
-  assert.equal(win.localStorage.getItem('hands'), '1');
-  assert.ok(d.querySelector('#mic.search'));
-  assert.equal(ev('__said[__said.length-1]'), ev(`U.ta.hHelp+' '+U.ta.homeV`));
-  ev(`langScreen()`); await settle();
-  d.querySelector('.tile[data-l="en"]').click(); await settle();
-  assert.ok(d.querySelector('#mic.search'));                  // asked once: straight home next time
+  assert.ok(d.querySelector('#mic.search'));                  // straight home, no extra question
+  ev(`micTold = false; home();`); await settle();
+  assert.ok(ev('__said[__said.length-1]').startsWith(ev('U.ta.micAsk')));   // explained once, until the mic has worked
+  ev(`store.set('micOk','1'); home();`); await settle();
+  assert.equal(ev('__said[__said.length-1]'), ev('U.ta.homeV'));
   ev(`say = __realSay; handsOn = false;`); sr.restore();
 });
 
@@ -255,9 +250,10 @@ test('talk mode: after speaking it listens, and she can answer, repeat, go back 
   assert.equal(ev('step'), 0);
   const n = sr.count();
   sr.silence(); await settle();
-  assert.equal(sr.count(), n + 1);                            // heard nothing: one more quiet try
   sr.silence(); await settle();
-  assert.equal(sr.count(), n + 1);                            // then it stops and points to the mic button
+  assert.equal(sr.count(), n + 2);                            // heard nothing: two more quiet tries
+  sr.silence(); await settle();
+  assert.equal(sr.count(), n + 2);                            // then it stops and points to the mic button
   assert.equal(d.querySelector('#msg').textContent, ev('U.en.micT'));
   d.querySelector('#mic').click(); await settle();
   sr.say('home'); await settle();
@@ -273,7 +269,7 @@ test('talk mode: after speaking it listens, and she can answer, repeat, go back 
   sr.say('done'); await settle();
   assert.ok(d.querySelector('#wa'));
   // what she says is never stored
-  const keys = Object.keys(win.localStorage).filter(k => !/^(lang|voice|hands|big|profile|tr_\w+)$/.test(k));
+  const keys = Object.keys(win.localStorage).filter(k => !/^(lang|voice|hands|micOk|big|profile|tr_\w+)$/.test(k));
   assert.deepEqual(keys, []);
   ev(`say = __realSay; handsOn = false; stopListening();`); sr.restore();
 });
@@ -459,20 +455,23 @@ test('call buttons are single links (no button inside a link) and the footer and
   assert.equal(d.querySelector('.lang[data-l="hi"]').getAttribute('aria-pressed'), 'false');
 });
 
-test('a returning user who never answered the talk-mode question is asked it once, where the browser can listen', () => {
+test('talk mode is on by default where the browser can listen, and stays off once she turns it off', () => {
   const root = path.join(__dirname, '..', 'public');
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/<script[^>]*src="app.js"[^>]*><\/script>/, '');
-  const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only', pretendToBeVisual: true });
-  dom.window.fetch = () => Promise.reject(new Error('offline'));
-  dom.window.SpeechRecognition = class { start() {} abort() {} };
-  dom.window.localStorage.setItem('lang', 'ta');
-  new vm.Script(fs.readFileSync(path.join(root, 'app.js'), 'utf8')).runInContext(dom.getInternalVMContext());
-  const d = dom.window.document;
-  assert.equal(d.querySelector('.big').textContent, new vm.Script('U.ta.hQ').runInContext(dom.getInternalVMContext()));
-  d.querySelector('#n').click();
-  assert.ok(d.querySelector('#mic.search'));
-  assert.equal(dom.window.localStorage.getItem('hands'), '0');
-  dom.window.close();
+  const run = hands => {
+    const dom = new JSDOM(html, { url: 'http://localhost/', runScripts: 'outside-only', pretendToBeVisual: true });
+    dom.window.fetch = () => Promise.reject(new Error('offline'));
+    dom.window.SpeechRecognition = class { start() {} abort() {} };
+    dom.window.localStorage.setItem('lang', 'ta');
+    if (hands) dom.window.localStorage.setItem('hands', hands);
+    new vm.Script(fs.readFileSync(path.join(root, 'app.js'), 'utf8')).runInContext(dom.getInternalVMContext());
+    const on = new vm.Script('handsOn').runInContext(dom.getInternalVMContext());
+    const pressed = dom.window.document.querySelector('#ht').getAttribute('aria-pressed');
+    const typing = dom.window.document.querySelectorAll('input[type=text], input:not([type]), textarea').length;
+    return [on, pressed, typing];   // left open: the screen is still speaking and listening in the background
+  };
+  assert.deepEqual(run(null), [true, 'true', 0]);
+  assert.deepEqual(run('0'), [false, 'false', 0]);
 });
 
 test('a returning user skips the language screen and lands on home in her language', () => {
