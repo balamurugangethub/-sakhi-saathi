@@ -22,14 +22,52 @@
 - Every screen: one task, big buttons (≥56 px), illustrated flat icons (no emoji), documents-to-carry list, step-by-step instructions, one-tap call buttons, and no dead ends.
 
 ## Architecture
-**Diagrams of every flow and algorithm** (screen flow, talk-mode voice loop, request matching, eligibility, Find my state, server checks, Gemini fallback, data pipeline, deploy): [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+![System overview: the app runs on the phone, a small Node server on Cloud Run holds the Gemini key](docs/diagrams/01-big-picture.png)
 
-```
-Browser (public/)  ──►  Node server (server.js, zero dependencies)  ──►  Gemini API
- index.html · app.js · style.css          │  /api/ask  /api/route  /api/translate  /api/tts  /api/health
- localStorage: profile, language,         │  GEMINI_API_KEY only on the server · rate limiting · input validation
- cached translations                      └─ strict CSP & security headers · gzip · deployed on Google Cloud Run
-```
+Almost everything runs on the phone: screens, scheme content, eligibility rules, the profile and the state lookup. The server only serves the app and passes requests to Gemini, so the API key never reaches the browser.
+
+### How it works, in pictures
+All 19 diagrams, with explanations and the code behind each one, are in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+**Where data lives.** The profile and GPS position never leave the phone; text reaches the server only when an answer needs Gemini, and is not saved.
+
+![Privacy map](docs/diagrams/02-privacy-map.png)
+
+**Screen flow.** One idea per screen, no dead ends; the phone's Back button and the spoken words "home", "back", "language", "repeat" and "stop" work everywhere.
+
+![Screen flow](docs/diagrams/03-screen-flow.png)
+
+**Talk mode.** Every screen speaks, then listens, retries quietly on silence, and accepts commands before passing her words to the screen.
+
+![Talk mode loop](docs/diagrams/04-talk-mode-loop.png)
+
+**Understanding a request.** Keyword rules, then name matching, run on the phone; Gemini is asked only when both fail.
+
+![Request matching](docs/diagrams/06-request-matching.png)
+
+**Eligibility.** Yes/no questions stop at the first answer that rules her out; the home screen shows schemes whose rule passes for her profile, counting skipped questions as "maybe".
+
+![Eligibility questions](docs/diagrams/07a-eligibility-questions.png)
+
+![Home screen filter](docs/diagrams/07b-home-screen-filter.png)
+
+**Find my state.** The phone turns GPS into a state with a bundled map; the coordinates are never sent or stored.
+
+![Find my state](docs/diagrams/08b-find-my-state-sequence.png)
+
+**Server and Gemini.** Cheap checks reject bad requests first; a retired or busy Gemini model is replaced automatically.
+
+![Server request pipeline](docs/diagrams/10-server-pipeline.png)
+
+![Gemini resilience](docs/diagrams/11-gemini-resilience.png)
+
+**Data pipeline.** Scheme facts are extracted into tables, validated, and checked for freshness every week.
+
+![Data pipeline](docs/diagrams/12a-data-pipeline.png)
+
+To change a diagram, edit its Mermaid source in `docs/ARCHITECTURE.md`, then run `node tools/render-diagrams.js`.
+
+### Key properties
 - **Google services:** Gemini API (answers, intent routing, translation, text-to-speech) and Google Cloud Run.
 - **Security:** key never reaches the browser; CSP forbids inline scripts (`script-src 'self'`); all user text is escaped; request size/length validation; per-IP rate limits; no tracking, no accounts, no personal data stored server-side; non-root container.
 - **Efficiency:** no framework, no external fonts or images (inline SVG), small gzip transfer, stateless server.
@@ -71,9 +109,9 @@ gcloud run deploy sakhi-saathi --source . --region asia-south1 --allow-unauthent
 | `public/` | the app: `index.html`, `app.js` (data, voice, UI), `style.css`, `sw.js` + `manifest.webmanifest` (PWA), icons |
 | `server.js` | static hosting + Gemini proxy, validation, rate limiting, security headers |
 | `test/` | `server.test.js`, `app.test.js` (`npm test`) |
-| `docs/` | `ARCHITECTURE.md` (diagrams of how the app works), `ROADMAP.md` |
+| `docs/` | `ARCHITECTURE.md` (diagrams of how the app works, pictures in `diagrams/`), `ROADMAP.md` |
 | `data/` | scheme data extraction, validation and provenance ([data/README.md](data/README.md)) |
-| `tools/` | `mictest.html` (microphone diagnostics), `mock-gemini.js`, `make-icons.js` |
+| `tools/` | `mictest.html` (microphone diagnostics), `mock-gemini.js`, `make-icons.js`, `render-diagrams.js` |
 | `Dockerfile` | Cloud Run image |
 | `VIBE_PROMPT.md` | the prompt used to vibe-code the app |
 
