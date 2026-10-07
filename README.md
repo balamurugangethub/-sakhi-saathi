@@ -22,6 +22,8 @@
 - Every screen: one task, big buttons (≥56 px), illustrated flat icons (no emoji), documents-to-carry list, step-by-step instructions, one-tap call buttons, and no dead ends.
 
 ## Architecture
+**Diagrams of every flow and algorithm** (screen flow, talk-mode voice loop, request matching, eligibility, Find my state, server checks, Gemini fallback, data pipeline, deploy): [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ```
 Browser (public/)  ──►  Node server (server.js, zero dependencies)  ──►  Gemini API
  index.html · app.js · style.css          │  /api/ask  /api/route  /api/translate  /api/tts  /api/health
@@ -69,6 +71,8 @@ gcloud run deploy sakhi-saathi --source . --region asia-south1 --allow-unauthent
 | `public/` | the app: `index.html`, `app.js` (data, voice, UI), `style.css`, `sw.js` + `manifest.webmanifest` (PWA), icons |
 | `server.js` | static hosting + Gemini proxy, validation, rate limiting, security headers |
 | `test/` | `server.test.js`, `app.test.js` (`npm test`) |
+| `docs/` | `ARCHITECTURE.md` (diagrams of how the app works), `ROADMAP.md` |
+| `data/` | scheme data extraction, validation and provenance ([data/README.md](data/README.md)) |
 | `tools/` | `mictest.html` (microphone diagnostics), `mock-gemini.js`, `make-icons.js` |
 | `Dockerfile` | Cloud Run image |
 | `VIBE_PROMPT.md` | the prompt used to vibe-code the app |
