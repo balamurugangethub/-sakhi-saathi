@@ -22,7 +22,33 @@
 - Every screen: one task, big buttons (≥56 px), illustrated flat icons (no emoji), documents-to-carry list, step-by-step instructions, one-tap call buttons, and no dead ends.
 
 ## Architecture
-![System overview: the app runs on the phone, a small Node server on Cloud Run holds the Gemini key](docs/diagrams/01-big-picture.png)
+```mermaid
+flowchart LR
+  subgraph phone["Her phone: browser, installable as an app"]
+    UI["App screens<br/>public/app.js"]
+    SW["Service worker<br/>offline copy of the app"]
+    LS[("localStorage<br/>language, profile, settings,<br/>translated text")]
+    GEO["states.geo.json<br/>state map"]
+    SP["Browser speech<br/>listening and device voices"]
+  end
+  subgraph cloud["Google Cloud Run"]
+    SRV["Node server<br/>server.js, zero dependencies"]
+  end
+  GEM["Gemini API"]
+  GOV["Official government sites"]
+  WA["WhatsApp"]
+  TEL["Phone dialer"]
+
+  SW -. "serves app files" .-> UI
+  UI <--> LS
+  UI <--> SP
+  UI --> GEO
+  UI -- "/api/ask, /route, /translate, /tts<br/>never the profile or location" --> SRV
+  SRV -- "GEMINI_API_KEY lives only here" --> GEM
+  UI -- "opens in a new tab" --> GOV
+  UI -- "shares the checklist" --> WA
+  UI -- "helpline tel: links" --> TEL
+```
 
 Almost everything runs on the phone: screens, scheme content, eligibility rules, the profile and the state lookup. The server only serves the app and passes requests to Gemini, so the API key never reaches the browser.
 
@@ -31,41 +57,203 @@ All 19 diagrams, with explanations and the code behind each one, are in [docs/AR
 
 **Where data lives.** The profile and GPS position never leave the phone; text reaches the server only when an answer needs Gemini, and is not saved.
 
-![Privacy map](docs/diagrams/02-privacy-map.png)
+```mermaid
+flowchart LR
+  subgraph stays["Stays on the phone"]
+    P["Profile: state, district, age group,<br/>category, yes/no answers"]
+    L["GPS position<br/>used once to find the state, then dropped"]
+    S["Settings: language, voice,<br/>talk mode, large text"]
+    T["Translated text cache"]
+  end
+  subgraph passes["Passes through the server for one request, not saved"]
+    Q["Her spoken request, only when the<br/>phone could not match it by itself"]
+    A["Her question about a scheme,<br/>with that scheme's public facts"]
+    X["App text to translate or read aloud"]
+  end
+  subgraph never["Never collected"]
+    N["Name, phone number, Aadhaar,<br/>accounts, cookies, tracking ids,<br/>recordings of her voice"]
+  end
+  passes --> GEM["Gemini"]
+```
 
 **Screen flow.** One idea per screen, no dead ends; the phone's Back button and the spoken words "home", "back", "language", "repeat" and "stop" work everywhere.
 
-![Screen flow](docs/diagrams/03-screen-flow.png)
+```mermaid
+flowchart TD
+  start(["Open the app"]) --> saved{"Language already<br/>saved on this phone?"}
+  saved -- no --> lang["Language screen<br/>say or tap Hindi, Tamil, Telugu, English<br/>+7 more when AI is on"]
+  saved -- yes --> home
+  lang --> home["Home<br/>'What do you need?' and picture tiles"]
+  home -- "'profile'" --> prof["Profile wizard<br/>see diagram 8"]
+  prof --> home
+  home -- "says or taps a need" --> route["Understand the request<br/>see diagram 6"]
+  route -- "scheme with questions" --> q["Question screen<br/>one yes/no question at a time"]
+  route -- "basic service, no questions" --> ok
+  q -- "every answer fits" --> ok["Result: you can get this<br/>documents, where to go, money, helplines,<br/>official site, share on WhatsApp"]
+  q -- "an answer rules her out" --> no["Result: not for you<br/>helplines, back home"]
+  ok -- "'steps'" --> steps["Step by step<br/>one instruction per screen"]
+  steps -- "'done'" --> ok
+  ok -- "'question'" --> ask["Ask a question<br/>see diagram 6"]
+  ask -- "back" --> ok
+  ok -- "'call'" --> calls["Reads the helpline numbers<br/>digit by digit"]
+  no --> home
+```
 
 **Talk mode.** Every screen speaks, then listens, retries quietly on silence, and accepts commands before passing her words to the screen.
 
-![Talk mode loop](docs/diagrams/04-talk-mode-loop.png)
+```mermaid
+flowchart TD
+  open["A screen opens and calls<br/>voiceScreen(text, handler)"] --> von{"Voice on?"}
+  von -- yes --> say["Speak the screen<br/>see diagram 5"]
+  von -- no --> tm
+  say --> blk{"Browser held the sound<br/>back until a first tap?"}
+  blk -- yes --> tap["Show a big glowing speaker<br/>her first tap replays the screen"]
+  tap --> say
+  blk -- no --> tm{"Talk mode on and the<br/>browser can listen?"}
+  tm -- no --> wait["Wait for a tap<br/>buttons are the fallback"]
+  tm -- yes --> listen["Listen once<br/>live words shown on screen"]
+  listen -- "silence" --> quiet{"Fewer than 3<br/>quiet tries?"}
+  quiet -- yes --> listen
+  quiet -- no --> micT["Say 'tap the mic to talk'"]
+  listen -- "mic not allowed" --> off["Turn talk mode off<br/>and say how to allow it"]
+  listen -- "heard words" --> cmd{"A command?<br/>stop, repeat, home,<br/>back, language"}
+  cmd -- yes --> doit["Do it"]
+  cmd -- no --> handler{"Did this screen's<br/>handler understand?"}
+  handler -- yes --> next["Next screen<br/>the loop starts again there"]
+  handler -- no --> miss{"Fewer than 3 misses?"}
+  miss -- yes --> sorry["Say 'I did not understand'"]
+  sorry --> listen
+  miss -- no --> giveup["Say the screen's give-up hint<br/>for example 'tap a picture'"]
+```
 
 **Understanding a request.** Keyword rules, then name matching, run on the phone; Gemini is asked only when both fail.
 
-![Request matching](docs/diagrams/06-request-matching.png)
+```mermaid
+flowchart TD
+  words["Her words on the home screen"] --> pc{"'profile' or 'delete'?"}
+  pc -- yes --> pw["Open or delete the profile"]
+  pc -- no --> kw{"1. Keyword rules<br/>specific schemes first: state cash,<br/>widow, scholarship, savings groups,<br/>then broad ones: gas, bank"}
+  kw -- match --> openS["Open that service"]
+  kw -- none --> fz{"2. Fuzzy match<br/>most words of a scheme name,<br/>common words skipped"}
+  fz -- match --> openS
+  fz -- none --> aiq{"3. AI on?"}
+  aiq -- yes --> api["POST /api/route<br/>Gemini picks one id from the list, or none"]
+  api -- "id from the list" --> openS
+  api -- none --> miss["Not understood<br/>ask again, see diagram 4"]
+  aiq -- no --> miss
+```
 
 **Eligibility.** Yes/no questions stop at the first answer that rules her out; the home screen shows schemes whose rule passes for her profile, counting skipped questions as "maybe".
 
-![Eligibility questions](docs/diagrams/07a-eligibility-questions.png)
+```mermaid
+flowchart TD
+  o["She opens a scheme"] --> more{"More questions left?"}
+  more -- no --> elig["Result: you can get this"]
+  more -- yes --> ask["Ask the next question<br/>she says or taps yes or no"]
+  ask --> want{"Is it the answer that<br/>keeps her eligible?<br/>usually yes, no for a few<br/>like 'do you already have one?'"}
+  want -- yes --> more
+  want -- no --> notE["Result: not for you<br/>with helplines"]
+```
 
-![Home screen filter](docs/diagrams/07b-home-screen-filter.png)
+```mermaid
+flowchart TD
+  all["Every service"] --> basic{"Basic service?<br/>LPG, bank balance, Jan Dhan"}
+  basic -- yes --> b["Always shown<br/>under 'Basic services'"]
+  basic -- no --> hp{"Profile saved?"}
+  hp -- no --> so{"State-only scheme?"}
+  so -- no --> pop["Shown under 'Popular schemes'"]
+  so -- yes --> h1["Hidden until she gives her state<br/>still reachable by voice"]
+  hp -- yes --> fit{"Does the scheme's rule<br/>pass for her profile?"}
+  fit -- yes --> fy["Shown under 'Schemes for you'"]
+  fit -- no --> h2["Hidden"]
+```
 
 **Find my state.** The phone turns GPS into a state with a bundled map; the coordinates are never sent or stored.
 
-![Find my state](docs/diagrams/08b-find-my-state-sequence.png)
+```mermaid
+sequenceDiagram
+  actor W as Woman
+  participant App as App on the phone
+  participant GPS as Phone location
+  participant Srv as Our server
+  W->>App: taps the pin, or says "location"
+  App->>GPS: ask for a coarse position
+  App->>Srv: GET states.geo.json, the same file for everyone
+  GPS-->>App: latitude, longitude
+  Srv-->>App: state outlines, 36 states and UTs
+  App->>App: stateAt(lat, lon) on the phone
+  Note over App: the coordinates are dropped here, never sent or stored
+  App->>W: "Tamil Nadu. Is this your state?" with big Yes and No
+  W->>App: Yes
+  App->>App: profile.state = TN, saved in localStorage
+```
 
 **Server and Gemini.** Cheap checks reject bad requests first; a retired or busy Gemini model is replaced automatically.
 
-![Server request pipeline](docs/diagrams/10-server-pipeline.png)
+```mermaid
+flowchart TD
+  req["Request"] --> h{"/api/health?"}
+  h -- yes --> hj["ok, and whether AI is on"]
+  h -- no --> isApi{"Starts with /api/?"}
+  isApi -- no --> path{"Path stays inside public/?"}
+  path -- no --> f403["403"]
+  path -- yes --> etag{"Browser already has<br/>this version? ETag"}
+  etag -- yes --> n304["304, nothing to send"]
+  etag -- no --> gz["File, gzipped once per version"]
+  isApi -- yes --> known{"Known route?"}
+  known -- no --> n404["404"]
+  known -- yes --> post{"POST with JSON?"}
+  post -- no --> e405["405 or 415"]
+  post -- yes --> rl{"Under the per-IP limit?<br/>per minute: ask 20, route 20,<br/>translate 40, tts 60"}
+  rl -- no --> e429["429, wait a minute"]
+  rl -- yes --> body{"Body under 120 KB<br/>and valid JSON?"}
+  body -- no --> e413["413 or 400"]
+  body -- yes --> val{"Fields valid?<br/>lengths, language, ids"}
+  val -- no --> e400["400"]
+  val -- yes --> run["Handler, then Gemini<br/>see diagram 11"]
+  run --> out["JSON, or audio/wav"]
+```
 
-![Gemini resilience](docs/diagrams/11-gemini-resilience.png)
+```mermaid
+flowchart TD
+  start["gemini(kind, body)"] --> key{"API key set?"}
+  key -- no --> e503["503: AI not configured<br/>the app falls back to scripted answers"]
+  key -- yes --> try1["Call the model<br/>the last one that worked, or the configured one"]
+  try1 --> r{"Result"}
+  r -- "ok" --> ok["Return the answer"]
+  r -- "404, model retired" --> disc["List the models this key can use,<br/>pick the newest suitable one, stable before preview,<br/>retry and remember it"]
+  disc --> r2{"Result"}
+  r -- "429 or 5xx, busy" --> retry["Wait 0.7 s, retry,<br/>then wait 1.8 s, retry"]
+  r2 -- "ok" --> ok
+  r2 -- "busy" --> retry
+  retry -- "ok" --> ok
+  retry -- "still busy" --> alt["Try one different model once<br/>not remembered, the outage is temporary"]
+  alt -- "ok" --> ok
+  alt -- "fails" --> e502["502 to the browser<br/>details go to the server log only"]
+  r -- "other error" --> e502
+  r2 -- "other error" --> e502
+```
 
 **Data pipeline.** Scheme facts are extracted into tables, validated, and checked for freshness every week.
 
-![Data pipeline](docs/diagrams/12a-data-pipeline.png)
+```mermaid
+flowchart LR
+  app["public/app.js<br/>source of truth for content"] -- "extract.js<br/>loads the app in jsdom" --> reg["registry.json"]
+  reg --> sch[("schemes.ndjson")]
+  reg --> hl[("helplines.ndjson")]
+  reg --> ln[("links.ndjson")]
+  src["data/sources.json<br/>human-checked provenance:<br/>official source, last_verified,<br/>evidence_url, review window"] --> val["validate.js"]
+  sch --> val
+  hl --> val
+  ln --> val
+  val --> res{"Result per scheme"}
+  res -- "rule broken" --> err["error: fails CI"]
+  res -- "verified too long ago" --> stale["stale: fails the weekly check"]
+  res -- "never verified or<br/>change announced" --> warn["warning: reported"]
+  res -- "all good" --> fresh["fresh"]
+```
 
-To change a diagram, edit its Mermaid source in `docs/ARCHITECTURE.md`, then run `node tools/render-diagrams.js`.
+The diagrams are [Mermaid](https://mermaid.js.org/) text that GitHub draws; their sources live in `docs/ARCHITECTURE.md`, and a test checks the README copies stay identical.
 
 ### Key properties
 - **Google services:** Gemini API (answers, intent routing, translation, text-to-speech) and Google Cloud Run.
@@ -109,9 +297,9 @@ gcloud run deploy sakhi-saathi --source . --region asia-south1 --allow-unauthent
 | `public/` | the app: `index.html`, `app.js` (data, voice, UI), `style.css`, `sw.js` + `manifest.webmanifest` (PWA), icons |
 | `server.js` | static hosting + Gemini proxy, validation, rate limiting, security headers |
 | `test/` | `server.test.js`, `app.test.js` (`npm test`) |
-| `docs/` | `ARCHITECTURE.md` (diagrams of how the app works, pictures in `diagrams/`), `ROADMAP.md` |
+| `docs/` | `ARCHITECTURE.md` (diagrams of how the app works), `ROADMAP.md` |
 | `data/` | scheme data extraction, validation and provenance ([data/README.md](data/README.md)) |
-| `tools/` | `mictest.html` (microphone diagnostics), `mock-gemini.js`, `make-icons.js`, `render-diagrams.js` |
+| `tools/` | `mictest.html` (microphone diagnostics), `mock-gemini.js`, `make-icons.js` |
 | `Dockerfile` | Cloud Run image |
 | `VIBE_PROMPT.md` | the prompt used to vibe-code the app |
 

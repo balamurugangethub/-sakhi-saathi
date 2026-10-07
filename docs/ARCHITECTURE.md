@@ -1,9 +1,8 @@
 # Architecture
 
 Pictures of how Sakhi Saathi works, drawn from the code on `main`. Each one has a short explanation and the functions to read next.
-The pictures are PNG files in [`docs/diagrams/`](diagrams/), so they show everywhere, including the GitHub phone app. Under each
-picture is its source in [Mermaid](https://mermaid.js.org/), a plain-text diagram language, so a diagram can be changed in the
-same pull request as the code it describes: edit the source, then run `node tools/render-diagrams.js` to redraw the PNGs.
+Every diagram is written in [Mermaid](https://mermaid.js.org/), a plain-text diagram language: GitHub draws it on this page
+(with zoom and pan), and a diagram can be changed in the same pull request as the code it describes.
 
 | # | Diagram | What it answers |
 |---|---|---|
@@ -27,12 +26,7 @@ same pull request as the code it describes: edit the source, then run `node tool
 
 ## 1. The big picture
 
-![System overview](diagrams/01-big-picture.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 01-big-picture
 flowchart LR
   subgraph phone["Her phone: browser, installable as an app"]
     UI["App screens<br/>public/app.js"]
@@ -60,8 +54,6 @@ flowchart LR
   UI -- "helpline tel: links" --> TEL
 ```
 
-</details>
-
 Almost everything happens on the phone: the screens, the scheme content, the eligibility rules, the profile and the
 state lookup. The server has two jobs: serve the app's files, and act as a small proxy to Gemini so the API key never
 reaches the browser. Without a key the app still works in Hindi, Tamil, Telugu and English with scripted answers and
@@ -74,12 +66,7 @@ phone has none for.
 
 ## 2. Where data lives (privacy map)
 
-![Privacy map](diagrams/02-privacy-map.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 02-privacy-map
 flowchart LR
   subgraph stays["Stays on the phone"]
     P["Profile: state, district, age group,<br/>category, yes/no answers"]
@@ -98,8 +85,6 @@ flowchart LR
   passes --> GEM["Gemini"]
 ```
 
-</details>
-
 The product promise is "no personal data", so this map is the one to check before any change. The profile and the
 GPS position never leave the phone (`saveProfile`, `locateState`). Listening is done by the browser's own speech
 service, which hands the app only text; the app uses that text for the current screen and drops it. Text reaches
@@ -111,12 +96,7 @@ is never written to logs; the server logs only Gemini errors and model switches.
 
 ## 3. Screen flow
 
-![Screen flow](diagrams/03-screen-flow.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 03-screen-flow
 flowchart TD
   start(["Open the app"]) --> saved{"Language already<br/>saved on this phone?"}
   saved -- no --> lang["Language screen<br/>say or tap Hindi, Tamil, Telugu, English<br/>+7 more when AI is on"]
@@ -137,8 +117,6 @@ flowchart TD
   no --> home
 ```
 
-</details>
-
 One idea per screen, and no dead ends. Every screen is a browser history entry (`screen()`), so the phone's Back
 button goes one screen back instead of closing the app. On any screen she can also say "home", "back", "language",
 "repeat" or "stop". A returning user skips the language screen.
@@ -149,12 +127,7 @@ button goes one screen back instead of closing the app. On any screen she can al
 
 ## 4. Talk mode: the voice loop on every screen
 
-![Talk mode loop](diagrams/04-talk-mode-loop.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 04-talk-mode-loop
 flowchart TD
   open["A screen opens and calls<br/>voiceScreen(text, handler)"] --> von{"Voice on?"}
   von -- yes --> say["Speak the screen<br/>see diagram 5"]
@@ -179,8 +152,6 @@ flowchart TD
   miss -- no --> giveup["Say the screen's give-up hint<br/>for example 'tap a picture'"]
 ```
 
-</details>
-
 Every screen is built the same way: it renders its buttons, then hands `voiceScreen` the words to say and a handler
 for her answer. The handler returns `false` when it did not understand, which drives the retry counter. On screens
 that expect free speech (her need, her district, a question) a command only counts if it is three words or fewer, so
@@ -193,12 +164,7 @@ which is why the glowing speaker exists.
 
 ## 5. Voice out: choosing a voice
 
-![Voice out](diagrams/05-voice-out.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 05-voice-out
 flowchart TD
   t["Text to speak"] --> ch["Split at sentence ends<br/>first part short, about 120 characters,<br/>so she hears something quickly"]
   ch --> dv{"A device voice for<br/>this language?"}
@@ -212,8 +178,6 @@ flowchart TD
   fb -- no --> def["Default device voice"]
 ```
 
-</details>
-
 Many PCs have no Tamil or Telugu voice, so the server's Gemini voice fills the gap. Fetching one sentence group at a
 time means she waits for the first sentence, not the whole paragraph, and `warm()` fetches the next question's audio
 while she is still answering the current one. A new screen always cancels what the old one was saying (`speechToken`),
@@ -225,12 +189,7 @@ so two screens never talk over each other.
 
 ## 6. Understanding what she asks for
 
-![Request matching](diagrams/06-request-matching.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 06-request-matching
 flowchart TD
   words["Her words on the home screen"] --> pc{"'profile' or 'delete'?"}
   pc -- yes --> pw["Open or delete the profile"]
@@ -244,8 +203,6 @@ flowchart TD
   api -- none --> miss["Not understood<br/>ask again, see diagram 4"]
   aiq -- no --> miss
 ```
-
-</details>
 
 The cheap, offline rules run first, so most requests never leave the phone; only words the rules cannot place are
 sent to Gemini. Specific schemes are tried before broad ones because "my daughter's bank account" should open Sukanya
@@ -264,12 +221,7 @@ documents, "where to go" or money text, picked by keywords, or gives the helplin
 
 **Inside a scheme:** yes/no questions, stopping at the first answer that rules her out.
 
-![Eligibility questions](diagrams/07a-eligibility-questions.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 07a-eligibility-questions
 flowchart TD
   o["She opens a scheme"] --> more{"More questions left?"}
   more -- no --> elig["Result: you can get this"]
@@ -279,16 +231,9 @@ flowchart TD
   want -- no --> notE["Result: not for you<br/>with helplines"]
 ```
 
-</details>
-
 **On the home screen:** which scheme tiles she sees.
 
-![Home screen filter](diagrams/07b-home-screen-filter.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 07b-home-screen-filter
 flowchart TD
   all["Every service"] --> basic{"Basic service?<br/>LPG, bank balance, Jan Dhan"}
   basic -- yes --> b["Always shown<br/>under 'Basic services'"]
@@ -301,8 +246,6 @@ flowchart TD
   fit -- no --> h2["Hidden"]
 ```
 
-</details>
-
 Each scheme has one small rule in `FIT`, for example *Matru Vandana: pregnant or a new mother, aged 18 to 59* or *a state cash scheme: same state, and her age group overlaps the scheme's age range*. A
 skipped question counts as "maybe" (rules test `!== 'no'`), and a rule that errors counts as a pass, so the app would
 rather show one scheme too many than hide one she could get. The questions inside a scheme still decide.
@@ -313,12 +256,7 @@ rather show one scheme too many than hide one she could get. The questions insid
 
 ## 8. Profile wizard and Find my state
 
-![Profile wizard](diagrams/08a-profile-wizard.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 08a-profile-wizard
 flowchart TD
   intro["Intro: what is saved,<br/>and that it stays on this phone"] -- "yes" --> st["Which state?"]
   intro -- "no" --> home["Home"]
@@ -334,14 +272,7 @@ flowchart TD
   save --> fy["Home with 'Schemes for you'"]
 ```
 
-</details>
-
-![Find my state sequence](diagrams/08b-find-my-state-sequence.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 08b-find-my-state-sequence
 sequenceDiagram
   actor W as Woman
   participant App as App on the phone
@@ -359,14 +290,7 @@ sequenceDiagram
   App->>App: profile.state = TN, saved in localStorage
 ```
 
-</details>
-
-![State lookup algorithm](diagrams/08c-state-lookup-algorithm.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 08c-state-lookup-algorithm
 flowchart TD
   p["Position, scaled to whole numbers"] --> each["For each state, for each outline"]
   each --> ray["Even-odd test: count how many<br/>outline edges a line going east crosses"]
@@ -379,8 +303,6 @@ flowchart TD
   close -- no --> none["Not found<br/>she picks from the list"]
 ```
 
-</details>
-
 Answers are spoken, not typed: a spoken number becomes an age group and "village"/"गाँव"/"கிராமம்" becomes `rural`
 (`pickOption`). The state map ships with the app, so finding the state needs no reverse-geocoding API and nobody
 learns where she is. A wrong guess near a border costs one "no". The map itself is built by a batch job (diagram 12).
@@ -391,12 +313,7 @@ learns where she is. A wrong guess near a border costs one "no". The map itself 
 
 ## 9. More languages: translation on demand
 
-![Translation on demand](diagrams/09-translation.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 09-translation
 sequenceDiagram
   participant App as App on the phone
   participant LS as localStorage
@@ -414,8 +331,6 @@ sequenceDiagram
   App->>App: build screens, state names, yes and no words
 ```
 
-</details>
-
 Hindi, Tamil, Telugu and English are written by hand. Bengali, Marathi, Gujarati, Kannada, Malayalam, Punjabi and
 Odia are translated once per phone, cached in two places (the server's memory for everyone, the phone's localStorage
 for her), and checked for shape before use. A cached language opens instantly and works offline.
@@ -426,12 +341,7 @@ for her), and checked for shape before use. A cached language opens instantly an
 
 ## 10. Server request pipeline
 
-![Server request pipeline](diagrams/10-server-pipeline.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 10-server-pipeline
 flowchart TD
   req["Request"] --> h{"/api/health?"}
   h -- yes --> hj["ok, and whether AI is on"]
@@ -455,8 +365,6 @@ flowchart TD
   run --> out["JSON, or audio/wav"]
 ```
 
-</details>
-
 Every response carries strict security headers (a Content-Security-Policy that blocks inline scripts, HSTS,
 no-referrer, microphone and location allowed only for this site). Cheap checks come first, so a bad or abusive request
 is rejected before it can cost a Gemini call. The server keeps no state that matters: Cloud Run can start or stop
@@ -468,12 +376,7 @@ copies of it at any time.
 
 ## 11. Gemini resilience
 
-![Gemini resilience](diagrams/11-gemini-resilience.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 11-gemini-resilience
 flowchart TD
   start["gemini(kind, body)"] --> key{"API key set?"}
   key -- no --> e503["503: AI not configured<br/>the app falls back to scripted answers"]
@@ -493,8 +396,6 @@ flowchart TD
   r2 -- "other error" --> e502
 ```
 
-</details>
-
 Google renames and retires Gemini models often. Instead of failing when that happens, the server finds a working model
 by itself and keeps using it, so the live demo does not break on a model rename. On the phone every AI feature has a
 non-AI fallback, so a 502 means a simpler answer, not an error screen.
@@ -505,12 +406,7 @@ non-AI fallback, so a 502 means a simpler answer, not an error screen.
 
 ## 12. Data pipeline: scheme facts as a data product
 
-![Data pipeline](diagrams/12a-data-pipeline.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 12a-data-pipeline
 flowchart LR
   app["public/app.js<br/>source of truth for content"] -- "extract.js<br/>loads the app in jsdom" --> reg["registry.json"]
   reg --> sch[("schemes.ndjson")]
@@ -527,14 +423,7 @@ flowchart LR
   res -- "all good" --> fresh["fresh"]
 ```
 
-</details>
-
-![Geo build](diagrams/12b-geo-build.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 12b-geo-build
 flowchart LR
   ne["Natural Earth admin-1<br/>v5.1.2, public domain, 40 MB"] --> india["Keep India"]
   india --> codes["Rename codes to the app's<br/>UT to UK, OR to OD, ..."]
@@ -543,8 +432,6 @@ flowchart LR
   simp --> int["Round to 0.001 degree<br/>store as whole numbers"]
   int --> out["public/states.geo.json<br/>99 KB, 36 states and UTs"]
 ```
-
-</details>
 
 Scheme amounts and rules go out of date, so the content is treated like a dataset: extracted into flat tables in
 BigQuery's load format (NDJSON), checked against rules, and given a freshness status from human-verified provenance.
@@ -559,12 +446,7 @@ batch job whose output ships with the app.
 
 ## 13. Build, test and deploy
 
-![Build and deploy](diagrams/13-build-and-deploy.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 13-build-and-deploy
 flowchart LR
   br["Feature branch"] --> pr["Pull request"]
   pr --> ci["GitHub Actions CI<br/>npm run check, npm test,<br/>npm run data:check"]
@@ -577,8 +459,6 @@ flowchart LR
   fw --> art["Report and NDJSON tables<br/>uploaded as a build artifact"]
 ```
 
-</details>
-
 `main` is always deployable. Deploys are manual on purpose: the Cloud Run project belongs to a separate Google account,
 and the Gemini key setting carries over from the previous revision. The image holds only `package.json`, `server.js`
 and `public/`; it has no runtime dependencies to install.
@@ -589,12 +469,7 @@ and `public/`; it has no runtime dependencies to install.
 
 ## 14. Offline: the service worker
 
-![Service worker](diagrams/14-service-worker.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 14-service-worker
 flowchart TD
   r["The browser asks for a file"] --> g{"GET, same site,<br/>and not /api/?"}
   g -- no --> net["Straight to the network<br/>answers, translations and audio are always live"]
@@ -603,8 +478,6 @@ flowchart TD
   c -- no --> fetch["Fetch from the network<br/>and keep a copy"]
   fetch -- "offline" --> fail["Fails, nothing cached yet"]
 ```
-
-</details>
 
 The app opens instantly and works without signal in the four built-in languages. The cost of "cached copy first" is
 that a fresh deploy appears on the second page load, not the first.
@@ -617,12 +490,7 @@ that a fresh deploy appears on the second page load, not the first.
 
 What is planned to turn this into a full data platform (see [`ROADMAP.md`](ROADMAP.md)). None of this is built yet.
 
-![Target roadmap](diagrams/15-roadmap-target.png)
-
-<details><summary>Diagram source (Mermaid, edit this, then run <code>node tools/render-diagrams.js</code>)</summary>
-
 ```mermaid
-%% file: 15-roadmap-target
 flowchart LR
   U["Browser PWA"] -- "anonymous events" --> E["/api/event<br/>validate, rate-limit"]
   E --> P["Pub/Sub"]
@@ -635,8 +503,6 @@ flowchart LR
   J --> BQraw2
   D -- "search-miss backlog" --> F["New schemes and features"]
 ```
-
-</details>
 
 ## Design decisions
 - **Privacy first.** The product promise is "no personal data". Events carry only coarse, non-identifying fields (event type, scheme id, language, optional state the user picked, app version, day). No IP, no cookie or persistent id, no free text, no voice. Dashboards hide groups smaller than a threshold.
